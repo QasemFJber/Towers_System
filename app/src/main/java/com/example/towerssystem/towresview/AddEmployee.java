@@ -23,6 +23,7 @@ import com.example.towerssystem.controller.EmployeeController;
 import com.example.towerssystem.R;
 import com.example.towerssystem.databinding.AddEmployeeBinding;
 import com.example.towerssystem.interfaces.AuthCallBack;
+import com.example.towerssystem.models.Employee;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.ByteArrayOutputStream;
@@ -78,10 +79,22 @@ public class AddEmployee extends AppCompatActivity  implements View.OnClickListe
     }
     public void saveEmployee(){
         String name = binding.etFirstname.getText().toString().trim();
-        String mobile =String.valueOf(binding.etMobile.getText().toString().trim());
-        String number =String.valueOf(binding.etNationalNumber.getText().toString().trim());
-        String image = binding.imageView2.toString();
+        String mobile =binding.etMobile.getText().toString().trim();
+        String number =binding.etNationalNumber.getText().toString().trim();
+        Employee employee = new Employee(name,mobile,number,bitmapToBytes());
         EmployeeController controller = new EmployeeController();
+        controller.insertEmployee(employee, new AuthCallBack() {
+            @Override
+            public void onSuccess(String message) {
+                Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(String message) {
+                Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
+
+            }
+        });
 
     }
 
@@ -113,7 +126,7 @@ public class AddEmployee extends AppCompatActivity  implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btn_save){
-            saveEmployee();
+            performData();
         }else if (v.getId() == R.id.imageView2){
             pickImage();
         }else if (v.getId() == R.id.tv_back) {
@@ -122,6 +135,8 @@ public class AddEmployee extends AppCompatActivity  implements View.OnClickListe
             finish();
         }
     }
+
+
 
 
 
@@ -149,6 +164,25 @@ public class AddEmployee extends AppCompatActivity  implements View.OnClickListe
         });
     }
 
+    private void performData(){
+        if (checkData()){
+            saveEmployee();
+        }else {
+            Toast.makeText(this, "ENTER REQUERD DATA", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+        private boolean checkData() {
+        if (!binding.etFirstname.getText().toString().isEmpty() &&
+                !binding.etMobile.getText().toString().isEmpty() &&
+                !binding.etNationalNumber.getText().toString().isEmpty()&&
+                bitmapToBytes() !=null
+                ) {
+            return true;
+        }
+        return false;
+    }
+
     private void pickImage() {
         permissionResultLauncher.launch(Manifest.permission.CAMERA);
     }
@@ -160,15 +194,7 @@ public class AddEmployee extends AppCompatActivity  implements View.OnClickListe
         return stream.toByteArray();
     }
 
-//    private boolean checkData() {
-//        if (!binding.fullNameEditText.getText().toString().isEmpty() &&
-//                !binding.emailEditText.getText().toString().isEmpty() &&
-//                !binding.passwordEditText.getText().toString().isEmpty() &&
-//                gender != null) {
-//            return true;
-//        }
-//        return false;
-//    }
+
 //
 //    private void controlGenderSelection() {
 //        binding.genderRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -179,26 +205,26 @@ public class AddEmployee extends AppCompatActivity  implements View.OnClickListe
 //        });
 //    }
 
-    private void showDialog(){
-        dialog = new Dialog(AddEmployee.this);
-        dialog.setContentView(R.layout.customdialogpiak);
-
-        dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.background));
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.setCancelable(false);
-        dialog.getWindow().getAttributes().windowAnimations = R.style.animation;
-        Button pick = dialog.findViewById(R.id.btn_pick);
-        Button upload = dialog.findViewById(R.id.btn_upload);
-        dialog.show();
-        pick.setOnClickListener(v -> {
-            Toast.makeText(this, "PICK IMAGE", Toast.LENGTH_SHORT).show();
-            dialog.dismiss();
-        });
-
-        upload.setOnClickListener(v -> {
-            Toast.makeText(this, "UPLOAD IMAGE", Toast.LENGTH_SHORT).show();
-            dialog.dismiss();
-
-        });
-    }
+//    private void showDialog(){
+//        dialog = new Dialog(AddEmployee.this);
+//        dialog.setContentView(R.layout.customdialogpiak);
+//
+//        dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.background));
+//        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+//        dialog.setCancelable(false);
+//        dialog.getWindow().getAttributes().windowAnimations = R.style.animation;
+//        Button pick = dialog.findViewById(R.id.btn_pick);
+//        Button upload = dialog.findViewById(R.id.btn_upload);
+//        dialog.show();
+//        pick.setOnClickListener(v -> {
+//            Toast.makeText(this, "PICK IMAGE", Toast.LENGTH_SHORT).show();
+//            dialog.dismiss();
+//        });
+//
+//        upload.setOnClickListener(v -> {
+//            Toast.makeText(this, "UPLOAD IMAGE", Toast.LENGTH_SHORT).show();
+//            dialog.dismiss();
+//
+//        });
+//    }
 }

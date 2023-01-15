@@ -34,12 +34,11 @@ public class AdvertisementsController {
 
     }
 
-    public void insertAdvertisements(String title,String info,String image , AuthCallBack callBack){
-        Call<BaseResponse<Advertisements>> insertAdvertisements = ApiController.getInstance().getRetrofitRequests().insertAdvertisements(title,info,image);
+    public void insertAdvertisements(Advertisements advertisements, AuthCallBack callBack){
+        Call<BaseResponse<Advertisements>> insertAdvertisements = ApiController.getInstance().getRetrofitRequests().insertAdvertisements(advertisements.title, advertisements.info, advertisements.imageUrl);
         insertAdvertisements.enqueue(new Callback<BaseResponse<Advertisements>>() {
             @Override
             public void onResponse(Call<BaseResponse<Advertisements>> call, Response<BaseResponse<Advertisements>> response) {
-
                 if (response.isSuccessful()) {
                     callBack.onSuccess("");
                 } else {

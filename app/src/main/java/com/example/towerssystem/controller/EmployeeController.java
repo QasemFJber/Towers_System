@@ -6,6 +6,7 @@ import com.example.towerssystem.interfaces.AuthCallBack;
 import com.example.towerssystem.interfaces.ContentCallBack;
 import com.example.towerssystem.models.BaseResponse;
 import com.example.towerssystem.models.Employee;
+import com.example.towerssystem.models.Resident;
 import com.example.towerssystem.towers.towrescontroller.ApiController;
 
 import org.json.JSONException;
@@ -54,33 +55,38 @@ public class EmployeeController {
 
     }
 
-    public void insertEmployee(AuthCallBack callBack){
+    public void insertEmployee(Employee employee ,AuthCallBack callBack){
         RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), imageBytesArray);
         MultipartBody.Part file = MultipartBody.Part.createFormData("image", "image-file", requestBody);
-        Employee employee = new Employee();
-        HashMap<String , RequestBody> bodyHashMap = new HashMap<>();
-        bodyHashMap.put("name",RequestBody.create(MediaType.parse("text/plain"),employee.name));
-        bodyHashMap.put("mobile",RequestBody.create(MediaType.parse("text/plain"),employee.mobile));
-        bodyHashMap.put("nationalNumber",RequestBody.create(MediaType.parse("text/plain"),employee.nationalNumber));
-        bodyHashMap.put("towerName",RequestBody.create(MediaType.parse("text/plain"),employee.towerName));
-        Call<BaseResponse<Employee>> insertEmployee = ApiController.getInstance().getRetrofitRequests().insertEmployee(bodyHashMap,file);
-        insertEmployee.enqueue(new Callback<BaseResponse<Employee>>() {
+        RequestBody _name = RequestBody.create(MediaType.parse("String"),employee.name);
+        RequestBody _mobile = RequestBody.create(MediaType.parse("String"),employee.mobile);
+        RequestBody _nationalNumber = RequestBody.create(MediaType.parse("String"),employee.nationalNumber);
+        Call<BaseResponse> insertEmployee = ApiController.getInstance().getRetrofitRequests().insertEmployee(_name,_mobile,_nationalNumber,file);
+        insertEmployee.enqueue(new Callback<BaseResponse>() {
             @Override
-            public void onResponse(Call<BaseResponse<Employee>> call, Response<BaseResponse<Employee>> response) {
-
-                if (response.isSuccessful()) {
-                    callBack.onSuccess("");
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                if (response.isSuccessful() && response.body() !=null) {
+                    callBack.onSuccess(response.body().message);
                 } else {
-                    callBack.onFailure("");
+                    try {
+                        String error = new String(response.errorBody().bytes(), StandardCharsets.UTF_8);
+                        JSONObject jsonObject = new JSONObject(error);
+                        callBack.onFailure(jsonObject.getString("message"));
+
+                    }catch (JSONException jsonException){
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
-
             @Override
-            public void onFailure(Call<BaseResponse<Employee>> call, Throwable t) {
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                callBack.onFailure("");
+
 
             }
         });
-
     }
     public void updateEmployee(int id, AuthCallBack callBack){
         Call<BaseResponse<Employee>> updateEmployee = ApiController.getInstance().getRetrofitRequests().updateEmployee(id);

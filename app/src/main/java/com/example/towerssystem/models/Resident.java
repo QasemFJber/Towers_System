@@ -34,4 +34,6 @@ public class Resident {
     @Expose
     public String towerName;
 
+    public Resident(String name, String email, String mobile, String number, String family, String gender, byte[] bitmapToBytes) {
+    }
 }

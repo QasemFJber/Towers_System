@@ -28,4 +28,6 @@ public class Employee {
     @Expose
     public String towerName;
 
+    public Employee(String name, String mobile, String number, byte[] bitmapToBytes) {
+    }
 }

@@ -15,13 +15,14 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.example.towerssystem.controller.UsersController;
+import com.example.towerssystem.controller.ResidentController;
 import com.example.towerssystem.R;
 import com.example.towerssystem.databinding.ActivityAddUserBinding;
+import com.example.towerssystem.interfaces.AuthCallBack;
+import com.example.towerssystem.models.Resident;
 
 import java.io.ByteArrayOutputStream;
 
@@ -33,15 +34,20 @@ public class AddUser extends AppCompatActivity implements View.OnClickListener {
     private Bitmap imageBitmap;
     private Dialog dialog;
     private Uri imagePick;
+    private String gender;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding  = ActivityAddUserBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+      initializeView();
+
+    }
+    private void initializeView() {
+        setOnCilck();
         OperationsSccren();
         setupResultsLauncher();
         checkIdOfActivity();
-
     }
 
     private void checkIdOfActivity() {
@@ -86,7 +92,7 @@ public class AddUser extends AppCompatActivity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btn_save){
-            saveUser();
+            performData();
         }else if (v.getId() == R.id.imageView2){
             pickImage();
         }else if (v.getId() == R.id.tv_back) {
@@ -105,6 +111,24 @@ public class AddUser extends AppCompatActivity implements View.OnClickListener {
     }
 
 
+    private void performData(){
+        if (checkData()){
+            saveResident();
+        }else {
+            Toast.makeText(this, "ENTER REQUERD DATA", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean checkData() {
+        if (!binding.etFirstname.getText().toString().isEmpty() &&
+                !binding.etMobile.getText().toString().isEmpty() &&
+                !binding.etNationalNumber.getText().toString().isEmpty()&&
+                bitmapToBytes() !=null
+        ) {
+            return true;
+        }
+        return false;
+    }
 
     private void setupResultsLauncher() {
         permissionResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback<Boolean>() {
@@ -134,15 +158,26 @@ public class AddUser extends AppCompatActivity implements View.OnClickListener {
         permissionResultLauncher.launch(Manifest.permission.CAMERA);
     }
 
-    private void saveUser() {
-        binding.etFirstname.getText().toString().trim();
-        binding.etEmailUser.getText().toString().trim();
-        binding.etMobile.getText().toString().trim();
-        binding.etNationalNumber.getText().toString().trim();
-        binding.etFamilyMembers.getText().toString().trim();
-//        binding..getText().toString().trim();
-        UsersController usersController = new UsersController();
-//        usersController.insertUser();
+    private void saveResident() {
+        String name =binding.etFirstname.getText().toString().trim();
+        String email = binding.etEmailUser.getText().toString().trim();
+        String mobile = binding.etMobile.getText().toString().trim();
+        String number =binding.etNationalNumber.getText().toString().trim();
+        String family =binding.etFamilyMembers.getText().toString().trim();
+        Resident resident = new Resident(name,email,mobile,number,family,gender,bitmapToBytes());
+        ResidentController residentController = new ResidentController();
+        residentController.insertResident(resident, new AuthCallBack() {
+            @Override
+            public void onSuccess(String message) {
+
+            }
+
+            @Override
+            public void onFailure(String message) {
+
+            }
+        });
+
 
     }
 
@@ -152,23 +187,13 @@ public class AddUser extends AppCompatActivity implements View.OnClickListener {
         return stream.toByteArray();
     }
 
-//    private boolean checkData() {
-//        if (!binding.fullNameEditText.getText().toString().isEmpty() &&
-//                !binding.emailEditText.getText().toString().isEmpty() &&
-//                !binding.passwordEditText.getText().toString().isEmpty() &&
-//                gender != null) {
-//            return true;
-//        }
-//        return false;
-//    }
-//
-//    private void controlGenderSelection() {
-//        binding.genderRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(RadioGroup group, int checkedId) {
-//                gender = checkedId == R.id.male_radio_button ? "M" : "F";
-//            }
-//        });
-//    }
+    private void controlGenderSelection() {
+        binding.radiogroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                gender = checkedId == R.id.radiomale ? "M" : "F";
+            }
+        });
+    }
 
 }

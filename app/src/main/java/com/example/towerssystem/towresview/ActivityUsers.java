@@ -14,7 +14,7 @@ import android.view.View;
 
 import com.example.towerssystem.R;
 import com.example.towerssystem.adapters.UserAdapter;
-import com.example.towerssystem.controller.UsersController;
+import com.example.towerssystem.controller.ResidentController;
 import com.example.towerssystem.databinding.ActivityUsersBinding;
 import com.example.towerssystem.interfaces.ContentCallBack;
 import com.example.towerssystem.models.Resident;
@@ -83,8 +83,8 @@ public class ActivityUsers extends AppCompatActivity implements View.OnClickList
     }
 
     private void getAllUsers(){
-        UsersController controller = new UsersController();
-        controller.getAllUsers(new ContentCallBack<Resident>() {
+        ResidentController controller = new ResidentController();
+        controller.getAllResident(new ContentCallBack<Resident>() {
             @Override
             public void onSuccess(List<Resident> list) {
                 adapter = new UserAdapter(list);

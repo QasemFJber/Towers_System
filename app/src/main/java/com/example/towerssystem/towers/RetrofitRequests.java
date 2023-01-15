@@ -62,19 +62,12 @@ public interface RetrofitRequests {
     @GET("employees")
     Call<BaseResponse<Employee>> getAllEmployee();
 
-//    @Multipart
-//    @POST("users")
-//    Call<BaseResponse> createResident(@Part("name") RequestBody name
-//            ,@Part("email") RequestBody email,
-//                                      @Part("mobile") RequestBody mobile,
-//                                      @Part("national_number") RequestBody national_number,
-//                                      @Part("family_members") RequestBody family_members,
-//                                      @Part("gender") RequestBody gender,
-//                                      @Part MultipartBody.Part image);
-
     @Multipart
     @POST("employees")
-    Call<BaseResponse<Employee>> insertEmployee(HashMap<String, RequestBody> map, @Part MultipartBody.Part image);
+    Call<BaseResponse> insertEmployee(@Part("name") RequestBody name,
+                                      @Part("mobile") RequestBody mobile,
+                                      @Part("national_number") RequestBody national_number,
+                                      @Part MultipartBody.Part image);
 
     @PUT("employees/{id}")
     Call<BaseResponse<Employee>> updateEmployee(@Path("id") int id);
@@ -108,7 +101,7 @@ public interface RetrofitRequests {
                                       @Part("national_number") RequestBody national_number,
                                       @Part("family_members") RequestBody family_members,
                                       @Part("gender") RequestBody gender,
-                                      @Part MultipartBody.Part image)
+                                      @Part MultipartBody.Part image);
 
 
     @PUT("users/{id}")
