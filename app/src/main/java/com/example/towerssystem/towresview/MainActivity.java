@@ -6,13 +6,16 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.towerssystem.Broadcastreciver.NetworkChangeListiners;
 import com.example.towerssystem.R;
 import com.example.towerssystem.adapters.CategoriesAdapter;
 import com.example.towerssystem.controller.AuthController;
@@ -32,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     AuthController authController = new AuthController();
     CategoriesController categoriesController = new CategoriesController();
     private List<Categorie> categories = new ArrayList<>();
+    NetworkChangeListiners networkChangeListiners = new NetworkChangeListiners();
+
     CategoriesAdapter adapter ;
 
     @Override
@@ -52,8 +57,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-        super.onStart();
         setDataInRecycler();
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeListiners,intentFilter);
+        super.onStart();
+
     }
 
     private void setDataInRecycler() {
@@ -64,7 +72,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
+        unregisterReceiver(networkChangeListiners);
         super.onStop();
+
 
     }
 
@@ -85,7 +95,13 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), ActivityEmployees.class);
             startActivity(intent);
         }else if (item.getItemId() == R.id.add_user){
-            Intent intent = new Intent(getApplicationContext(), ActivityUsers.class);
+            Intent intent = new Intent(getApplicationContext(), ActivityResidents.class);
+            startActivity(intent);
+        }else if (item.getItemId() == R.id.operations){
+            Intent intent = new Intent(getApplicationContext(), Operations.class);
+            startActivity(intent);
+        }else if (item.getItemId() == R.id.advertisements){
+            Intent intent = new Intent(getApplicationContext(), AddOperations.class);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);

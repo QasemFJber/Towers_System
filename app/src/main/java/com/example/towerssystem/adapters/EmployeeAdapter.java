@@ -38,10 +38,10 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.Employ
     @Override
     public void onBindViewHolder(@NonNull EmployeeViewHolder holder, int position) {
         Employee employee = employees.get(position);
-        holder.binding.tvUsername.setText(employee.name);
-        holder.binding.tvItemMobile.setText(employee.mobile);
-        holder.binding.tvItemTowresName.setText(employee.towerName);
-        Picasso.get().load(employee.imageUrl).into(holder.binding.imageemp);
+        holder.binding.tvEmployeeUsername.setText(employee.name);
+        holder.binding.tvItememployeeMobile.setText(employee.mobile);
+        holder.binding.tvItememployeeTowresName.setText(employee.towerName);
+        Picasso.get().load(employee.imageUrl).into(holder.binding.imag);
 
     }
 

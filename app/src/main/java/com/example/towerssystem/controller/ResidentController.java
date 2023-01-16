@@ -73,41 +73,41 @@ public class ResidentController {
 
     }
     public void updateResident(int id, AuthCallBack callBack){
-        Call<BaseResponse<Resident>> updateUser = ApiController.getInstance().getRetrofitRequests().updateResident(id);
-        updateUser.enqueue(new Callback<BaseResponse<Resident>>() {
+        Call<BaseResponse> updateUser = ApiController.getInstance().getRetrofitRequests().updateResident(id);
+        updateUser.enqueue(new Callback<BaseResponse>() {
             @Override
-            public void onResponse(Call<BaseResponse<Resident>> call, Response<BaseResponse<Resident>> response) {
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
 
-                if (response.isSuccessful()) {
-                    callBack.onSuccess("");
-                } else {
-                    callBack.onFailure("");
-                }
             }
 
             @Override
-            public void onFailure(Call<BaseResponse<Resident>> call, Throwable t) {
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
 
-                callBack.onFailure("");
             }
         });
-
     }
     public void deleteResident(int id , AuthCallBack callBack){
-        Call<BaseResponse<Resident>> deleteUser = ApiController.getInstance().getRetrofitRequests().deleteResident(id);
-        deleteUser.enqueue(new Callback<BaseResponse<Resident>>() {
+        Call<BaseResponse> deleteUser = ApiController.getInstance().getRetrofitRequests().deleteResident(id);
+        deleteUser.enqueue(new Callback<BaseResponse>() {
             @Override
-            public void onResponse(Call<BaseResponse<Resident>> call, Response<BaseResponse<Resident>> response) {
-                if (response.isSuccessful()) {
-                    callBack.onSuccess("");
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                if (response.isSuccessful() && response.body() !=null) {
+                    callBack.onSuccess(response.body().message);
                 } else {
-                    callBack.onFailure("");
+                    try {
+                        String error = new String(response.errorBody().bytes(), StandardCharsets.UTF_8);
+                        JSONObject jsonObject = new JSONObject(error);
+                        callBack.onFailure(jsonObject.getString("message"));
+                    }catch (JSONException jsonException){
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
             @Override
-            public void onFailure(Call<BaseResponse<Resident>> call, Throwable t) {
-                callBack.onFailure("");
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
 
             }
         });

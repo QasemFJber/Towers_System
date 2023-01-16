@@ -89,40 +89,43 @@ public class EmployeeController {
         });
     }
     public void updateEmployee(int id, AuthCallBack callBack){
-        Call<BaseResponse<Employee>> updateEmployee = ApiController.getInstance().getRetrofitRequests().updateEmployee(id);
-        updateEmployee.enqueue(new Callback<BaseResponse<Employee>>() {
+        Call<BaseResponse> updateEmployee = ApiController.getInstance().getRetrofitRequests().updateEmployee(id);
+        updateEmployee.enqueue(new Callback<BaseResponse>() {
             @Override
-            public void onResponse(Call<BaseResponse<Employee>> call, Response<BaseResponse<Employee>> response) {
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
 
-                if (response.isSuccessful()) {
-                    callBack.onSuccess("");
-                } else {
-                    callBack.onFailure("");
-                }
             }
 
             @Override
-            public void onFailure(Call<BaseResponse<Employee>> call, Throwable t) {
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
 
             }
         });
 
     }
     public void deleteEmployee(int id, AuthCallBack callBack){
-        Call<BaseResponse<Employee>> deleteEmployee = ApiController.getInstance().getRetrofitRequests().deleteEmployee(id);
-        deleteEmployee.enqueue(new Callback<BaseResponse<Employee>>() {
+        Call<BaseResponse> deleteEmployee = ApiController.getInstance().getRetrofitRequests().deleteEmployee(id);
+        deleteEmployee.enqueue(new Callback<BaseResponse>() {
             @Override
-            public void onResponse(Call<BaseResponse<Employee>> call, Response<BaseResponse<Employee>> response) {
-
-                if (response.isSuccessful()) {
-                    callBack.onSuccess("");
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                if (response.isSuccessful() && response.body() !=null) {
+                    callBack.onSuccess(response.body().message);
                 } else {
-                    callBack.onFailure("");
+                    try {
+                        String error = new String(response.errorBody().bytes(), StandardCharsets.UTF_8);
+                        JSONObject jsonObject = new JSONObject(error);
+                        callBack.onFailure(jsonObject.getString("message"));
+                    }catch (JSONException jsonException){
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
             @Override
-            public void onFailure(Call<BaseResponse<Employee>> call, Throwable t) {
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+
 
             }
         });

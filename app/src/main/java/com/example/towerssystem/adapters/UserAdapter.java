@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.towerssystem.databinding.ItemUserBinding;
+import com.example.towerssystem.databinding.ItemResidentBinding;
 import com.example.towerssystem.models.Resident;
 import com.squareup.picasso.Picasso;
 
@@ -28,7 +28,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     @NonNull
     @Override
     public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemUserBinding binding = ItemUserBinding.inflate(LayoutInflater.from(parent.getContext()),parent,false);
+        ItemResidentBinding binding = ItemResidentBinding.inflate(LayoutInflater.from(parent.getContext()),parent,false);
         return new UserViewHolder(binding.getRoot());
     }
 
@@ -38,8 +38,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         holder.binding.tvUsername.setText(resident.name);
         holder.binding.tvItemMobile.setText(resident.mobile);
         holder.binding.tvItemTowresName.setText(resident.towerName);
-        holder.binding.tvEmailItem.setText(resident.email);
-        Picasso.get().load(resident.imageUrl).into(holder.binding.image);
+        holder.binding.tvUserEmail.setText(resident.email);
+        Picasso.get().load(resident.imageUrl).into(holder.binding.imag);
 
     }
 
@@ -49,11 +49,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     }
 
     class UserViewHolder extends RecyclerView.ViewHolder{
-        ItemUserBinding binding;
+        ItemResidentBinding binding;
 
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
-            binding = ItemUserBinding.bind(itemView);
+            binding = ItemResidentBinding.bind(itemView);
         }
     }
 }

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context=".towresview.AddUser">
+    tools:context=".towresview.AddResident">
 
 
     <TextView
@@ -194,7 +194,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="77dp"
         android:layout_marginEnd="77dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="4dp"
         android:backgroundTint="#FFBB3B"
         android:text="SAVE"
         android:textColor="#000000"
@@ -214,16 +214,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_family_members" >
+        app:layout_constraintTop_toBottomOf="@+id/et_family_members">
 
         <RadioButton
             android:id="@+id/radiomale"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="M"
             android:layout_marginStart="@dimen/_22sdp"
+            android:layout_weight="1"
             android:paddingStart="@dimen/_10sdp"
+            android:text="M"
             android:textColor="@color/yl"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -232,19 +232,19 @@
             android:id="@+id/radiofemale"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="F"
             android:layout_marginEnd="@dimen/_22sdp"
-            android:textColor="@color/yl"
+            android:layout_weight="1"
             android:paddingStart="@dimen/_10sdp"
+            android:text="F"
+            android:textColor="@color/yl"
             android:textSize="20sp"
             android:textStyle="bold" />
     </RadioGroup>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
-        android:layout_width="@dimen/_90sdp"
-        android:layout_height="@dimen/_90sdp"
+        android:layout_width="@dimen/_120sdp"
+        android:layout_height="@dimen/_120sdp"
         android:layout_marginTop="8dp"
         app:cardBackgroundColor="#3E3D3D"
         app:cardCornerRadius="@dimen/_555sdp"
@@ -257,26 +257,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
+            <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/imageView2"
-                android:layout_width="@dimen/_80sdp"
-                android:layout_height="@dimen/_80sdp"
-                android:src="@drawable/cri"
+                android:layout_width="@dimen/_110sdp"
+                android:layout_height="@dimen/_110sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/imagerow" />
 
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/img"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView2"
-                app:layout_constraintEnd_toEndOf="@+id/imageView2"
-                app:layout_constraintStart_toStartOf="@+id/imageView2"
-                app:layout_constraintTop_toTopOf="@+id/imageView2" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

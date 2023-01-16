@@ -8,39 +8,43 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.example.towerssystem.R;
-import com.example.towerssystem.adapters.EmployeeAdapter;
-import com.example.towerssystem.controller.EmployeeController;
-import com.example.towerssystem.databinding.ActivityEmployeesBinding;
+import com.example.towerssystem.adapters.OperationsAdapter;
+import com.example.towerssystem.adapters.UserAdapter;
+import com.example.towerssystem.controller.OperationsController;
+import com.example.towerssystem.databinding.ActivityOperationsBinding;
 import com.example.towerssystem.interfaces.AuthCallBack;
 import com.example.towerssystem.interfaces.ContentCallBack;
-import com.example.towerssystem.models.Employee;
+import com.example.towerssystem.models.Resident;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
-public class ActivityEmployees extends AppCompatActivity implements View.OnClickListener {
-    private ActivityEmployeesBinding binding;
-    private EmployeeAdapter adapter;
-    private EmployeeController controller = new EmployeeController();
+public class Operations extends AppCompatActivity implements View.OnClickListener {
+    private ActivityOperationsBinding binding;
+    private OperationsController controller = new OperationsController();
+    private OperationsAdapter adapter = new OperationsAdapter();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityEmployeesBinding.inflate(getLayoutInflater());
+        binding = ActivityOperationsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        initializeView();
+    }
+    private void initializeView(){
+        setOnCilck();
         OperationsSccren();
-        getAllEmployees();
+
     }
     private void OperationsSccren() {
-        setTitle("EMPLOYEES");
+        setTitle("Operations");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.yl)));
-        getWindow().setStatusBarColor(ContextCompat.getColor(ActivityEmployees.this,R.color.black));
+        getWindow().setStatusBarColor(ContextCompat.getColor(Operations.this,R.color.black));
         setOnCilck();
     }
 
@@ -62,6 +66,7 @@ public class ActivityEmployees extends AppCompatActivity implements View.OnClick
     protected void onStart() {
         super.onStart();
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menuempanuser, menu);
@@ -71,60 +76,49 @@ public class ActivityEmployees extends AppCompatActivity implements View.OnClick
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.add) {
-            Intent intent = new Intent(getApplicationContext(),AddEmployee.class);
+            Intent intent = new Intent(getApplicationContext(), AddOperations.class);
             intent.putExtra("id",1);
             startActivity(intent);
         }else if (item.getItemId() == R.id.update){
-            Intent intent = new Intent(getApplicationContext(),AddEmployee.class);
+            Intent intent = new Intent(getApplicationContext(), AddOperations.class);
             intent.putExtra("id",2);
             startActivity(intent);
         }else if (item.getItemId() == R.id.delete){
-            deleteEmployee();
+            deleteResident();
 
-        }else if (item.getItemId() == R.id.addOperations){
-            Intent intent = new Intent(getApplicationContext(),AddOperations.class);
-            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void getAllEmployees(){
-        controller.getAllEmployees(new ContentCallBack<Employee>() {
+    private void getAllOperations(){
+        controller.getAllOperations(new ContentCallBack<com.example.towerssystem.models.Operations>() {
             @Override
-            public void onSuccess(List<Employee> list) {
-                adapter = new EmployeeAdapter(list);
-                adapter.notifyItemRangeInserted(0,list.size());
-                binding.rvUsers.setAdapter(adapter);
-                binding.rvUsers.setHasFixedSize(true);
-                binding.rvUsers.setLayoutManager(new LinearLayoutManager(ActivityEmployees.this));
-                Log.d("API_REQUEST","LIST_SIZE"+list.size());
+            public void onSuccess(List<com.example.towerssystem.models.Operations> list) {
+                adapter = new OperationsAdapter();
+                binding.rvOperations.setAdapter(adapter);
+                binding.rvOperations.setHasFixedSize(true);
+                binding.rvOperations.setLayoutManager(new LinearLayoutManager(Operations.this));
             }
 
             @Override
             public void onFailure(String message) {
-                Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
 
             }
         });
     }
 
-    private void deleteEmployee(){
-        controller.deleteEmployee(66, new AuthCallBack() {
+    private  void deleteResident(){
+        controller.deleteOperations(1, new AuthCallBack() {
             @Override
             public void onSuccess(String message) {
-                Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
-
 
             }
 
             @Override
             public void onFailure(String message) {
-                Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
 
             }
         });
+
     }
-
-
-
 }

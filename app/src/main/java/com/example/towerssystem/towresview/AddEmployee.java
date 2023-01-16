@@ -36,6 +36,7 @@ public class AddEmployee extends AppCompatActivity  implements View.OnClickListe
     private Bitmap imageBitmap;
     private Dialog dialog;
     private Uri imagePick;
+    private EmployeeController controller = new EmployeeController();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +75,7 @@ public class AddEmployee extends AppCompatActivity  implements View.OnClickListe
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode== RESULT_OK){
-            binding.imageView3.setImageURI(data.getData());
+            binding.imageView2.setImageURI(data.getData());
         }
     }
     public void saveEmployee(){
@@ -157,7 +158,6 @@ public class AddEmployee extends AppCompatActivity  implements View.OnClickListe
                 if (result != null) {
                     imageBitmap = result;
                     binding.imageView2.setImageBitmap(imageBitmap);
-                    binding.imageView3.setVisibility(View.GONE);
                     binding.tvAddImage.setText("");
                 }
             }
@@ -194,6 +194,19 @@ public class AddEmployee extends AppCompatActivity  implements View.OnClickListe
         return stream.toByteArray();
     }
 
+    private void updateEmployee(){
+        controller.updateEmployee(4, new AuthCallBack() {
+            @Override
+            public void onSuccess(String message) {
+
+            }
+
+            @Override
+            public void onFailure(String message) {
+
+            }
+        });
+    }
 
 //
 //    private void controlGenderSelection() {

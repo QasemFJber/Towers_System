@@ -20,14 +20,14 @@ import android.widget.Toast;
 
 import com.example.towerssystem.controller.ResidentController;
 import com.example.towerssystem.R;
-import com.example.towerssystem.databinding.ActivityAddUserBinding;
+import com.example.towerssystem.databinding.AddResidentBinding;
 import com.example.towerssystem.interfaces.AuthCallBack;
 import com.example.towerssystem.models.Resident;
 
 import java.io.ByteArrayOutputStream;
 
-public class AddUser extends AppCompatActivity implements View.OnClickListener {
-    ActivityAddUserBinding binding;
+public class AddResident extends AppCompatActivity implements View.OnClickListener {
+    AddResidentBinding binding;
 
     private ActivityResultLauncher<String> permissionResultLauncher;
     private ActivityResultLauncher<Void> cameraResultLauncher;
@@ -35,10 +35,11 @@ public class AddUser extends AppCompatActivity implements View.OnClickListener {
     private Dialog dialog;
     private Uri imagePick;
     private String gender;
+    private ResidentController controller = new ResidentController();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding  = ActivityAddUserBinding.inflate(getLayoutInflater());
+        binding  = AddResidentBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
       initializeView();
 
@@ -55,20 +56,18 @@ public class AddUser extends AppCompatActivity implements View.OnClickListener {
        int id =  intent.getIntExtra("id",0);
        if (id == 1){
            binding.btnSave.setText("Save");
-           setTitle("ADD USER");
+           setTitle("ADD RESIDENT");
        }else {
            binding.btnSave.setText("UPDATE");
-           setTitle("UPDATE USER");
+           setTitle("UPDATE RESIDENT");
 
        }
     }
 
     private void OperationsSccren() {
-
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.yl)));
-        getWindow().setStatusBarColor(ContextCompat.getColor(AddUser.this,R.color.black));
+        getWindow().setStatusBarColor(ContextCompat.getColor(AddResident.this,R.color.black));
         setOnCilck();
-
     }
 
 
@@ -96,7 +95,7 @@ public class AddUser extends AppCompatActivity implements View.OnClickListener {
         }else if (v.getId() == R.id.imageView2){
             pickImage();
         }else if (v.getId() == R.id.tv_back) {
-            Intent intent = new Intent(getApplicationContext(),ActivityUsers.class);
+            Intent intent = new Intent(getApplicationContext(), ActivityResidents.class);
             startActivity(intent);
             finish();
         }
@@ -147,7 +146,6 @@ public class AddUser extends AppCompatActivity implements View.OnClickListener {
                 if (result != null) {
                     imageBitmap = result;
                     binding.imageView2.setImageBitmap(imageBitmap);
-                    binding.imageView3.setVisibility(View.GONE);
                     binding.tvAddImage.setText("");
                 }
             }
@@ -194,6 +192,20 @@ public class AddUser extends AppCompatActivity implements View.OnClickListener {
                 gender = checkedId == R.id.radiomale ? "M" : "F";
             }
         });
+    }
+    private void updateResident(){
+        controller.updateResident(1, new AuthCallBack() {
+            @Override
+            public void onSuccess(String message) {
+
+            }
+
+            @Override
+            public void onFailure(String message) {
+
+            }
+        });
+
     }
 
 }

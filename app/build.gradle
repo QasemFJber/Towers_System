@@ -4,15 +4,15 @@ plugins {
 
 android {
     namespace 'com.example.towerssystem'
-    compileSdk 32
+    compileSdk 33
     buildFeatures{
         viewBinding true
     }
 
     defaultConfig {
         applicationId "com.example.towerssystem"
-        minSdk 21
-        targetSdk 32
+        minSdk 24
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -34,7 +34,7 @@ android {
 dependencies {
 
     implementation 'com.squareup.picasso:picasso:2.8'
-
+    implementation 'com.wdullaer:materialdatetimepicker:4.2.3'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.daimajia.androidanimations:library:2.4@aar'
     implementation "com.airbnb.android:lottie:3.4.0"

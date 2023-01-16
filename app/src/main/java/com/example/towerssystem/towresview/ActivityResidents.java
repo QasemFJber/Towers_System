@@ -11,33 +11,34 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
 import com.example.towerssystem.R;
 import com.example.towerssystem.adapters.UserAdapter;
 import com.example.towerssystem.controller.ResidentController;
-import com.example.towerssystem.databinding.ActivityUsersBinding;
+import com.example.towerssystem.databinding.ActivityResidentsBinding;
+import com.example.towerssystem.interfaces.AuthCallBack;
 import com.example.towerssystem.interfaces.ContentCallBack;
 import com.example.towerssystem.models.Resident;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
-public class ActivityUsers extends AppCompatActivity implements View.OnClickListener {
-    private ActivityUsersBinding binding;
+public class ActivityResidents extends AppCompatActivity implements View.OnClickListener {
+    private ActivityResidentsBinding binding;
     private UserAdapter adapter;
+    private  ResidentController controller = new ResidentController();;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityUsersBinding.inflate(getLayoutInflater());
+        binding = ActivityResidentsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         OperationsSccren();
-        getAllUsers();
+        getAllResident();
     }
     private void OperationsSccren() {
-        setTitle("USERS");
+        setTitle("Residents");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.yl)));
-        getWindow().setStatusBarColor(ContextCompat.getColor(ActivityUsers.this,R.color.black));
+        getWindow().setStatusBarColor(ContextCompat.getColor(ActivityResidents.this,R.color.black));
         setOnCilck();
     }
 
@@ -69,28 +70,31 @@ public class ActivityUsers extends AppCompatActivity implements View.OnClickList
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.add) {
-            Intent intent = new Intent(getApplicationContext(),AddUser.class);
+            Intent intent = new Intent(getApplicationContext(), AddResident.class);
             intent.putExtra("id",1);
             startActivity(intent);
         }else if (item.getItemId() == R.id.update){
-            Intent intent = new Intent(getApplicationContext(),AddUser.class);
+            Intent intent = new Intent(getApplicationContext(), AddResident.class);
             intent.putExtra("id",2);
             startActivity(intent);
         }else if (item.getItemId() == R.id.delete){
+            deleteResident();
 
+        }else if (item.getItemId() == R.id.addOperations){
+            Intent intent = new Intent(getApplicationContext(),AddOperations.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void getAllUsers(){
-        ResidentController controller = new ResidentController();
+    private void getAllResident(){
         controller.getAllResident(new ContentCallBack<Resident>() {
             @Override
             public void onSuccess(List<Resident> list) {
                 adapter = new UserAdapter(list);
                 binding.rvUsers.setAdapter(adapter);
                 binding.rvUsers.setHasFixedSize(true);
-                binding.rvUsers.setLayoutManager(new LinearLayoutManager(ActivityUsers.this));
+                binding.rvUsers.setLayoutManager(new LinearLayoutManager(ActivityResidents.this));
 
             }
 
@@ -100,6 +104,23 @@ public class ActivityUsers extends AppCompatActivity implements View.OnClickList
 
             }
         });
+    }
+
+    private  void deleteResident(){
+        controller.deleteResident(83, new AuthCallBack() {
+            @Override
+            public void onSuccess(String message) {
+                Intent intent = new Intent(getApplicationContext(), ActivityResidents.class);
+                startActivity(intent);
+
+            }
+
+            @Override
+            public void onFailure(String message) {
+
+            }
+        });
+
     }
 
 }

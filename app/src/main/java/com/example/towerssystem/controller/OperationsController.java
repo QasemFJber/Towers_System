@@ -35,60 +35,45 @@ public class OperationsController {
     }
 
     public void insertOperations(String category_id,String amount,String details , String actor_id,String actor_type,String date , AuthCallBack callBack){
-        Call<BaseResponse<Operations>> insertOperations = ApiController.getInstance().getRetrofitRequests().insertOperations(category_id,amount,details,actor_id,actor_type,date);
-        insertOperations.enqueue(new Callback<BaseResponse<Operations>>() {
+        Call<BaseResponse> insertOperations = ApiController.getInstance().getRetrofitRequests().insertOperations(category_id,amount,details,actor_id,actor_type,date);
+        insertOperations.enqueue(new Callback<BaseResponse>() {
             @Override
-            public void onResponse(Call<BaseResponse<Operations>> call, Response<BaseResponse<Operations>> response) {
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
 
-                if (response.isSuccessful()) {
-                    callBack.onSuccess("");
-                } else {
-                    callBack.onFailure("");
-                }
             }
 
             @Override
-            public void onFailure(Call<BaseResponse<Operations>> call, Throwable t) {
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
 
             }
         });
 
     }
     public void updateOperations(int id, AuthCallBack callBack){
-        Call<BaseResponse<Operations>> updateOperations = ApiController.getInstance().getRetrofitRequests().updateOperations(id);
-        updateOperations.enqueue(new Callback<BaseResponse<Operations>>() {
+        Call<BaseResponse> updateOperations = ApiController.getInstance().getRetrofitRequests().updateOperations(id);
+        updateOperations.enqueue(new Callback<BaseResponse>() {
             @Override
-            public void onResponse(Call<BaseResponse<Operations>> call, Response<BaseResponse<Operations>> response) {
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
 
-                if (response.isSuccessful()) {
-                    callBack.onSuccess("");
-                } else {
-                    callBack.onFailure("");
-                }
             }
 
             @Override
-            public void onFailure(Call<BaseResponse<Operations>> call, Throwable t) {
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
 
             }
         });
 
     }
     public void deleteOperations(int id, AuthCallBack callBack){
-        Call<BaseResponse<Operations>> deleteOperations = ApiController.getInstance().getRetrofitRequests().deleteOperations(id);
-        deleteOperations.enqueue(new Callback<BaseResponse<Operations>>() {
+        Call<BaseResponse> deleteOperations = ApiController.getInstance().getRetrofitRequests().deleteOperations(id);
+        deleteOperations.enqueue(new Callback<BaseResponse>() {
             @Override
-            public void onResponse(Call<BaseResponse<Operations>> call, Response<BaseResponse<Operations>> response) {
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
 
-                if (response.isSuccessful()) {
-                    callBack.onSuccess("");
-                } else {
-                    callBack.onFailure("");
-                }
             }
 
             @Override
-            public void onFailure(Call<BaseResponse<Operations>> call, Throwable t) {
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
 
             }
         });

@@ -3,11 +3,14 @@ package com.example.towerssystem.towresview;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.example.towerssystem.Broadcastreciver.NetworkChangeListiners;
 import com.example.towerssystem.R;
 import com.example.towerssystem.databinding.ActivitySplashBinding;
 import com.example.towerssystem.prefs.AppSharedPreferences;
@@ -15,6 +18,7 @@ import com.example.towerssystem.towresview.Login;
 
 public class Splash extends AppCompatActivity {
     ActivitySplashBinding binding;
+    NetworkChangeListiners networkChangeListiners = new NetworkChangeListiners();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +31,8 @@ public class Splash extends AppCompatActivity {
 
     @Override
     protected void onStart() {
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeListiners,intentFilter);
         super.onStart();
         controlSplashActivity();
     }
@@ -34,6 +40,7 @@ public class Splash extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        unregisterReceiver(networkChangeListiners);
         finish();
     }
 

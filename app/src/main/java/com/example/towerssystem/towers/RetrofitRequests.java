@@ -70,10 +70,10 @@ public interface RetrofitRequests {
                                       @Part MultipartBody.Part image);
 
     @PUT("employees/{id}")
-    Call<BaseResponse<Employee>> updateEmployee(@Path("id") int id);
+    Call<BaseResponse> updateEmployee(@Path("id") int id);
 
     @DELETE("employees/{id}")
-    Call<BaseResponse<Employee>> deleteEmployee(@Path("id") int id);
+    Call<BaseResponse> deleteEmployee(@Path("id") int id);
 
 
 
@@ -105,10 +105,10 @@ public interface RetrofitRequests {
 
 
     @PUT("users/{id}")
-    Call<BaseResponse<Resident>> updateResident(@Path("id") int id);
+    Call<BaseResponse> updateResident(@Path("id") int id);
 
     @DELETE("users/{id}")
-    Call<BaseResponse<Resident>> deleteResident(@Path("id") int id);
+    Call<BaseResponse> deleteResident(@Path("id") int id);
 
 
 
@@ -129,13 +129,13 @@ public interface RetrofitRequests {
 
     @FormUrlEncoded
     @POST("operations")
-    Call<BaseResponse<Operations>> insertOperations(@Field("category_id") String category_id,@Field("amount") String amount,@Field("details") String details ,@Field("actor_id") String actor_id,@Field("actor_type") String actor_type,@Field("date") String date);
+    Call<BaseResponse> insertOperations(@Field("category_id") String category_id,@Field("amount") String amount,@Field("details") String details ,@Field("actor_id") String actor_id,@Field("actor_type") String actor_type,@Field("date") String date);
 
     @PUT("operations/{id}")
-    Call<BaseResponse<Operations>> updateOperations(@Path("id") int id);
+    Call<BaseResponse> updateOperations(@Path("id") int id);
 
     @DELETE("operations/{id}")
-    Call<BaseResponse<Operations>> deleteOperations(@Path("id") int id);
+    Call<BaseResponse> deleteOperations(@Path("id") int id);
 
 
 
@@ -157,15 +157,17 @@ public interface RetrofitRequests {
     @GET("advertisements")
     Call<BaseResponse<Advertisements>> getAllAdvertisements();
 
-    @FormUrlEncoded
+    @Multipart
     @POST("advertisements")
-    Call<BaseResponse<Advertisements>> insertAdvertisements(@Field("title") String title, @Field("info") String info, @Field("image") String image);
+    Call<BaseResponse> insertAdvertisements(@Part("title") RequestBody title,
+                                      @Part("info") RequestBody info,
+                                      @Part MultipartBody.Part image);
 
     @PUT("advertisements/{id}")
-    Call<BaseResponse<Advertisements>> updateAdvertisements(@Path("id") int id);
+    Call<BaseResponse> updateAdvertisements(@Path("id") int id);
 
     @DELETE("advertisements/{id}")
-    Call<BaseResponse<Advertisements>> deleteAdvertisements(@Path("id") int id);
+    Call<BaseResponse> deleteAdvertisements(@Path("id") int id);
 
 
 
