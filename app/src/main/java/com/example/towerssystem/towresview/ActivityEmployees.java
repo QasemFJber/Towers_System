@@ -6,13 +6,18 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.towerssystem.Broadcastreciver.NetworkChangeListiners;
+import com.example.towerssystem.Dialog.CustomDialog;
 import com.example.towerssystem.R;
 import com.example.towerssystem.adapters.EmployeeAdapter;
 import com.example.towerssystem.controller.EmployeeController;
@@ -28,16 +33,43 @@ public class ActivityEmployees extends AppCompatActivity implements View.OnClick
     private ActivityEmployeesBinding binding;
     private EmployeeAdapter adapter;
     private EmployeeController controller = new EmployeeController();
+    NetworkChangeListiners networkChangeListiners = new NetworkChangeListiners();
+    private CustomDialog dialog = new CustomDialog(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityEmployeesBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        OperationsSccren();
-        getAllEmployees();
+
+        initializeView();
+
     }
-    private void OperationsSccren() {
+
+
+    private void initializeView() {
+        setOnClick();
+        operationsSccren();
+        getAllEmployees();
+        dialogLoad();
+        }
+
+
+
+    private void dialogLoad() {
+        dialog.startLoading();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialog.dismissDialog();
+            }
+        },3000);
+    }
+
+    private void setOnClick() {
+    }
+
+    private void operationsSccren() {
         setTitle("EMPLOYEES");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.yl)));
         getWindow().setStatusBarColor(ContextCompat.getColor(ActivityEmployees.this,R.color.black));
@@ -54,6 +86,7 @@ public class ActivityEmployees extends AppCompatActivity implements View.OnClick
 
     @Override
     protected void onStop() {
+        unregisterReceiver(networkChangeListiners);
         super.onStop();
         onBackPressed();
     }
@@ -61,6 +94,8 @@ public class ActivityEmployees extends AppCompatActivity implements View.OnClick
     @Override
     protected void onStart() {
         super.onStart();
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeListiners,intentFilter);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -109,7 +144,7 @@ public class ActivityEmployees extends AppCompatActivity implements View.OnClick
     }
 
     private void deleteEmployee(){
-        controller.deleteEmployee(66, new AuthCallBack() {
+        controller.deleteEmployee(62, new AuthCallBack() {
             @Override
             public void onSuccess(String message) {
                 Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();

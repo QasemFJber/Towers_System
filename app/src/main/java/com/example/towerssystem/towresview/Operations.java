@@ -6,12 +6,15 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.towerssystem.Broadcastreciver.NetworkChangeListiners;
 import com.example.towerssystem.R;
 import com.example.towerssystem.adapters.OperationsAdapter;
 import com.example.towerssystem.adapters.UserAdapter;
@@ -22,12 +25,14 @@ import com.example.towerssystem.interfaces.ContentCallBack;
 import com.example.towerssystem.models.Resident;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Operations extends AppCompatActivity implements View.OnClickListener {
     private ActivityOperationsBinding binding;
     private OperationsController controller = new OperationsController();
-    private OperationsAdapter adapter = new OperationsAdapter();
+    private OperationsAdapter adapter = new OperationsAdapter(new ArrayList<>());
+    NetworkChangeListiners networkChangeListiners = new NetworkChangeListiners();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +44,7 @@ public class Operations extends AppCompatActivity implements View.OnClickListene
     private void initializeView(){
         setOnCilck();
         OperationsSccren();
+        getAllOperations();
 
     }
     private void OperationsSccren() {
@@ -59,12 +65,15 @@ public class Operations extends AppCompatActivity implements View.OnClickListene
     @Override
     protected void onStop() {
         super.onStop();
+        unregisterReceiver(networkChangeListiners);
         onBackPressed();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeListiners,intentFilter);
     }
 
     @Override
@@ -94,7 +103,7 @@ public class Operations extends AppCompatActivity implements View.OnClickListene
         controller.getAllOperations(new ContentCallBack<com.example.towerssystem.models.Operations>() {
             @Override
             public void onSuccess(List<com.example.towerssystem.models.Operations> list) {
-                adapter = new OperationsAdapter();
+                adapter = new OperationsAdapter(list);
                 binding.rvOperations.setAdapter(adapter);
                 binding.rvOperations.setHasFixedSize(true);
                 binding.rvOperations.setLayoutManager(new LinearLayoutManager(Operations.this));
@@ -102,6 +111,7 @@ public class Operations extends AppCompatActivity implements View.OnClickListene
 
             @Override
             public void onFailure(String message) {
+                Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
 
             }
         });

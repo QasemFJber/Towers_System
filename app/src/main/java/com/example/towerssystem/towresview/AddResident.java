@@ -10,25 +10,28 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.example.towerssystem.Broadcastreciver.NetworkChangeListiners;
 import com.example.towerssystem.controller.ResidentController;
 import com.example.towerssystem.R;
 import com.example.towerssystem.databinding.AddResidentBinding;
 import com.example.towerssystem.interfaces.AuthCallBack;
 import com.example.towerssystem.models.Resident;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.ByteArrayOutputStream;
 
 public class AddResident extends AppCompatActivity implements View.OnClickListener {
     AddResidentBinding binding;
-
     private ActivityResultLauncher<String> permissionResultLauncher;
     private ActivityResultLauncher<Void> cameraResultLauncher;
     private Bitmap imageBitmap;
@@ -36,6 +39,7 @@ public class AddResident extends AppCompatActivity implements View.OnClickListen
     private Uri imagePick;
     private String gender;
     private ResidentController controller = new ResidentController();
+    NetworkChangeListiners networkChangeListiners = new NetworkChangeListiners();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,11 +84,14 @@ public class AddResident extends AppCompatActivity implements View.OnClickListen
     @Override
     protected void onStart() {
         super.onStart();
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeListiners,intentFilter);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        unregisterReceiver(networkChangeListiners);
     }
 
 
@@ -167,11 +174,14 @@ public class AddResident extends AppCompatActivity implements View.OnClickListen
         residentController.insertResident(resident, new AuthCallBack() {
             @Override
             public void onSuccess(String message) {
+                Intent intent = new Intent(getApplicationContext(),ActivityResidents.class);
+                startActivity(intent);
 
             }
 
             @Override
             public void onFailure(String message) {
+                Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
 
             }
         });

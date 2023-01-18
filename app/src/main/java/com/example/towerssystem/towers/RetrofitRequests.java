@@ -37,7 +37,7 @@ public interface RetrofitRequests {
 
     @FormUrlEncoded
     @POST("auth/login")
-    Call<BaseResponse<Admin>> login (@Field("email") String email , @Field("password") String password );
+    Call<BaseResponse<Resident>> login (@Field("email") String email , @Field("password") String password );
 
     @GET("auth/logout")
     Call<BaseResponse> logout();
@@ -69,7 +69,7 @@ public interface RetrofitRequests {
                                       @Part("national_number") RequestBody national_number,
                                       @Part MultipartBody.Part image);
 
-    @PUT("employees/{id}")
+    @POST("employees/{id}")
     Call<BaseResponse> updateEmployee(@Path("id") int id);
 
     @DELETE("employees/{id}")

@@ -5,6 +5,7 @@ import android.util.Log;
 import com.example.towerssystem.interfaces.AuthCallBack;
 import com.example.towerssystem.models.Admin;
 import com.example.towerssystem.models.BaseResponse;
+import com.example.towerssystem.models.Resident;
 import com.example.towerssystem.prefs.AppSharedPreferences;
 import com.example.towerssystem.towers.towrescontroller.ApiController;
 
@@ -21,31 +22,32 @@ import retrofit2.Response;
 public class AuthController {
 
 
-    public void  login (String email , String password , AuthCallBack authCallBack){
-        Call<BaseResponse<Admin>> call = ApiController.getInstance().getRetrofitRequests().login(email, password);
-        call.enqueue(new Callback<BaseResponse<Admin>>() {
+    public void login(String email, String pass, AuthCallBack callback) {
+        Call<BaseResponse<Resident>> call = ApiController.getInstance().getRetrofitRequests().login(email, pass);
+        call.enqueue(new Callback<BaseResponse<Resident>>() {
             @Override
-            public void onResponse(Call<BaseResponse<Admin>> call, Response<BaseResponse<Admin>> response) {
-                if (response.isSuccessful() && response.body() != null) {
+            public void onResponse(Call<BaseResponse<Resident>> call, Response<BaseResponse<Resident>> response) {
+                if (response.isSuccessful()&&response.body()!=null){
                     AppSharedPreferences.getInstance().save(response.body().data);
-                    authCallBack.onSuccess(response.body().message);
-                } else {
+                    AppSharedPreferences.getInstance().saveActorType(response.body().type);
+                    callback.onSuccess(response.body().message);
+                }else
+                {
                     try {
                         String error = new String(response.errorBody().bytes(), StandardCharsets.UTF_8);
                         JSONObject jsonObject = new JSONObject(error);
-                        authCallBack.onFailure(jsonObject.getString("message"));
+                        callback.onFailure(jsonObject.getString("message"));
                     } catch (IOException | JSONException e) {
                         e.printStackTrace();
                     }
                 }
             }
-            @Override
-            public void onFailure(Call<BaseResponse<Admin>> call, Throwable t) {
-               authCallBack.onFailure(t.getMessage());
 
+            @Override
+            public void onFailure(Call<BaseResponse<Resident>> call, Throwable t) {
+                callback.onFailure("somethings went wrong!");
             }
         });
-
     }
 
 

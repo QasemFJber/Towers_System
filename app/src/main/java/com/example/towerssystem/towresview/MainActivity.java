@@ -10,12 +10,14 @@ import android.content.IntentFilter;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.towerssystem.Broadcastreciver.NetworkChangeListiners;
+import com.example.towerssystem.Dialog.CustomDialog;
 import com.example.towerssystem.R;
 import com.example.towerssystem.adapters.CategoriesAdapter;
 import com.example.towerssystem.controller.AuthController;
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     CategoriesController categoriesController = new CategoriesController();
     private List<Categorie> categories = new ArrayList<>();
     NetworkChangeListiners networkChangeListiners = new NetworkChangeListiners();
+    private CustomDialog dialog = new CustomDialog(this);
 
     CategoriesAdapter adapter ;
 
@@ -45,8 +48,13 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initializeView();
-        String name =AppSharedPreferences.getInstance().getToken();
-        Toast.makeText(this, name, Toast.LENGTH_SHORT).show();
+        dialog.startLoading();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialog.dismissDialog();
+            }
+        },3000);
     }
 
     private void operationsSccren() {
@@ -61,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(networkChangeListiners,intentFilter);
         super.onStart();
+
 
     }
 
@@ -101,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), Operations.class);
             startActivity(intent);
         }else if (item.getItemId() == R.id.advertisements){
-            Intent intent = new Intent(getApplicationContext(), AddOperations.class);
+            Intent intent = new Intent(getApplicationContext(), Advertisements.class);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
@@ -119,9 +128,9 @@ public class MainActivity extends AppCompatActivity {
             public void onSuccess(List<Categorie> list) {
                 adapter.setCategories(list);
                 binding.rvCategories.setAdapter(adapter);
-                binding.rvCategories.setLayoutManager(new GridLayoutManager(MainActivity.this,1));
+                binding.rvCategories.setLayoutManager(new GridLayoutManager(MainActivity.this,2));
                 binding.rvCategories.setHasFixedSize(true);
-                Toast.makeText(MainActivity.this, list.size(), Toast.LENGTH_SHORT).show();
+
                 Log.v("QASEM_LIST","LIST"+list.size());
             }
 

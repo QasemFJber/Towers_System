@@ -6,11 +6,17 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.example.towerssystem.Broadcastreciver.NetworkChangeListiners;
+import com.example.towerssystem.Dialog.CustomDialog;
 import com.example.towerssystem.R;
 import com.example.towerssystem.adapters.UserAdapter;
 import com.example.towerssystem.controller.ResidentController;
@@ -25,22 +31,45 @@ import java.util.List;
 public class ActivityResidents extends AppCompatActivity implements View.OnClickListener {
     private ActivityResidentsBinding binding;
     private UserAdapter adapter;
-    private  ResidentController controller = new ResidentController();;
+    private  ResidentController controller = new ResidentController();
+    NetworkChangeListiners networkChangeListiners = new NetworkChangeListiners();
+    private CustomDialog dialog = new CustomDialog(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityResidentsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        OperationsSccren();
+        initializeView();
+
+    }
+    private void initializeView() {
+        setOnClick();
+        operationsSccren();
+        dialogLoad();
         getAllResident();
     }
-    private void OperationsSccren() {
+
+    private void dialogLoad() {
+        dialog.startLoading();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialog.dismissDialog();
+            }
+        },3000);
+    }
+
+    private void setOnClick() {
+    }
+
+    private void operationsSccren() {
         setTitle("Residents");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.yl)));
         getWindow().setStatusBarColor(ContextCompat.getColor(ActivityResidents.this,R.color.black));
         setOnCilck();
     }
+
 
     private void setOnCilck() {
     }
@@ -53,12 +82,15 @@ public class ActivityResidents extends AppCompatActivity implements View.OnClick
     @Override
     protected void onStop() {
         super.onStop();
+        unregisterReceiver(networkChangeListiners);
         onBackPressed();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeListiners,intentFilter);
     }
 
     @Override

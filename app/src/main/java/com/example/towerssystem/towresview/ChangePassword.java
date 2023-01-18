@@ -4,10 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.towerssystem.Broadcastreciver.NetworkChangeListiners;
 import com.example.towerssystem.R;
 import com.example.towerssystem.controller.AuthController;
 import com.example.towerssystem.databinding.ActivityForgotPasswordBinding;
@@ -17,6 +20,7 @@ import com.google.android.material.snackbar.Snackbar;
 public class ChangePassword extends AppCompatActivity  implements View.OnClickListener {
     private ActivityForgotPasswordBinding binding;
     AuthController authController = new AuthController();
+    NetworkChangeListiners networkChangeListiners = new NetworkChangeListiners();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,5 +67,18 @@ public class ChangePassword extends AppCompatActivity  implements View.OnClickLi
             }
         });
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(networkChangeListiners);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeListiners,intentFilter);
     }
 }

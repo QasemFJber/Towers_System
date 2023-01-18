@@ -31,7 +31,6 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.Employ
     @Override
     public EmployeeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         ItemEmployeeBinding binding = ItemEmployeeBinding.inflate(LayoutInflater.from(parent.getContext()),parent,false);
-
         return new EmployeeViewHolder(binding.getRoot());
     }
 
@@ -50,12 +49,12 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.Employ
         return employees.size();
     }
 
-    class EmployeeViewHolder extends RecyclerView.ViewHolder{
+    static class EmployeeViewHolder extends RecyclerView.ViewHolder{
         ItemEmployeeBinding binding;
 
         public EmployeeViewHolder(@NonNull View itemView) {
             super(itemView);
-            ItemEmployeeBinding.bind(itemView);
+            binding = ItemEmployeeBinding.bind(itemView);
         }
     }
 }

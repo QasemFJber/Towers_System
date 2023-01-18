@@ -12,9 +12,9 @@ public class BaseResponse<Model> {
     @SerializedName("status")
     @Expose
     public Boolean status;
-//    @SerializedName("type")
-//    @Expose
-//    public String type;
+    @SerializedName("type")
+    @Expose
+    public String type;
     @SerializedName("message")
     @Expose
     public String message;
@@ -24,6 +24,7 @@ public class BaseResponse<Model> {
     @SerializedName("data")
     @Expose
     public Model data;
+
 
 
 }

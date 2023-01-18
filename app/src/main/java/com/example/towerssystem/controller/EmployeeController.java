@@ -72,7 +72,6 @@ public class EmployeeController {
                         String error = new String(response.errorBody().bytes(), StandardCharsets.UTF_8);
                         JSONObject jsonObject = new JSONObject(error);
                         callBack.onFailure(jsonObject.getString("message"));
-
                     }catch (JSONException jsonException){
 
                     } catch (IOException e) {

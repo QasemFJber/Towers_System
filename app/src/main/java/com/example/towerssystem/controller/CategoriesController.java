@@ -1,11 +1,14 @@
 package com.example.towerssystem.controller;
 
 import android.util.Log;
+import android.widget.Toast;
 
+import com.airbnb.lottie.L;
 import com.example.towerssystem.interfaces.ContentCallBack;
 import com.example.towerssystem.models.BaseResponse;
 import com.example.towerssystem.models.Categorie;
 import com.example.towerssystem.towers.towrescontroller.ApiController;
+import com.example.towerssystem.towresview.MainActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,15 +28,14 @@ public class CategoriesController {
             @Override
             public void onResponse(Call<BaseResponse<Categorie>> call, Response<BaseResponse<Categorie>> response) {
                 if (response.isSuccessful() && response.body() != null){
-                    Log.v("QASEM_LIST","LIST"+response.body().list.size());
-                    Log.v("QASEM_LIST","LIST"+response.body().list.size());
-
                     callBack.onSuccess(response.body().list);
                 }else {
                     try {
                         String error = new String(response.errorBody().bytes(), StandardCharsets.UTF_8);
                         JSONObject jsonObject = new JSONObject(error);
                         callBack.onFailure(jsonObject.getString("message"));
+                        Log.d("API REQUEST","REQUEST"+jsonObject.getString("message"));
+
                     }catch (JSONException | IOException jsonException){
 
                     }

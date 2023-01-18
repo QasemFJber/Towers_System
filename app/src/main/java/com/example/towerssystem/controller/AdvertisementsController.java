@@ -7,6 +7,12 @@ import com.example.towerssystem.models.BaseResponse;
 import com.example.towerssystem.models.Employee;
 import com.example.towerssystem.towers.towrescontroller.ApiController;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -25,7 +31,13 @@ public class AdvertisementsController {
                 if (response.isSuccessful() && response.body() != null) {
                     callBack.onSuccess(response.body().list);
                 } else {
-                    callBack.onFailure("");
+                    try {
+                        String error = new String(response.errorBody().bytes(), StandardCharsets.UTF_8);
+                        JSONObject jsonObject = new JSONObject(error);
+                        callBack.onFailure(jsonObject.getString("message"));
+                    } catch (IOException | JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 

@@ -6,13 +6,16 @@ import androidx.fragment.app.DialogFragment;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.ColorDrawable;
 import android.icu.text.DateFormat;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
+import com.example.towerssystem.Broadcastreciver.NetworkChangeListiners;
 import com.example.towerssystem.R;
 import com.example.towerssystem.controller.OperationsController;
 import com.example.towerssystem.databinding.ActivityAddOperationsBinding;
@@ -23,7 +26,7 @@ import java.util.Calendar;
 public class AddOperations extends AppCompatActivity  implements DatePickerDialog.OnDateSetListener  {
     private ActivityAddOperationsBinding binding;
     private OperationsController controller = new OperationsController();
-
+    NetworkChangeListiners networkChangeListiners = new NetworkChangeListiners();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +43,8 @@ public class AddOperations extends AppCompatActivity  implements DatePickerDialo
             dialogFragment.show(getSupportFragmentManager(),"DATE PICKER");
         });
         binding.tvBack.setOnClickListener(v -> {
-            onBackPressed();
+            Intent intent = new Intent(getApplicationContext(),Operations.class);
+            startActivity(intent);
         });
     }
     private void initializeView(){
@@ -70,12 +74,15 @@ public class AddOperations extends AppCompatActivity  implements DatePickerDialo
     @Override
     protected void onStart() {
         super.onStart();
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeListiners,intentFilter);
     }
 
 
     @Override
     protected void onStop() {
         super.onStop();
+        unregisterReceiver(networkChangeListiners);
     }
 
     private void performData(){
@@ -138,10 +145,10 @@ public class AddOperations extends AppCompatActivity  implements DatePickerDialo
         int id =  intent.getIntExtra("id",0);
         if (id == 1){
             binding.btnSave.setText("SAVE");
-            setTitle("ADD EMPLOYEE");
+            setTitle("ADD OPERATIONS");
         }else {
             binding.btnSave.setText("UPDATE");
-            setTitle("UPDATE EMPLOYEE");
+            setTitle("UPDATE OPERATIONS");
 
         }
     }

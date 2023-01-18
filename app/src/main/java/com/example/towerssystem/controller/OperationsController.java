@@ -7,6 +7,12 @@ import com.example.towerssystem.models.Employee;
 import com.example.towerssystem.models.Operations;
 import com.example.towerssystem.towers.towrescontroller.ApiController;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -21,7 +27,13 @@ public class OperationsController {
                 if (response.isSuccessful() && response.body() != null) {
                     callBack.onSuccess(response.body().list);
                 } else {
-                    callBack.onFailure("");
+                    try {
+                        String error = new String(response.errorBody().bytes(), StandardCharsets.UTF_8);
+                        JSONObject jsonObject = new JSONObject(error);
+                        callBack.onFailure(jsonObject.getString("message"));
+                    } catch (IOException | JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 

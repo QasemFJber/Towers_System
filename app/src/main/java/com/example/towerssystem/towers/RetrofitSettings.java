@@ -36,7 +36,7 @@ public class RetrofitSettings {
                         Request.Builder builder = chain.request().newBuilder();
                         builder.addHeader("Accept","application/json");
                         builder.addHeader("Content-Type","application/json");
-                        builder.addHeader("Authorization","Bearer "+ AppSharedPreferences.getInstance().getToken());
+                        builder.addHeader("Authorization",AppSharedPreferences.getInstance().getToken());
                         return chain.proceed(builder.build());
                     }
                 }).build();

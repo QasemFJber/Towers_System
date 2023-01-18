@@ -10,8 +10,10 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -19,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.towerssystem.Broadcastreciver.NetworkChangeListiners;
 import com.example.towerssystem.controller.EmployeeController;
 import com.example.towerssystem.R;
 import com.example.towerssystem.databinding.AddEmployeeBinding;
@@ -37,6 +40,7 @@ public class AddEmployee extends AppCompatActivity  implements View.OnClickListe
     private Dialog dialog;
     private Uri imagePick;
     private EmployeeController controller = new EmployeeController();
+    NetworkChangeListiners networkChangeListiners = new NetworkChangeListiners();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,12 +66,15 @@ public class AddEmployee extends AppCompatActivity  implements View.OnClickListe
     @Override
     protected void onStop() {
         super.onStop();
+        unregisterReceiver(networkChangeListiners);
 
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeListiners,intentFilter);
     }
 
 
@@ -87,7 +94,8 @@ public class AddEmployee extends AppCompatActivity  implements View.OnClickListe
         controller.insertEmployee(employee, new AuthCallBack() {
             @Override
             public void onSuccess(String message) {
-                Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
+                Intent intent = new Intent(getApplicationContext(),ActivityEmployees.class);
+                startActivity(intent);
             }
 
             @Override

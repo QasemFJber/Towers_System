@@ -1,6 +1,4 @@
 package com.example.towerssystem.models;
-
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -33,6 +31,10 @@ public class Resident {
     @SerializedName("tower_name")
     @Expose
     public String towerName;
+    @SerializedName("token")
+    @Expose
+    public String token;
+
 
     public Resident(String name, String email, String mobile, String number, String family, String gender, byte[] bitmapToBytes) {
     }
