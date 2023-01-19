@@ -5,8 +5,10 @@ import android.widget.Toast;
 
 import com.airbnb.lottie.L;
 import com.example.towerssystem.interfaces.ContentCallBack;
+import com.example.towerssystem.interfaces.ShowListenirs;
 import com.example.towerssystem.models.BaseResponse;
 import com.example.towerssystem.models.Categorie;
+import com.example.towerssystem.models.ShowCategorie;
 import com.example.towerssystem.towers.towrescontroller.ApiController;
 import com.example.towerssystem.towresview.MainActivity;
 
@@ -48,5 +50,32 @@ public class CategoriesController {
             }
         });
 
+    }
+
+    public void getAllCategoriesOfCategorieId(int id, ShowListenirs callBack){
+        Call<BaseResponse<ShowCategorie>> getAll = ApiController.getInstance().getRetrofitRequests().getAllCategoriesOfCategorieId(id);
+        getAll.enqueue(new Callback<BaseResponse<ShowCategorie>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<ShowCategorie>> call, Response<BaseResponse<ShowCategorie>> response) {
+                if (response.isSuccessful() && response.body() != null){
+                    callBack.onSuccess(response.body().list);
+                }else {
+                    try {
+                        String error = new String(response.errorBody().bytes(), StandardCharsets.UTF_8);
+                        JSONObject jsonObject = new JSONObject(error);
+                        callBack.onFailure(jsonObject.getString("message"));
+                        Log.d("API REQUEST","REQUEST"+jsonObject.getString("message"));
+                    }catch (JSONException | IOException jsonException){
+
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse<ShowCategorie>> call, Throwable t) {
+
+            }
+        });
     }
 }

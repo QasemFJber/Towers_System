@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.towerssystem.databinding.ItemCategorieBinding;
 import com.example.towerssystem.databinding.ItemEmployeeBinding;
+import com.example.towerssystem.interfaces.Item_Click;
 import com.example.towerssystem.models.Categorie;
 import com.example.towerssystem.models.Employee;
 import com.example.towerssystem.towresview.Home;
@@ -16,15 +17,18 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.EmployeeViewHolder>{
+public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.EmployeeViewHolder> {
     private List<Employee> employees ;
+    private final Item_Click itemClick;
 
-    public EmployeeAdapter(List<Employee> employees) {
+    public EmployeeAdapter(List<Employee> employees,Item_Click itemClick) {
         this.employees = employees;
+        this.itemClick = itemClick;
     }
 
     public void setEmployees(List<Employee> employees) {
         this.employees = employees;
+        notifyItemRangeInserted(0,employees.size());
     }
 
     @NonNull
@@ -41,6 +45,12 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.Employ
         holder.binding.tvItememployeeMobile.setText(employee.mobile);
         holder.binding.tvItememployeeTowresName.setText(employee.towerName);
         Picasso.get().load(employee.imageUrl).into(holder.binding.imag);
+        holder.binding.card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                 itemClick.onClick(employee);
+            }
+        });
 
     }
 
@@ -51,10 +61,10 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.Employ
 
     static class EmployeeViewHolder extends RecyclerView.ViewHolder{
         ItemEmployeeBinding binding;
-
         public EmployeeViewHolder(@NonNull View itemView) {
             super(itemView);
             binding = ItemEmployeeBinding.bind(itemView);
+
         }
     }
 }

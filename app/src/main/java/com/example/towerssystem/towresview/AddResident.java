@@ -128,9 +128,9 @@ public class AddResident extends AppCompatActivity implements View.OnClickListen
     private boolean checkData() {
         if (!binding.etFirstname.getText().toString().isEmpty() &&
                 !binding.etMobile.getText().toString().isEmpty() &&
-                !binding.etNationalNumber.getText().toString().isEmpty()&&
-                bitmapToBytes() !=null
+                !binding.etNationalNumber.getText().toString().isEmpty()
         ) {
+            bitmapToBytes();
             return true;
         }
         return false;
@@ -174,8 +174,7 @@ public class AddResident extends AppCompatActivity implements View.OnClickListen
         residentController.insertResident(resident, new AuthCallBack() {
             @Override
             public void onSuccess(String message) {
-                Intent intent = new Intent(getApplicationContext(),ActivityResidents.class);
-                startActivity(intent);
+                Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
 
             }
 

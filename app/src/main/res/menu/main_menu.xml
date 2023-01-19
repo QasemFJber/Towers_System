@@ -17,16 +17,19 @@
                     android:icon="@drawable/change"
                     android:title="Change Password"
                     app:showAsAction="ifRoom" />
+
+            <item
+                android:id="@+id/add_employee"
+                android:icon="@drawable/addemployee"
+                android:title="EMPLOYEES"
+                app:showAsAction="ifRoom" />
+
                 <item
                     android:id="@+id/add_user"
                     android:icon="@drawable/adduser"
                     android:title="USERS"
                     app:showAsAction="ifRoom" />
-                <item
-                    android:id="@+id/add_employee"
-                    android:icon="@drawable/addemployee"
-                    android:title="EMPLOYEES"
-                    app:showAsAction="ifRoom" />
+
                 <item
                     android:id="@+id/advertisements"
                     android:icon="@drawable/addadv"

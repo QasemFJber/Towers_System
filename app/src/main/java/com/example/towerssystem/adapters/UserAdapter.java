@@ -20,10 +20,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         this.residents = residents;
     }
 
-    public void setUsers(List<Resident> residents) {
+    public void setResidents(List<Resident> residents) {
         this.residents = residents;
-        notifyDataSetChanged();
-  }
+    }
 
     @NonNull
     @Override

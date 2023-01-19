@@ -55,12 +55,12 @@ public class EmployeeController {
 
     }
 
-    public void insertEmployee(Employee employee ,AuthCallBack callBack){
+    public void insertEmployee(String name,String mobile,String nationalNumber,AuthCallBack callBack){
         RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), imageBytesArray);
         MultipartBody.Part file = MultipartBody.Part.createFormData("image", "image-file", requestBody);
-        RequestBody _name = RequestBody.create(MediaType.parse("String"),employee.name);
-        RequestBody _mobile = RequestBody.create(MediaType.parse("String"),employee.mobile);
-        RequestBody _nationalNumber = RequestBody.create(MediaType.parse("String"),employee.nationalNumber);
+        RequestBody _name = RequestBody.create(MediaType.parse("String"),name);
+        RequestBody _mobile = RequestBody.create(MediaType.parse("String"),mobile);
+        RequestBody _nationalNumber = RequestBody.create(MediaType.parse("String"),nationalNumber);
         Call<BaseResponse> insertEmployee = ApiController.getInstance().getRetrofitRequests().insertEmployee(_name,_mobile,_nationalNumber,file);
         insertEmployee.enqueue(new Callback<BaseResponse>() {
             @Override

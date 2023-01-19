@@ -89,13 +89,10 @@ public class AddEmployee extends AppCompatActivity  implements View.OnClickListe
         String name = binding.etFirstname.getText().toString().trim();
         String mobile =binding.etMobile.getText().toString().trim();
         String number =binding.etNationalNumber.getText().toString().trim();
-        Employee employee = new Employee(name,mobile,number,bitmapToBytes());
-        EmployeeController controller = new EmployeeController();
-        controller.insertEmployee(employee, new AuthCallBack() {
+        controller.insertEmployee(name,mobile,number, new AuthCallBack() {
             @Override
             public void onSuccess(String message) {
-                Intent intent = new Intent(getApplicationContext(),ActivityEmployees.class);
-                startActivity(intent);
+                Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
             }
 
             @Override
@@ -183,9 +180,9 @@ public class AddEmployee extends AppCompatActivity  implements View.OnClickListe
         private boolean checkData() {
         if (!binding.etFirstname.getText().toString().isEmpty() &&
                 !binding.etMobile.getText().toString().isEmpty() &&
-                !binding.etNationalNumber.getText().toString().isEmpty()&&
-                bitmapToBytes() !=null
+                !binding.etNationalNumber.getText().toString().isEmpty()
                 ) {
+            bitmapToBytes();
             return true;
         }
         return false;

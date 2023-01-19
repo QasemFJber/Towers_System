@@ -7,6 +7,7 @@ import com.example.towerssystem.models.Categorie;
 import com.example.towerssystem.models.Employee;
 import com.example.towerssystem.models.Operations;
 import com.example.towerssystem.models.Resident;
+import com.example.towerssystem.models.ShowCategorie;
 
 import java.util.HashMap;
 
@@ -49,6 +50,9 @@ public interface RetrofitRequests {
     @GET("categories")
     Call<BaseResponse<Categorie>> getAllCategories();
 
+
+    @GET("categories/{id}")
+    Call<BaseResponse<ShowCategorie>> getAllCategoriesOfCategorieId(@Path("id") int id);
     /***
      * EMPLOYEE Requests
      *

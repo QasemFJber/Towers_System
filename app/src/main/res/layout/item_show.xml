@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_333sdp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:cardCornerRadius="@dimen/_22sdp"
+        app:cardElevation="@dimen/_6sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView"
+                android:layout_width="@dimen/_90sdp"
+                android:layout_height="@dimen/_90sdp"
+                android:layout_marginTop="8dp"
+                app:cardBackgroundColor="#3E3D3D"
+                app:cardCornerRadius="@dimen/_555sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/imageView2"
+                        android:layout_width="@dimen/_90sdp"
+                        android:layout_height="@dimen/_90sdp"
+                        android:src="@drawable/cri"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.498"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/imag"
+                        android:layout_width="@dimen/_108sdp"
+                        android:layout_height="@dimen/_108sdp"
+                        android:src="@drawable/loadimg"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+                        app:layout_constraintEnd_toEndOf="@+id/imageView2"
+                        app:layout_constraintStart_toStartOf="@+id/imageView2"
+                        app:layout_constraintTop_toTopOf="@+id/imageView2" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/tv_id_categorie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="32dp"
+                android:text="Qasem"
+                android:textColor="@color/yl"
+                android:textSize="20sp"
+                android:textStyle="italic"
+                app:layout_constraintEnd_toStartOf="@+id/textView15"
+                app:layout_constraintStart_toStartOf="@+id/tv_categorie_name"
+                app:layout_constraintTop_toBottomOf="@+id/cardView" />
+
+
+            <TextView
+                android:id="@+id/tv_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="0593410582"
+                android:textColor="@color/yl"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@+id/tv_resident_name"
+                app:layout_constraintStart_toStartOf="@+id/tv_resident_name"
+                app:layout_constraintTop_toBottomOf="@+id/tv_categorie_name" />
+
+            <TextView
+                android:id="@+id/tv_detilas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="154dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="31dp"
+                android:text="Aurora"
+                android:textColor="@color/yl"
+                android:textSize="20sp"
+                android:textStyle="italic"
+                app:layout_constraintBottom_toTopOf="@+id/tv_date"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_email_res"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="8dp"
+                android:text="qj@smail.ucas.edu.ps"
+                android:textColor="@color/yl"
+                android:textSize="12sp"
+                android:textStyle="italic"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/textView13"
+                app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+            <TextView
+                android:id="@+id/tv_categorie_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="32dp"
+                android:text="Qasem"
+                android:textColor="@color/yl"
+                android:textSize="20sp"
+                android:textStyle="italic"
+                app:layout_constraintEnd_toStartOf="@+id/textView14"
+                app:layout_constraintStart_toStartOf="@+id/tv_amount"
+                app:layout_constraintTop_toBottomOf="@+id/tv_id_categorie" />
+
+            <TextView
+                android:id="@+id/tv_resident_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                android:text="0593410582"
+                android:textColor="@color/yl"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toStartOf="@+id/textView13"
+                app:layout_constraintStart_toEndOf="@+id/textView10"
+                app:layout_constraintTop_toBottomOf="@+id/tv_amount" />
+
+            <TextView
+                android:id="@+id/tv_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="44dp"
+                android:text="Aurora"
+                android:textColor="@color/yl"
+                android:textSize="20sp"
+                android:textStyle="italic"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detilas" />
+
+            <TextView
+                android:id="@+id/tv_towres_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:layout_marginEnd="26dp"
+                android:text="qj@smail.ucas.edu.ps"
+                android:textColor="@color/yl"
+                android:textStyle="italic"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/textView9"
+                app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="19dp"
+                android:layout_marginEnd="76dp"
+                android:layout_marginBottom="8dp"
+                android:text="Tower Name"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/tv_towres_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_email_res" />
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="EMAIL"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_resident_name"
+                app:layout_constraintStart_toStartOf="@+id/textView9" />
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="Date :"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_date"
+                app:layout_constraintEnd_toStartOf="@+id/tv_date"
+                app:layout_constraintTop_toTopOf="@+id/tv_date"
+                app:layout_constraintVertical_bias="0.875" />
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:text="Details :"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_detilas"
+                app:layout_constraintEnd_toStartOf="@+id/tv_detilas"
+                app:layout_constraintTop_toTopOf="@+id/tv_detilas"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Name Resident :"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_resident_name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_resident_name"
+                app:layout_constraintVertical_bias="0.0"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Amount :"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_amount"
+                app:layout_constraintEnd_toStartOf="@+id/tv_amount"
+                app:layout_constraintHorizontal_bias="0.121"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_amount"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Category Name ::"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_categorie_name"
+                app:layout_constraintEnd_toStartOf="@+id/tv_categorie_name"
+                app:layout_constraintHorizontal_bias="0.347"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_categorie_name"
+                app:layout_constraintVertical_bias="0.692" />
+
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Category Id ::"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_id_categorie"
+                app:layout_constraintEnd_toStartOf="@+id/tv_id_categorie"
+                app:layout_constraintHorizontal_bias="0.175"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_id_categorie"
+                app:layout_constraintVertical_bias="0.384" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

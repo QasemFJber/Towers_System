@@ -3,10 +3,13 @@ package com.example.towerssystem.towresview;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Canvas;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
@@ -15,6 +18,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.towerssystem.Broadcastreciver.NetworkChangeListiners;
 import com.example.towerssystem.Dialog.CustomDialog;
@@ -24,25 +28,32 @@ import com.example.towerssystem.controller.EmployeeController;
 import com.example.towerssystem.databinding.ActivityEmployeesBinding;
 import com.example.towerssystem.interfaces.AuthCallBack;
 import com.example.towerssystem.interfaces.ContentCallBack;
+import com.example.towerssystem.interfaces.Item_Click;
 import com.example.towerssystem.models.Employee;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class ActivityEmployees extends AppCompatActivity implements View.OnClickListener {
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
+
+public class ActivityEmployees extends AppCompatActivity  implements Item_Click {
     private ActivityEmployeesBinding binding;
-    private EmployeeAdapter adapter;
+    private EmployeeAdapter adapter  = new EmployeeAdapter(new ArrayList<>(),this);;
     private EmployeeController controller = new EmployeeController();
     NetworkChangeListiners networkChangeListiners = new NetworkChangeListiners();
     private CustomDialog dialog = new CustomDialog(this);
+    private List<Employee> employees;
+    private static int id ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityEmployeesBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
         initializeView();
+
 
     }
 
@@ -52,6 +63,9 @@ public class ActivityEmployees extends AppCompatActivity implements View.OnClick
         operationsSccren();
         getAllEmployees();
         dialogLoad();
+        SwipeRight();
+        SwipeLeft();
+        DroptoReorder();
         }
 
 
@@ -79,10 +93,6 @@ public class ActivityEmployees extends AppCompatActivity implements View.OnClick
     private void setOnCilck() {
     }
 
-    @Override
-    public void onClick(View v) {
-
-    }
 
     @Override
     protected void onStop() {
@@ -109,13 +119,6 @@ public class ActivityEmployees extends AppCompatActivity implements View.OnClick
             Intent intent = new Intent(getApplicationContext(),AddEmployee.class);
             intent.putExtra("id",1);
             startActivity(intent);
-        }else if (item.getItemId() == R.id.update){
-            Intent intent = new Intent(getApplicationContext(),AddEmployee.class);
-            intent.putExtra("id",2);
-            startActivity(intent);
-        }else if (item.getItemId() == R.id.delete){
-            deleteEmployee();
-
         }else if (item.getItemId() == R.id.addOperations){
             Intent intent = new Intent(getApplicationContext(),AddOperations.class);
             startActivity(intent);
@@ -123,15 +126,26 @@ public class ActivityEmployees extends AppCompatActivity implements View.OnClick
         return super.onOptionsItemSelected(item);
     }
 
+    private void SwipeRight(){
+        new ItemTouchHelper(simpleCallback2).attachToRecyclerView(binding.rvEmployees);
+    }
+    private void SwipeLeft(){
+        new ItemTouchHelper(simpleCallback).attachToRecyclerView(binding.rvEmployees);
+    }
+    private void DroptoReorder(){
+        new ItemTouchHelper(callback).attachToRecyclerView(binding.rvEmployees);
+    }
+
     private void getAllEmployees(){
         controller.getAllEmployees(new ContentCallBack<Employee>() {
             @Override
             public void onSuccess(List<Employee> list) {
-                adapter = new EmployeeAdapter(list);
+                employees = list;
+                adapter.setEmployees(list);
                 adapter.notifyItemRangeInserted(0,list.size());
-                binding.rvUsers.setAdapter(adapter);
-                binding.rvUsers.setHasFixedSize(true);
-                binding.rvUsers.setLayoutManager(new LinearLayoutManager(ActivityEmployees.this));
+                binding.rvEmployees.setAdapter(adapter);
+                binding.rvEmployees.setHasFixedSize(true);
+                binding.rvEmployees.setLayoutManager(new LinearLayoutManager(ActivityEmployees.this));
                 Log.d("API_REQUEST","LIST_SIZE"+list.size());
             }
 
@@ -143,23 +157,114 @@ public class ActivityEmployees extends AppCompatActivity implements View.OnClick
         });
     }
 
-    private void deleteEmployee(){
-        controller.deleteEmployee(62, new AuthCallBack() {
-            @Override
-            public void onSuccess(String message) {
-                Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
+
+    String deleteData;
 
 
-            }
+    @Override
+    public void onClick(Employee employee) {
+        Toast.makeText(this, employee.id.toString(), Toast.LENGTH_SHORT).show();
 
-            @Override
-            public void onFailure(String message) {
-                Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
 
-            }
-        });
     }
+    ItemTouchHelper.SimpleCallback simpleCallback2 = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            int position = viewHolder.getAdapterPosition();
+            Intent intent = new Intent(getApplicationContext(),AddEmployee.class);
+            intent.putExtra("id",2);
+            startActivity(intent);
+            Snackbar.make(binding.getRoot(),deleteData,Snackbar.LENGTH_LONG).setAction("GERI ALL", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(ActivityEmployees.this, "UPDATE EMPLOYEE", Toast.LENGTH_SHORT).show();
+
+                }
+            }).show();
 
 
+        }
 
+        @Override
+        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+            new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                    .addBackgroundColor(ContextCompat.getColor(ActivityEmployees.this, R.color.teal_200))
+                    .addActionIcon(R.drawable.ic_baseline_loop_24)
+                    .addSwipeRightLabel("UPDATE ")
+                    .setSwipeRightLabelTextSize(1,33)
+                    .setSwipeRightLabelColor(R.color.white)
+                    .create()
+                    .decorate();
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+        }
+    };
+
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            int position = viewHolder.getAdapterPosition();
+//                controller.deleteEmployee(id, new AuthCallBack() {
+//                    @Override
+//                    public void onSuccess(String message) {
+//                        Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
+//                        adapter.notifyItemRemoved(position);
+//
+//
+//                    }
+//
+//                    @Override
+//                    public void onFailure(String message) {
+//                        Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
+//
+//                    }
+//                });
+
+            Snackbar.make(binding.getRoot(),deleteData,Snackbar.LENGTH_LONG).setAction("GERI ALL", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(ActivityEmployees.this, "RETRY", Toast.LENGTH_SHORT).show();
+
+                }
+            }).show();
+
+        }
+
+        @Override
+        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+            new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                    .addBackgroundColor(ContextCompat.getColor(ActivityEmployees.this, R.color.my_background))
+                    .addActionIcon(R.drawable.ic_baseline_delete_24)
+                    .addSwipeLeftLabel("DELETE ")
+                    .setSwipeLeftLabelTextSize(1,33)
+                    .setSwipeLeftLabelColor(R.color.white)
+                    .create()
+                    .decorate();
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+        }
+    };
+    ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.DOWN | ItemTouchHelper.START | ItemTouchHelper.END,0) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            int fromPosition = viewHolder.getAdapterPosition();
+            int toPosition = target.getAdapterPosition();
+            Collections.swap(employees,fromPosition,toPosition);
+            adapter.notifyItemMoved(fromPosition,toPosition);
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
+        }
+    };
 }

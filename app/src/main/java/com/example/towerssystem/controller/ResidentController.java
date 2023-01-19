@@ -23,8 +23,8 @@ public class ResidentController {
     public byte[] imageBytesArray;
 
     public void getAllResident(ContentCallBack<Resident> callBack){
-        Call<BaseResponse<Resident>> getAllUsers = ApiController.getInstance().getRetrofitRequests().getAllResident();
-        getAllUsers.enqueue(new Callback<BaseResponse<Resident>>() {
+        Call<BaseResponse<Resident>> getAllResident = ApiController.getInstance().getRetrofitRequests().getAllResident();
+        getAllResident.enqueue(new Callback<BaseResponse<Resident>>() {
             @Override
             public void onResponse(Call<BaseResponse<Resident>> call, Response<BaseResponse<Resident>> response) {
                 if (response.isSuccessful() && response.body() != null) {

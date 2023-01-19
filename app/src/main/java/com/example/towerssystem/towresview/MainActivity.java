@@ -83,8 +83,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         unregisterReceiver(networkChangeListiners);
         super.onStop();
-
-
     }
 
     @Override
