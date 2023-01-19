@@ -51,18 +51,30 @@ public class OperationsController {
         insertOperations.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callBack.onSuccess(response.body().message);
+                } else {
+                    try {
+                        String error = new String(response.errorBody().bytes(), StandardCharsets.UTF_8);
+                        JSONObject jsonObject = new JSONObject(error);
+                        callBack.onFailure(jsonObject.getString("message"));
+                    } catch (IOException | JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
 
             }
 
             @Override
             public void onFailure(Call<BaseResponse> call, Throwable t) {
+                callBack.onFailure("Somewont wont woreng");
 
             }
         });
 
     }
     public void updateOperations(int id, AuthCallBack callBack){
-        Call<BaseResponse> updateOperations = ApiController.getInstance().getRetrofitRequests().updateOperations(id);
+        Call<BaseResponse> updateOperations = ApiController.getInstance().getRetrofitRequests().updateOperations(id,null,null,null,null,null,null);
         updateOperations.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
@@ -81,6 +93,19 @@ public class OperationsController {
         deleteOperations.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                if (response.isSuccessful() && response.body() !=null) {
+                    callBack.onSuccess(response.body().message);
+                } else {
+                    try {
+                        String error = new String(response.errorBody().bytes(), StandardCharsets.UTF_8);
+                        JSONObject jsonObject = new JSONObject(error);
+                        callBack.onFailure(jsonObject.getString("message"));
+                    }catch (JSONException jsonException){
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
 
             }
 

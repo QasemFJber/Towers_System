@@ -73,8 +73,14 @@ public interface RetrofitRequests {
                                       @Part("national_number") RequestBody national_number,
                                       @Part MultipartBody.Part image);
 
+    @Multipart
     @POST("employees/{id}")
-    Call<BaseResponse> updateEmployee(@Path("id") int id);
+    Call<BaseResponse> updateEmployee(@Path("id") int id,
+                                      @Part("name") RequestBody name,
+                                      @Part("mobile") RequestBody mobile,
+                                      @Part("national_number") RequestBody national_number,
+                                      @Part MultipartBody.Part image,
+                                      @Part("_method") RequestBody _method);
 
     @DELETE("employees/{id}")
     Call<BaseResponse> deleteEmployee(@Path("id") int id);
@@ -108,8 +114,16 @@ public interface RetrofitRequests {
                                       @Part MultipartBody.Part image);
 
 
+    @Multipart
     @PUT("users/{id}")
-    Call<BaseResponse> updateResident(@Path("id") int id);
+    Call<BaseResponse> updateResident(@Path("id") int id,
+                                      @Part("name") RequestBody name,
+                                      @Part("email") RequestBody email,
+                                      @Part("mobile") RequestBody mobile,
+                                      @Part("national_number") RequestBody national_number,
+                                      @Part("family_members") RequestBody family_members,
+                                      @Part("gender") RequestBody gender,
+                                      @Part MultipartBody.Part image);
 
     @DELETE("users/{id}")
     Call<BaseResponse> deleteResident(@Path("id") int id);
@@ -133,10 +147,21 @@ public interface RetrofitRequests {
 
     @FormUrlEncoded
     @POST("operations")
-    Call<BaseResponse> insertOperations(@Field("category_id") String category_id,@Field("amount") String amount,@Field("details") String details ,@Field("actor_id") String actor_id,@Field("actor_type") String actor_type,@Field("date") String date);
+    Call<BaseResponse> insertOperations(@Field("category_id") String category_id,
+                                        @Field("amount") String amount,
+                                        @Field("details") String details,
+                                        @Field("actor_id") String actor_id,
+                                        @Field("actor_type") String actor_type,
+                                        @Field("date") String date);
 
     @PUT("operations/{id}")
-    Call<BaseResponse> updateOperations(@Path("id") int id);
+    Call<BaseResponse> updateOperations(@Path("id") int id,
+                                        @Field("category_id") String category_id,
+                                        @Field("amount") String amount,
+                                        @Field("details") String details,
+                                        @Field("actor_id") String actor_id,
+                                        @Field("actor_type") String actor_type,
+                                        @Field("date") String date);
 
     @DELETE("operations/{id}")
     Call<BaseResponse> deleteOperations(@Path("id") int id);
@@ -167,8 +192,12 @@ public interface RetrofitRequests {
                                       @Part("info") RequestBody info,
                                       @Part MultipartBody.Part image);
 
+    @Multipart
     @PUT("advertisements/{id}")
-    Call<BaseResponse> updateAdvertisements(@Path("id") int id);
+    Call<BaseResponse> updateAdvertisements(@Path("id") int id,
+                                            @Part("title") RequestBody title,
+                                            @Part("info") RequestBody info,
+                                            @Part MultipartBody.Part image);
 
     @DELETE("advertisements/{id}")
     Call<BaseResponse> deleteAdvertisements(@Path("id") int id);

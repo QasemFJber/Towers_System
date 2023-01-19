@@ -71,7 +71,7 @@
                 android:layout_marginEnd="32dp"
                 android:text="Qasem"
                 android:textColor="@color/yl"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="italic"
                 app:layout_constraintEnd_toStartOf="@+id/textView15"
                 app:layout_constraintStart_toStartOf="@+id/tv_categorie_name"
@@ -87,6 +87,7 @@
                 android:textColor="@color/yl"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="@+id/tv_resident_name"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="@+id/tv_resident_name"
                 app:layout_constraintTop_toBottomOf="@+id/tv_categorie_name" />
 
@@ -99,7 +100,7 @@
                 android:layout_marginBottom="31dp"
                 android:text="Aurora"
                 android:textColor="@color/yl"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="italic"
                 app:layout_constraintBottom_toTopOf="@+id/tv_date"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -109,14 +110,14 @@
                 android:id="@+id/tv_email_res"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:text="qj@smail.ucas.edu.ps"
                 android:textColor="@color/yl"
                 android:textSize="12sp"
                 android:textStyle="italic"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.083"
                 app:layout_constraintStart_toStartOf="@+id/textView13"
                 app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
@@ -125,13 +126,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="32dp"
                 android:text="Qasem"
                 android:textColor="@color/yl"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="italic"
                 app:layout_constraintEnd_toStartOf="@+id/textView14"
+                app:layout_constraintHorizontal_bias="0.447"
                 app:layout_constraintStart_toStartOf="@+id/tv_amount"
                 app:layout_constraintTop_toBottomOf="@+id/tv_id_categorie" />
 
@@ -146,6 +148,7 @@
                 android:textColor="@color/yl"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toStartOf="@+id/textView13"
+                app:layout_constraintHorizontal_bias="0.92"
                 app:layout_constraintStart_toEndOf="@+id/textView10"
                 app:layout_constraintTop_toBottomOf="@+id/tv_amount" />
 
@@ -153,11 +156,11 @@
                 android:id="@+id/tv_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="44dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginEnd="20dp"
                 android:text="Aurora"
                 android:textColor="@color/yl"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="italic"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_detilas" />
@@ -183,6 +186,7 @@
                 android:layout_marginEnd="76dp"
                 android:layout_marginBottom="8dp"
                 android:text="Tower Name"
+                android:textSize="12sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/tv_towres_name"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -193,7 +197,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:layout_marginBottom="-20dp"
                 android:text="EMAIL"
+                android:textSize="12sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_resident_name"
                 app:layout_constraintStart_toStartOf="@+id/textView9" />
@@ -204,6 +210,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:text="Date :"
+                android:textSize="12sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_date"
                 app:layout_constraintEnd_toStartOf="@+id/tv_date"
@@ -214,8 +221,9 @@
                 android:id="@+id/textView15"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
+                android:layout_marginEnd="12dp"
                 android:text="Details :"
+                android:textSize="12sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_detilas"
                 app:layout_constraintEnd_toStartOf="@+id/tv_detilas"
@@ -228,17 +236,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="Name Resident :"
+                android:textSize="12sp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_resident_name"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_resident_name"
-                app:layout_constraintVertical_bias="0.0"
-                android:textStyle="bold" />
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/textView11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Amount :"
+                android:textSize="12sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_amount"
                 app:layout_constraintEnd_toStartOf="@+id/tv_amount"
@@ -252,26 +262,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Category Name ::"
+                android:textSize="12sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_categorie_name"
                 app:layout_constraintEnd_toStartOf="@+id/tv_categorie_name"
-                app:layout_constraintHorizontal_bias="0.347"
+                app:layout_constraintHorizontal_bias="0.16"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_categorie_name"
-                app:layout_constraintVertical_bias="0.692" />
+                app:layout_constraintVertical_bias="0.625" />
 
             <TextView
                 android:id="@+id/textView16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Category Id ::"
+                android:textSize="12sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_id_categorie"
                 app:layout_constraintEnd_toStartOf="@+id/tv_id_categorie"
-                app:layout_constraintHorizontal_bias="0.175"
+                app:layout_constraintHorizontal_bias="0.101"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_id_categorie"
-                app:layout_constraintVertical_bias="0.384" />
+                app:layout_constraintVertical_bias="0.727" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

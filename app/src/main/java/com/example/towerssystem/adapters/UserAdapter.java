@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.towerssystem.databinding.ItemResidentBinding;
+import com.example.towerssystem.interfaces.ItemClickResident;
 import com.example.towerssystem.models.Resident;
 import com.squareup.picasso.Picasso;
 
@@ -15,9 +16,11 @@ import java.util.List;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
     private List<Resident> residents;
+    private ItemClickResident clickResident ;
 
-    public UserAdapter(List<Resident> residents) {
+    public UserAdapter(List<Resident> residents,ItemClickResident clickResident) {
         this.residents = residents;
+        this.clickResident=clickResident;
     }
 
     public void setResidents(List<Resident> residents) {
@@ -39,6 +42,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         holder.binding.tvItemTowresName.setText(resident.towerName);
         holder.binding.tvUserEmail.setText(resident.email);
         Picasso.get().load(resident.imageUrl).into(holder.binding.imag);
+
+        holder.binding.card.setOnClickListener(v -> {
+            clickResident.onClick(resident);
+        });
 
     }
 

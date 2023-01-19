@@ -73,7 +73,7 @@ public class ResidentController {
 
     }
     public void updateResident(int id, AuthCallBack callBack){
-        Call<BaseResponse> updateUser = ApiController.getInstance().getRetrofitRequests().updateResident(id);
+        Call<BaseResponse> updateUser = ApiController.getInstance().getRetrofitRequests().updateResident(id,null,null,null,null,null,null,null);
         updateUser.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {

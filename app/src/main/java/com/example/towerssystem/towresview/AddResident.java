@@ -16,11 +16,13 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.towerssystem.Broadcastreciver.NetworkChangeListiners;
+import com.example.towerssystem.Dialog.AddedDialog;
 import com.example.towerssystem.controller.ResidentController;
 import com.example.towerssystem.R;
 import com.example.towerssystem.databinding.AddResidentBinding;
@@ -40,6 +42,7 @@ public class AddResident extends AppCompatActivity implements View.OnClickListen
     private String gender;
     private ResidentController controller = new ResidentController();
     NetworkChangeListiners networkChangeListiners = new NetworkChangeListiners();
+    AddedDialog addedDialog = new AddedDialog(this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +95,7 @@ public class AddResident extends AppCompatActivity implements View.OnClickListen
     protected void onStop() {
         super.onStop();
         unregisterReceiver(networkChangeListiners);
+        finish();
     }
 
 
@@ -174,7 +178,15 @@ public class AddResident extends AppCompatActivity implements View.OnClickListen
         residentController.insertResident(resident, new AuthCallBack() {
             @Override
             public void onSuccess(String message) {
-                Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
+                addedDialog.startLoading();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        addedDialog.dismissDialog();
+                        Intent intent = new Intent(getApplicationContext(),ActivityResidents.class);
+                        startActivity(intent);
+                    }
+                },2000);
 
             }
 
@@ -206,11 +218,21 @@ public class AddResident extends AppCompatActivity implements View.OnClickListen
         controller.updateResident(1, new AuthCallBack() {
             @Override
             public void onSuccess(String message) {
+                addedDialog.startLoading();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        addedDialog.dismissDialog();
+                        Intent intent = new Intent(getApplicationContext(),Operations.class);
+                        startActivity(intent);
+                    }
+                },2000);
 
             }
 
             @Override
             public void onFailure(String message) {
+                Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
 
             }
         });

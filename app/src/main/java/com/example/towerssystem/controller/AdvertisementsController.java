@@ -69,7 +69,7 @@ public class AdvertisementsController {
         });
     }
     public void updateAdvertisements(int id, AuthCallBack callBack){
-        Call<BaseResponse> updateAdvertisements = ApiController.getInstance().getRetrofitRequests().updateAdvertisements(id);
+        Call<BaseResponse> updateAdvertisements = ApiController.getInstance().getRetrofitRequests().updateAdvertisements(id,null,null,null);
         updateAdvertisements.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
@@ -88,6 +88,19 @@ public class AdvertisementsController {
         deleteAdvertisements.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                if (response.isSuccessful() && response.body() !=null) {
+                    callBack.onSuccess(response.body().message);
+                } else {
+                    try {
+                        String error = new String(response.errorBody().bytes(), StandardCharsets.UTF_8);
+                        JSONObject jsonObject = new JSONObject(error);
+                        callBack.onFailure(jsonObject.getString("message"));
+                    }catch (JSONException jsonException){
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
 
             }
 

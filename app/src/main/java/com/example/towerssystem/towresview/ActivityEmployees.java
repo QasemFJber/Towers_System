@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.example.towerssystem.Broadcastreciver.NetworkChangeListiners;
 import com.example.towerssystem.Dialog.CustomDialog;
+import com.example.towerssystem.Dialog.DeletedDialog;
 import com.example.towerssystem.R;
 import com.example.towerssystem.adapters.EmployeeAdapter;
 import com.example.towerssystem.controller.EmployeeController;
@@ -44,8 +45,9 @@ public class ActivityEmployees extends AppCompatActivity  implements Item_Click 
     private EmployeeController controller = new EmployeeController();
     NetworkChangeListiners networkChangeListiners = new NetworkChangeListiners();
     private CustomDialog dialog = new CustomDialog(this);
+    private DeletedDialog deletedDialog = new DeletedDialog(this);
     private List<Employee> employees;
-    private static int id ;
+        private static int ID ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +109,7 @@ public class ActivityEmployees extends AppCompatActivity  implements Item_Click 
         IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(networkChangeListiners,intentFilter);
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menuempanuser, menu);
@@ -157,15 +160,34 @@ public class ActivityEmployees extends AppCompatActivity  implements Item_Click 
         });
     }
 
+    private void deleteEmployee(){
+        controller.deleteEmployee(ID, new AuthCallBack() {
+            @Override
+            public void onSuccess(String message) {
+                deletedDialog.startLoading();
+                adapter.notifyDataSetChanged();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        deletedDialog.dismissDialog();
+                    }
+                },2000);
+
+            }
+
+            @Override
+            public void onFailure(String message) {
+                Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
+            }
+        });
+    }
 
     String deleteData;
 
 
     @Override
     public void onClick(Employee employee) {
-        Toast.makeText(this, employee.id.toString(), Toast.LENGTH_SHORT).show();
-
-
+        ID = employee.id;
     }
     ItemTouchHelper.SimpleCallback simpleCallback2 = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT) {
         @Override
@@ -213,22 +235,8 @@ public class ActivityEmployees extends AppCompatActivity  implements Item_Click 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             int position = viewHolder.getAdapterPosition();
-//                controller.deleteEmployee(id, new AuthCallBack() {
-//                    @Override
-//                    public void onSuccess(String message) {
-//                        Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
-//                        adapter.notifyItemRemoved(position);
-//
-//
-//                    }
-//
-//                    @Override
-//                    public void onFailure(String message) {
-//                        Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
-//
-//                    }
-//                });
-
+            deleteEmployee();
+            employees.remove(position);
             Snackbar.make(binding.getRoot(),deleteData,Snackbar.LENGTH_LONG).setAction("GERI ALL", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -264,6 +272,7 @@ public class ActivityEmployees extends AppCompatActivity  implements Item_Click 
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
 
         }
     };

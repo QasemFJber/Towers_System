@@ -87,8 +87,13 @@ public class EmployeeController {
             }
         });
     }
-    public void updateEmployee(int id, AuthCallBack callBack){
-        Call<BaseResponse> updateEmployee = ApiController.getInstance().getRetrofitRequests().updateEmployee(id);
+    public void updateEmployee(int id,Employee employee, AuthCallBack callBack){
+        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), imageBytesArray);
+        MultipartBody.Part file = MultipartBody.Part.createFormData("image", "image-file", requestBody);
+        RequestBody _name = RequestBody.create(MediaType.parse("String"),employee.name);
+        RequestBody _mobile = RequestBody.create(MediaType.parse("String"),employee.mobile);
+        RequestBody _nationalNumber = RequestBody.create(MediaType.parse("String"),employee.nationalNumber);
+        Call<BaseResponse> updateEmployee = ApiController.getInstance().getRetrofitRequests().updateEmployee(id,_name,_mobile,_nationalNumber,file,null);
         updateEmployee.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {

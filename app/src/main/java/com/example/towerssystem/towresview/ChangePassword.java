@@ -8,9 +8,11 @@ import android.content.IntentFilter;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 
 import com.example.towerssystem.Broadcastreciver.NetworkChangeListiners;
+import com.example.towerssystem.Dialog.AddedDialog;
 import com.example.towerssystem.R;
 import com.example.towerssystem.controller.AuthController;
 import com.example.towerssystem.databinding.ActivityForgotPasswordBinding;
@@ -21,6 +23,7 @@ public class ChangePassword extends AppCompatActivity  implements View.OnClickLi
     private ActivityForgotPasswordBinding binding;
     AuthController authController = new AuthController();
     NetworkChangeListiners networkChangeListiners = new NetworkChangeListiners();
+    AddedDialog addedDialog = new AddedDialog(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +56,16 @@ public class ChangePassword extends AppCompatActivity  implements View.OnClickLi
         authController.changePassword(binding.etCurrentPassword.getText().toString().trim(), binding.etNewPassword.getText().toString().trim(), binding.etNewPasswordConfirmation.getText().toString().trim(), new AuthCallBack() {
             @Override
             public void onSuccess(String message) {
-                Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                startActivity(intent);
+                addedDialog.startLoading();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        addedDialog.dismissDialog();
+                        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                        startActivity(intent);
+                    }
+                },2000);
+
 
             }
 

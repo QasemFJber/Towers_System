@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.towerssystem.databinding.ItemOperationsBinding;
+import com.example.towerssystem.interfaces.ClickItem;
 import com.example.towerssystem.models.Operations;
 import com.squareup.picasso.Picasso;
 
@@ -15,9 +16,11 @@ import java.util.List;
 
 public class OperationsAdapter extends RecyclerView.Adapter<OperationsAdapter.OperationsViewHolder> {
     private List<Operations> operationsList ;
+    private ClickItem clickItem;
 
-    public OperationsAdapter(List<Operations> operationsList) {
+    public OperationsAdapter(List<Operations> operationsList,ClickItem clickItem) {
         this.operationsList = operationsList;
+        this.clickItem = clickItem;
     }
 
     public void setOperationsList(List<Operations> operationsList) {
@@ -40,6 +43,10 @@ public class OperationsAdapter extends RecyclerView.Adapter<OperationsAdapter.Op
         holder.binding.tvItemDetails.setText(operations.details);
         holder.binding.tvCategoryName.setText(operations.categoryName);
         Picasso.get().load(operations.employee.imageUrl).into(holder.binding.imag);
+
+        holder.binding.card.setOnClickListener(v -> {
+            clickItem.onClick(operations);
+        });
 
     }
 

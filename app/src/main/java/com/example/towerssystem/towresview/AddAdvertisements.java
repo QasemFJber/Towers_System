@@ -15,23 +15,30 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.towerssystem.Broadcastreciver.NetworkChangeListiners;
+import com.example.towerssystem.Dialog.AddedDialog;
 import com.example.towerssystem.R;
+import com.example.towerssystem.controller.AdvertisementsController;
 import com.example.towerssystem.databinding.ActivityAddAdvertisementsBinding;
+import com.example.towerssystem.interfaces.AuthCallBack;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.ByteArrayOutputStream;
 
 public class AddAdvertisements extends AppCompatActivity implements View.OnClickListener {
     private ActivityAddAdvertisementsBinding binding;
     NetworkChangeListiners networkChangeListiners = new NetworkChangeListiners();
+    AdvertisementsController controller = new AdvertisementsController();
     private ActivityResultLauncher<String> permissionResultLauncher;
     private ActivityResultLauncher<Void> cameraResultLauncher;
     private Bitmap imageBitmap;
     private Dialog dialog;
     private Uri imagePick;
+    AddedDialog addedDialog = new AddedDialog(this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +58,7 @@ public class AddAdvertisements extends AppCompatActivity implements View.OnClick
     protected void onStop() {
         super.onStop();
         unregisterReceiver(networkChangeListiners);
+        finish();
     }
 
 
@@ -149,9 +157,55 @@ public class AddAdvertisements extends AppCompatActivity implements View.OnClick
         }else if (v.getId() == R.id.imageView2){
             pickImage();
         }else if (v.getId() == R.id.tv_back) {
-            Intent intent = new Intent(getApplicationContext(),ActivityEmployees.class);
+            Intent intent = new Intent(getApplicationContext(),Advertisements.class);
             startActivity(intent);
             finish();
         }
+    }
+
+    private void insertAdvertisements(){
+        controller.insertAdvertisements(new com.example.towerssystem.models.Advertisements(), new AuthCallBack() {
+            @Override
+            public void onSuccess(String message) {
+                addedDialog.startLoading();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        addedDialog.dismissDialog();
+                        Intent intent = new Intent(getApplicationContext(),Advertisements.class);
+                        startActivity(intent);
+                    }
+                },2000);
+            }
+
+            @Override
+            public void onFailure(String message) {
+                Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
+
+            }
+        });
+    }
+
+    private void updateAdvertisements(){
+        controller.updateAdvertisements(1, new AuthCallBack() {
+            @Override
+            public void onSuccess(String message) {
+                addedDialog.startLoading();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        addedDialog.dismissDialog();
+                        Intent intent = new Intent(getApplicationContext(),Operations.class);
+                        startActivity(intent);
+                    }
+                },2000);
+            }
+
+            @Override
+            public void onFailure(String message) {
+                Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
+
+            }
+        });
     }
 }

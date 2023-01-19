@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.towerssystem.databinding.ItemCategorieBinding;
+import com.example.towerssystem.interfaces.CategoryClickRecycler;
 import com.example.towerssystem.models.Categorie;
 
 import java.util.List;
@@ -15,9 +16,11 @@ import java.util.List;
 public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.CategoriesViewHolder> {
 
     private List<Categorie> categories ;
+    private CategoryClickRecycler categoryClickRecycler;
 
-    public CategoriesAdapter(List<Categorie> categories) {
+    public CategoriesAdapter(List<Categorie> categories, CategoryClickRecycler categoryClickRecycler) {
         this.categories = categories;
+        this.categoryClickRecycler=categoryClickRecycler;
     }
 
     public void setCategories(List<Categorie> categories) {
@@ -38,6 +41,10 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
         holder.binding.tvName.setText(categorie.name);
         holder.binding.tvActionsCount.setText(categorie.actionsCount);
         holder.binding.tvTotal.setText(categorie.total);
+
+        holder.binding.card.setOnClickListener(v -> {
+            categoryClickRecycler.onClick(categorie);
+        });
 
     }
 

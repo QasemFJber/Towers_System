@@ -16,12 +16,14 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.towerssystem.Broadcastreciver.NetworkChangeListiners;
+import com.example.towerssystem.Dialog.AddedDialog;
 import com.example.towerssystem.controller.EmployeeController;
 import com.example.towerssystem.R;
 import com.example.towerssystem.databinding.AddEmployeeBinding;
@@ -33,6 +35,7 @@ import java.io.ByteArrayOutputStream;
 
 public class AddEmployee extends AppCompatActivity  implements View.OnClickListener {
     AddEmployeeBinding binding;
+    private int id;
 
     private ActivityResultLauncher<String> permissionResultLauncher;
     private ActivityResultLauncher<Void> cameraResultLauncher;
@@ -41,6 +44,7 @@ public class AddEmployee extends AppCompatActivity  implements View.OnClickListe
     private Uri imagePick;
     private EmployeeController controller = new EmployeeController();
     NetworkChangeListiners networkChangeListiners = new NetworkChangeListiners();
+    AddedDialog addedDialog = new AddedDialog(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +71,7 @@ public class AddEmployee extends AppCompatActivity  implements View.OnClickListe
     protected void onStop() {
         super.onStop();
         unregisterReceiver(networkChangeListiners);
+        finish();
 
     }
 
@@ -92,7 +97,15 @@ public class AddEmployee extends AppCompatActivity  implements View.OnClickListe
         controller.insertEmployee(name,mobile,number, new AuthCallBack() {
             @Override
             public void onSuccess(String message) {
-                Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
+                addedDialog.startLoading();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        addedDialog.dismissDialog();
+                        Intent intent = new Intent(getApplicationContext(),ActivityEmployees.class);
+                        startActivity(intent);
+                    }
+                },2000);
             }
 
             @Override
@@ -106,7 +119,7 @@ public class AddEmployee extends AppCompatActivity  implements View.OnClickListe
 
     private void checkIdOfActivity() {
         Intent intent = getIntent();
-        int id =  intent.getIntExtra("id",0);
+         id =  intent.getIntExtra("id",0);
         if (id == 1){
             binding.btnSave.setText("SAVE");
             setTitle("ADD EMPLOYEE");
@@ -170,10 +183,10 @@ public class AddEmployee extends AppCompatActivity  implements View.OnClickListe
     }
 
     private void performData(){
-        if (checkData()){
+        if (checkData() && id==1){
             saveEmployee();
-        }else {
-            Toast.makeText(this, "ENTER REQUERD DATA", Toast.LENGTH_SHORT).show();
+        }else if (checkData() && id == 2){
+            updateEmployee();
         }
     }
 
@@ -200,7 +213,8 @@ public class AddEmployee extends AppCompatActivity  implements View.OnClickListe
     }
 
     private void updateEmployee(){
-        controller.updateEmployee(4, new AuthCallBack() {
+        Employee employee = new Employee(null,null,null,bitmapToBytes());
+        controller.updateEmployee(4,employee, new AuthCallBack() {
             @Override
             public void onSuccess(String message) {
 

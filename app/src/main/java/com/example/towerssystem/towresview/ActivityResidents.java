@@ -21,12 +21,14 @@ import android.widget.Toast;
 
 import com.example.towerssystem.Broadcastreciver.NetworkChangeListiners;
 import com.example.towerssystem.Dialog.CustomDialog;
+import com.example.towerssystem.Dialog.DeletedDialog;
 import com.example.towerssystem.R;
 import com.example.towerssystem.adapters.UserAdapter;
 import com.example.towerssystem.controller.ResidentController;
 import com.example.towerssystem.databinding.ActivityResidentsBinding;
 import com.example.towerssystem.interfaces.AuthCallBack;
 import com.example.towerssystem.interfaces.ContentCallBack;
+import com.example.towerssystem.interfaces.ItemClickResident;
 import com.example.towerssystem.models.Resident;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -36,13 +38,15 @@ import java.util.List;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
-public class ActivityResidents extends AppCompatActivity implements View.OnClickListener {
+public class ActivityResidents extends AppCompatActivity implements ItemClickResident {
     private ActivityResidentsBinding binding;
-    private UserAdapter adapter = new UserAdapter(new ArrayList<>());
+    private UserAdapter adapter = new UserAdapter(new ArrayList<>(),this);
     private  ResidentController controller = new ResidentController();
     NetworkChangeListiners networkChangeListiners = new NetworkChangeListiners();
     private CustomDialog dialog = new CustomDialog(this);
+    private DeletedDialog deletedDialog = new DeletedDialog(this);
     private List<Resident> residents;
+    private static  int  ID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +57,7 @@ public class ActivityResidents extends AppCompatActivity implements View.OnClick
 
     }
     private void initializeView() {
-        setOnClick();
+
         operationsSccren();
         dialogLoad();
         getAllResident();
@@ -72,24 +76,17 @@ public class ActivityResidents extends AppCompatActivity implements View.OnClick
         },3000);
     }
 
-    private void setOnClick() {
-    }
+
 
     private void operationsSccren() {
         setTitle("Residents");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.yl)));
         getWindow().setStatusBarColor(ContextCompat.getColor(ActivityResidents.this,R.color.black));
-        setOnCilck();
-    }
-
-
-    private void setOnCilck() {
-    }
-
-    @Override
-    public void onClick(View v) {
 
     }
+
+
+
 
     @Override
     protected void onStop() {
@@ -154,17 +151,33 @@ public class ActivityResidents extends AppCompatActivity implements View.OnClick
         });
     }
 
+
+    @Override
+    public void onClick(Resident resident) {
+        ID = resident.id;
+    }
+
+
     private  void deleteResident(){
-        controller.deleteResident(140, new AuthCallBack() {
+        controller.deleteResident(ID, new AuthCallBack() {
             @Override
             public void onSuccess(String message) {
-                Intent intent = new Intent(getApplicationContext(), ActivityResidents.class);
-                startActivity(intent);
+                deletedDialog.startLoading();
+                adapter.notifyDataSetChanged();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        deletedDialog.dismissDialog();
+                    }
+                },2000);
+
 
             }
 
             @Override
             public void onFailure(String message) {
+                Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
+
 
             }
         });
@@ -233,21 +246,8 @@ public class ActivityResidents extends AppCompatActivity implements View.OnClick
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             int position = viewHolder.getAdapterPosition();
-//                controller.deleteEmployee(id, new AuthCallBack() {
-//                    @Override
-//                    public void onSuccess(String message) {
-//                        Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
-//                        adapter.notifyItemRemoved(position);
-//
-//
-//                    }
-//
-//                    @Override
-//                    public void onFailure(String message) {
-//                        Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
-//
-//                    }
-//                });
+            deleteResident();
+            residents.remove(position);
 
             Snackbar.make(binding.getRoot(),deleteData,Snackbar.LENGTH_LONG).setAction("GERI ALL", new View.OnClickListener() {
                 @Override
@@ -272,5 +272,6 @@ public class ActivityResidents extends AppCompatActivity implements View.OnClick
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
     };
+
 
 }

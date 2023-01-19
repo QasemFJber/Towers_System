@@ -24,6 +24,7 @@ import com.example.towerssystem.controller.AuthController;
 import com.example.towerssystem.controller.CategoriesController;
 import com.example.towerssystem.databinding.ActivityMainBinding;
 import com.example.towerssystem.interfaces.AuthCallBack;
+import com.example.towerssystem.interfaces.CategoryClickRecycler;
 import com.example.towerssystem.interfaces.ContentCallBack;
 import com.example.towerssystem.models.Categorie;
 import com.example.towerssystem.prefs.AppSharedPreferences;
@@ -32,15 +33,14 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  implements CategoryClickRecycler {
     private  ActivityMainBinding binding;
     AuthController authController = new AuthController();
     CategoriesController categoriesController = new CategoriesController();
     private List<Categorie> categories = new ArrayList<>();
     NetworkChangeListiners networkChangeListiners = new NetworkChangeListiners();
     private CustomDialog dialog = new CustomDialog(this);
-
-    CategoriesAdapter adapter ;
+    CategoriesAdapter adapter = new CategoriesAdapter(new ArrayList<>(),this::onClick) ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,19 +65,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-        setDataInRecycler();
+
         IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(networkChangeListiners,intentFilter);
         super.onStart();
 
 
     }
-
-    private void setDataInRecycler() {
-        adapter = new CategoriesAdapter(categories);
-
-    }
-
 
     @Override
     protected void onStop() {
@@ -154,5 +148,35 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public void onClick(Categorie categorie) {
+
+
+        switch (categorie.id.toString()){
+            case "1":
+                Intent intent = new Intent(getApplicationContext(),ShowPopulationServices.class);
+                intent.putExtra("id",1);
+                startActivity(intent);
+                break;
+            case "2":
+                Intent intent1 = new Intent(getApplicationContext(),ShowPayroll.class);
+                intent1.putExtra("id",2);
+                startActivity(intent1);
+                break;
+            case "3":
+                Intent intent2 = new Intent(getApplicationContext(),ShowPurchases.class);
+                intent2.putExtra("id",3);
+                startActivity(intent2);
+                break;
+            case "4":
+                Intent intent3 = new Intent(getApplicationContext(),ShowMaintenance.class);
+                intent3.putExtra("id",4);
+                startActivity(intent3);
+                break;
+        }
+
+
     }
 }
