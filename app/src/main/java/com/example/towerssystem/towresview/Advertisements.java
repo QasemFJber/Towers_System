@@ -45,7 +45,8 @@ public class Advertisements extends AppCompatActivity implements ClickItemRecycl
     private CustomDialog dialog = new CustomDialog(this);
     private List<com.example.towerssystem.models.Advertisements> advertisements;
     private DeletedDialog deletedDialog = new DeletedDialog(this);
-    private static int ID;
+
+    private static int  POSITION;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +100,11 @@ public class Advertisements extends AppCompatActivity implements ClickItemRecycl
             @Override
             public void onSuccess(List<com.example.towerssystem.models.Advertisements> list) {
                 advertisements = list;
+                if (list.size() ==0){
+                    dialog.dismissDialog();
+                    binding.tvData.setVisibility(View.VISIBLE);
+                    binding.nodata.setVisibility(View.VISIBLE);
+                }
                 adapter.setAdvertisementsList(list);
                 binding.rvAdvertisements.setAdapter(adapter);
                 binding.rvAdvertisements.setHasFixedSize(true);
@@ -145,11 +151,12 @@ public class Advertisements extends AppCompatActivity implements ClickItemRecycl
 
     @Override
     public void onClick(com.example.towerssystem.models.Advertisements advertisements) {
-        ID = advertisements.id;
+
+
 
     }
-    private void deleteAdvertisements() {
-        controller.deleteAdvertisements(ID, new AuthCallBack() {
+    private void deleteAdvertisements(int id) {
+        controller.deleteAdvertisements(id, new AuthCallBack() {
             @Override
             public void onSuccess(String message) {
                 deletedDialog.startLoading();
@@ -197,17 +204,11 @@ public class Advertisements extends AppCompatActivity implements ClickItemRecycl
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             int position = viewHolder.getAdapterPosition();
-            Intent intent = new Intent(getApplicationContext(),AddEmployee.class);
+            int id = advertisements.get(position).id;
+            Intent intent = new Intent(getApplicationContext(),AddAdvertisements.class);
             intent.putExtra("id",2);
+            intent.putExtra("operationsID",id);
             startActivity(intent);
-            Snackbar.make(binding.getRoot(),deleteData,Snackbar.LENGTH_LONG).setAction("GERI ALL", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(Advertisements.this, "UPDATE EMPLOYEE", Toast.LENGTH_SHORT).show();
-
-                }
-            }).show();
-
 
         }
 
@@ -233,16 +234,10 @@ public class Advertisements extends AppCompatActivity implements ClickItemRecycl
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            int position = viewHolder.getAdapterPosition();
-            deleteAdvertisements();
-            advertisements.remove(position);
-            Snackbar.make(binding.getRoot(),deleteData,Snackbar.LENGTH_LONG).setAction("GERI ALL", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(Advertisements.this, "RETRY", Toast.LENGTH_SHORT).show();
-
-                }
-            }).show();
+            POSITION = viewHolder.getAdapterPosition();
+            int id = advertisements.get(POSITION).id;
+            deleteAdvertisements(id);
+            advertisements.remove(POSITION);
 
         }
 
@@ -259,24 +254,5 @@ public class Advertisements extends AppCompatActivity implements ClickItemRecycl
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
     };
-
-    private void insertAdvertisement(){
-        controller.insertAdvertisements(advertisements.get(1), new AuthCallBack() {
-            @Override
-            public void onSuccess(String message) {
-                Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
-                Intent intent = new Intent(getApplicationContext(),Advertisements.class);
-                startActivity(intent);
-            }
-
-            @Override
-            public void onFailure(String message) {
-                Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
-            }
-        });
-
-    }
-
-
 
 }

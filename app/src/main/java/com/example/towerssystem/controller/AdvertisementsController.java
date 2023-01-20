@@ -50,11 +50,11 @@ public class AdvertisementsController {
 
     }
 
-    public void insertAdvertisements(Advertisements advertisements, AuthCallBack callBack){
+    public void insertAdvertisements(String title, String info, AuthCallBack callBack){
         RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), imageBytesArray);
         MultipartBody.Part file = MultipartBody.Part.createFormData("image", "image-file", requestBody);
-        RequestBody _title = RequestBody.create(MediaType.parse("String"),advertisements.title);
-        RequestBody _info = RequestBody.create(MediaType.parse("String"),advertisements.info);
+        RequestBody _title = RequestBody.create(MediaType.parse("String"),title);
+        RequestBody _info = RequestBody.create(MediaType.parse("String"),info);
         Call<BaseResponse> insertAdvertisements = ApiController.getInstance().getRetrofitRequests().insertAdvertisements(_title,_info,file);
         insertAdvertisements.enqueue(new Callback<BaseResponse>() {
             @Override

@@ -82,6 +82,7 @@ public class AddResident extends AppCompatActivity implements View.OnClickListen
         binding.imageView2.setOnClickListener(this::onClick);
         binding.btnSave.setOnClickListener(this::onClick);
         binding.tvBack.setOnClickListener(this::onClick);
+        binding.imageView4.setOnClickListener(this::onClick);
     }
 
     @Override
@@ -106,6 +107,10 @@ public class AddResident extends AppCompatActivity implements View.OnClickListen
         }else if (v.getId() == R.id.imageView2){
             pickImage();
         }else if (v.getId() == R.id.tv_back) {
+            Intent intent = new Intent(getApplicationContext(), ActivityResidents.class);
+            startActivity(intent);
+            finish();
+        }else if (v.getId() == R.id.imageView4) {
             Intent intent = new Intent(getApplicationContext(), ActivityResidents.class);
             startActivity(intent);
             finish();
@@ -211,6 +216,7 @@ public class AddResident extends AppCompatActivity implements View.OnClickListen
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 gender = checkedId == R.id.radiomale ? "M" : "F";
+                Toast.makeText(AddResident.this, gender, Toast.LENGTH_SHORT).show();
             }
         });
     }

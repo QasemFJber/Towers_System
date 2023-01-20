@@ -48,6 +48,7 @@ public class ActivityEmployees extends AppCompatActivity  implements Item_Click 
     private DeletedDialog deletedDialog = new DeletedDialog(this);
     private List<Employee> employees;
         private static int ID ;
+    private static int  POSITION;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,6 +146,11 @@ public class ActivityEmployees extends AppCompatActivity  implements Item_Click 
             public void onSuccess(List<Employee> list) {
                 employees = list;
                 adapter.setEmployees(list);
+                if (list.size() ==0){
+                    dialog.dismissDialog();
+                    binding.tvData.setVisibility(View.VISIBLE);
+                    binding.nodata.setVisibility(View.VISIBLE);
+                }
                 adapter.notifyItemRangeInserted(0,list.size());
                 binding.rvEmployees.setAdapter(adapter);
                 binding.rvEmployees.setHasFixedSize(true);
@@ -160,8 +166,8 @@ public class ActivityEmployees extends AppCompatActivity  implements Item_Click 
         });
     }
 
-    private void deleteEmployee(){
-        controller.deleteEmployee(ID, new AuthCallBack() {
+    private void deleteEmployee(int id){
+        controller.deleteEmployee(id, new AuthCallBack() {
             @Override
             public void onSuccess(String message) {
                 deletedDialog.startLoading();
@@ -182,7 +188,7 @@ public class ActivityEmployees extends AppCompatActivity  implements Item_Click 
         });
     }
 
-    String deleteData;
+
 
 
     @Override
@@ -198,18 +204,11 @@ public class ActivityEmployees extends AppCompatActivity  implements Item_Click 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             int position = viewHolder.getAdapterPosition();
+            int id = employees.get(position).id;
             Intent intent = new Intent(getApplicationContext(),AddEmployee.class);
             intent.putExtra("id",2);
+            intent.putExtra("operationsID",id);
             startActivity(intent);
-            Snackbar.make(binding.getRoot(),deleteData,Snackbar.LENGTH_LONG).setAction("GERI ALL", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(ActivityEmployees.this, "UPDATE EMPLOYEE", Toast.LENGTH_SHORT).show();
-
-                }
-            }).show();
-
-
         }
 
         @Override
@@ -234,17 +233,10 @@ public class ActivityEmployees extends AppCompatActivity  implements Item_Click 
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            int position = viewHolder.getAdapterPosition();
-            deleteEmployee();
-            employees.remove(position);
-            Snackbar.make(binding.getRoot(),deleteData,Snackbar.LENGTH_LONG).setAction("GERI ALL", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(ActivityEmployees.this, "RETRY", Toast.LENGTH_SHORT).show();
-
-                }
-            }).show();
-
+            POSITION = viewHolder.getAdapterPosition();
+            int id = employees.get(POSITION).id;
+            deleteEmployee(id);
+            employees.remove(POSITION);
         }
 
         @Override

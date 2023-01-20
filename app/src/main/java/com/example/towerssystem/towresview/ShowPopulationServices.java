@@ -10,6 +10,9 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
 import com.example.towerssystem.Broadcastreciver.NetworkChangeListiners;
 import com.example.towerssystem.Dialog.CustomDialog;
@@ -37,6 +40,16 @@ public class ShowPopulationServices extends AppCompatActivity {
         binding = ActivityShowPopulationServicesBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initializeView();
+
+    }
+
+    private void initializeView() {
+        getCategoriesOfId();
+        operationsSccren();
+        loadDialog();
+    }
+
+    private void loadDialog() {
         dialog.startLoading();
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -44,11 +57,6 @@ public class ShowPopulationServices extends AppCompatActivity {
                 dialog.dismissDialog();
             }
         }, 3000);
-    }
-
-    private void initializeView() {
-        getCategoriesOfId();
-        operationsSccren();
     }
 
     @Override
@@ -73,14 +81,20 @@ public class ShowPopulationServices extends AppCompatActivity {
         super.onStop();
     }
 
-
     private void getCategoriesOfId() {
         Intent intent = getIntent();
         int id = intent.getIntExtra("id",0);
+        Toast.makeText(this, "The id is :"+ id, Toast.LENGTH_SHORT).show();
         categoriesController.getAllCategoriesOfCategorieId(id, new ShowListenirs() {
             @Override
-            public void onSuccess(List<com.example.towerssystem.models.ShowCategorie> list) {
+            public void onSuccess(List<ShowCategorie> list) {
                 adapter.setCategorieList(list);
+                Log.d("LIST_SIZE","LIST : "+list.size());
+                if (list.size() ==0){
+                    dialog.dismissDialog();
+                    binding.tvData.setVisibility(View.VISIBLE);
+                    binding.nodata.setVisibility(View.VISIBLE);
+                }
                 binding.rvService.setAdapter(adapter);
                 binding.rvService.setLayoutManager(new LinearLayoutManager(ShowPopulationServices.this));
                 binding.rvService.setHasFixedSize(true);
@@ -93,8 +107,32 @@ public class ShowPopulationServices extends AppCompatActivity {
         });
 
     }
+//    private void getCategoriesOfId() {
+//        Intent intent = getIntent();
+//        int id = intent.getIntExtra("id",0);
+//        categoriesController.getAllCategoriesOfCategorieId(id, new ShowListenirs() {
+//            @Override
+//            public void onSuccess(List<com.example.towerssystem.models.ShowCategorie> list) {
+//                adapter.setCategorieList(list);
+//                if (list.size() ==0){
+//                    dialog.dismissDialog();
+//                    binding.tvData.setVisibility(View.VISIBLE);
+//                    binding.nodata.setVisibility(View.VISIBLE);
+//                }
+//                binding.rvService.setAdapter(adapter);
+//                binding.rvService.setLayoutManager(new LinearLayoutManager(ShowPopulationServices.this));
+//                binding.rvService.setHasFixedSize(true);
+//            }
+//
+//            @Override
+//            public void onFailure(String message) {
+//
+//            }
+//        });
+//
+//    }
     private void operationsSccren() {
-        setTitle("PopulationServices");
+        setTitle("Population Services");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.yl)));
         getWindow().setStatusBarColor(ContextCompat.getColor(ShowPopulationServices.this,R.color.black));
 

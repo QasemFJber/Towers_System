@@ -154,6 +154,7 @@ public interface RetrofitRequests {
                                         @Field("actor_type") String actor_type,
                                         @Field("date") String date);
 
+    @FormUrlEncoded
     @PUT("operations/{id}")
     Call<BaseResponse> updateOperations(@Path("id") int id,
                                         @Field("category_id") String category_id,

@@ -73,20 +73,18 @@ public class AddAdvertisements extends AppCompatActivity implements View.OnClick
         binding.tvBack.setOnClickListener(this::onClick);
         binding.imageView2.setOnClickListener(this::onClick);
         binding.btnSave.setOnClickListener(this::onClick);
+        binding.imageView4.setOnClickListener(this::onClick);
     }
 
     private void performData(){
         if (checkData()){
-            saveOperations();
-            Intent intent = new Intent(getApplicationContext(),Advertisements.class);
-            startActivity(intent);
+            insertAdvertisements();
         }else {
             Toast.makeText(this, "ENTER REQUERD DATA", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void saveOperations() {
-    }
+
 
     private void operationsSccren() {
         setTitle("Advertisements");
@@ -160,11 +158,17 @@ public class AddAdvertisements extends AppCompatActivity implements View.OnClick
             Intent intent = new Intent(getApplicationContext(),Advertisements.class);
             startActivity(intent);
             finish();
+        }else if (v.getId() == R.id.imageView4){
+            Intent intent = new Intent(getApplicationContext(),Advertisements.class);
+            startActivity(intent);
+            finish();
         }
     }
 
     private void insertAdvertisements(){
-        controller.insertAdvertisements(new com.example.towerssystem.models.Advertisements(), new AuthCallBack() {
+        String _title =binding.etTitle.getText().toString().trim();
+        String _info = binding.etInfo.getText().toString().trim();
+        controller.insertAdvertisements(_title, _info, new AuthCallBack() {
             @Override
             public void onSuccess(String message) {
                 addedDialog.startLoading();
@@ -176,12 +180,13 @@ public class AddAdvertisements extends AppCompatActivity implements View.OnClick
                         startActivity(intent);
                     }
                 },2000);
+
             }
 
             @Override
             public void onFailure(String message) {
-                Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
 
+                Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
             }
         });
     }

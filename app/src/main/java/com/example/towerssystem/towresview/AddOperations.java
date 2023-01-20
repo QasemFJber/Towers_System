@@ -51,6 +51,8 @@ public class AddOperations extends AppCompatActivity  implements DatePickerDialo
     private  String Id_TYPE;
     private String type;
     AddedDialog addedDialog = new AddedDialog(this);
+    private static int operationID;
+    private static int ID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,8 @@ public class AddOperations extends AppCompatActivity  implements DatePickerDialo
         operationsSccren();
         initializeView();
         Date date = new Date();
+        Toast.makeText(this, "THE ID IS : "+ID, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "The operation id is :"+operationID, Toast.LENGTH_SHORT).show();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
         String strDate = formatter.format(date);
         binding.btnSave.setOnClickListener(v -> {
@@ -71,6 +75,10 @@ public class AddOperations extends AppCompatActivity  implements DatePickerDialo
             dialogFragment.show(getSupportFragmentManager(),"DATE PICKER");
         });
         binding.tvBack.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(),Operations.class);
+            startActivity(intent);
+        });
+        binding.imageView4.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(),Operations.class);
             startActivity(intent);
         });
@@ -90,12 +98,30 @@ public class AddOperations extends AppCompatActivity  implements DatePickerDialo
         calendar.set(Calendar.MONTH,month);
         calendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
         if (year > 2023 ){
-            Toast.makeText(this, " PLEASE ENTER DATE ", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, " PLEASE ENTER DATE ", Toast.LENGTH_SHORT).show();
         }else {
             String curruntDate = DateFormat.getDateInstance(DateFormat.FULL).format(calendar.getTime());
             binding.etDate.setText(curruntDate);
         }
     }
+
+    private void checkIdOfActivity() {
+        Intent intent = getIntent();
+         ID = intent.getIntExtra("id",0);
+        operationID = intent.getIntExtra("operationsID",0);
+        if (ID == 1){
+            binding.btnSave.setText("SAVE");
+            setTitle("ADD OPERATIONS");
+        }else if (ID == 2){
+            binding.btnSave.setText("UPDATE");
+            setTitle("UPDATE OPERATIONS");
+
+        }else {
+//            Toast.makeText(this, "No  Found  Id", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
     private void operationsSccren() {
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.yl)));
         getWindow().setStatusBarColor(ContextCompat.getColor(AddOperations.this,R.color.black));
@@ -118,8 +144,10 @@ public class AddOperations extends AppCompatActivity  implements DatePickerDialo
     }
 
     private void performData(){
-        if (checkData()){
+        if (checkData() && ID == 1){
             insertOperations();
+        }else if (checkData() && ID == 2){
+            updateOperations();
         }else {
             Toast.makeText(this, "Enter Data Please", Toast.LENGTH_SHORT).show();
         }
@@ -140,32 +168,32 @@ public class AddOperations extends AppCompatActivity  implements DatePickerDialo
 
 
 
+
+
     private void updateOperations(){
-        controller.updateOperations(1, new AuthCallBack() {
+        controller.updateOperations(operationID,Id_CATEGORY, binding.etAmount.getText().toString().trim(), binding.etDetails.getText().toString().trim(), Id_TYPE,type, binding.etDate.getText().toString().trim(), new AuthCallBack() {
             @Override
             public void onSuccess(String message) {
+                addedDialog.startLoading();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        addedDialog.dismissDialog();
+                        Intent intent = new Intent(getApplicationContext(),Operations.class);
+                        startActivity(intent);
+                    }
+                },2000);
 
             }
 
             @Override
             public void onFailure(String message) {
+                Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
 
             }
         });
     }
 
-    private void checkIdOfActivity() {
-        Intent intent = getIntent();
-        int id =  intent.getIntExtra("id",0);
-        if (id == 1){
-            binding.btnSave.setText("SAVE");
-            setTitle("ADD OPERATIONS");
-        }else {
-            binding.btnSave.setText("UPDATE");
-            setTitle("UPDATE OPERATIONS");
-
-        }
-    }
 
     private void getAllCategory(){
         categoriesController.getAllCategories(new ContentCallBack<Categorie>() {
@@ -216,7 +244,7 @@ public class AddOperations extends AppCompatActivity  implements DatePickerDialo
                     getAllResident();
                 }
 
-                Toast.makeText(AddOperations.this, "The Type is :"+type, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(AddOperations.this, "The Type is :"+type, Toast.LENGTH_SHORT).show();
 
             }
 

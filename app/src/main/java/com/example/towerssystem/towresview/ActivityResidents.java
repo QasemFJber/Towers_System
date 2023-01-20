@@ -46,7 +46,7 @@ public class ActivityResidents extends AppCompatActivity implements ItemClickRes
     private CustomDialog dialog = new CustomDialog(this);
     private DeletedDialog deletedDialog = new DeletedDialog(this);
     private List<Resident> residents;
-    private static  int  ID;
+    private static int  POSITION;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +137,11 @@ public class ActivityResidents extends AppCompatActivity implements ItemClickRes
             public void onSuccess(List<Resident> list) {
                 residents = list;
                 adapter.setResidents(list);
+                if (list.size() ==0){
+                    dialog.dismissDialog();
+                    binding.tvData.setVisibility(View.VISIBLE);
+                    binding.nodata.setVisibility(View.VISIBLE);
+                }
                 binding.rvResident.setAdapter(adapter);
                 binding.rvResident.setHasFixedSize(true);
                 binding.rvResident.setLayoutManager(new LinearLayoutManager(ActivityResidents.this));
@@ -154,12 +159,12 @@ public class ActivityResidents extends AppCompatActivity implements ItemClickRes
 
     @Override
     public void onClick(Resident resident) {
-        ID = resident.id;
+
     }
 
 
-    private  void deleteResident(){
-        controller.deleteResident(ID, new AuthCallBack() {
+    private  void deleteResident(int id){
+        controller.deleteResident(id, new AuthCallBack() {
             @Override
             public void onSuccess(String message) {
                 deletedDialog.startLoading();
@@ -209,16 +214,12 @@ public class ActivityResidents extends AppCompatActivity implements ItemClickRes
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             int position = viewHolder.getAdapterPosition();
-            Intent intent = new Intent(getApplicationContext(),AddEmployee.class);
+            int id = residents.get(position).id;
+            Intent intent = new Intent(getApplicationContext(),AddResident.class);
             intent.putExtra("id",2);
+            intent.putExtra("operationsID",id);
             startActivity(intent);
-            Snackbar.make(binding.getRoot(),deleteData,Snackbar.LENGTH_LONG).setAction("GERI ALL", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(ActivityResidents.this, "UPDATE EMPLOYEE", Toast.LENGTH_SHORT).show();
 
-                }
-            }).show();
 
 
         }
@@ -245,17 +246,11 @@ public class ActivityResidents extends AppCompatActivity implements ItemClickRes
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            int position = viewHolder.getAdapterPosition();
-            deleteResident();
-            residents.remove(position);
+            POSITION = viewHolder.getAdapterPosition();
+            int id = residents.get(POSITION).id;
+            deleteResident(id);
+            residents.remove(POSITION);
 
-            Snackbar.make(binding.getRoot(),deleteData,Snackbar.LENGTH_LONG).setAction("GERI ALL", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(ActivityResidents.this, "RETRY", Toast.LENGTH_SHORT).show();
-
-                }
-            }).show();
 
         }
 

@@ -65,6 +65,7 @@ public class AddEmployee extends AppCompatActivity  implements View.OnClickListe
     private void setOnClick() {
         binding.imageView2.setOnClickListener(this::onClick);
         binding.tvBack.setOnClickListener(this::onClick);
+        binding.imageView4.setOnClickListener(this::onClick);
     }
 
     @Override
@@ -149,6 +150,10 @@ public class AddEmployee extends AppCompatActivity  implements View.OnClickListe
         }else if (v.getId() == R.id.imageView2){
             pickImage();
         }else if (v.getId() == R.id.tv_back) {
+            Intent intent = new Intent(getApplicationContext(),ActivityEmployees.class);
+            startActivity(intent);
+            finish();
+        }else if (v.getId() == R.id.imageView4) {
             Intent intent = new Intent(getApplicationContext(),ActivityEmployees.class);
             startActivity(intent);
             finish();

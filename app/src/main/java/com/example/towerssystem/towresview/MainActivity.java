@@ -119,6 +119,7 @@ public class MainActivity extends AppCompatActivity  implements CategoryClickRec
             @Override
             public void onSuccess(List<Categorie> list) {
                 adapter.setCategories(list);
+                adapter.notifyDataSetChanged();
                 binding.rvCategories.setAdapter(adapter);
                 binding.rvCategories.setLayoutManager(new GridLayoutManager(MainActivity.this,2));
                 binding.rvCategories.setHasFixedSize(true);
@@ -176,7 +177,6 @@ public class MainActivity extends AppCompatActivity  implements CategoryClickRec
                 startActivity(intent3);
                 break;
         }
-
 
     }
 }

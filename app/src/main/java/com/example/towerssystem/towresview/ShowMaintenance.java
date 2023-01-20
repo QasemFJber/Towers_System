@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 
 import com.example.towerssystem.Broadcastreciver.NetworkChangeListiners;
 import com.example.towerssystem.Dialog.CustomDialog;
@@ -82,6 +83,11 @@ public class ShowMaintenance extends AppCompatActivity {
             @Override
             public void onSuccess(List<com.example.towerssystem.models.ShowCategorie> list) {
                 adapter.setCategorieList(list);
+                if (list.size() ==0){
+                    dialog.dismissDialog();
+                    binding.tvData.setVisibility(View.VISIBLE);
+                    binding.nodata.setVisibility(View.VISIBLE);
+                }
                 binding.rvMaintenance.setAdapter(adapter);
                 binding.rvMaintenance.setLayoutManager(new LinearLayoutManager(ShowMaintenance.this));
                 binding.rvMaintenance.setHasFixedSize(true);

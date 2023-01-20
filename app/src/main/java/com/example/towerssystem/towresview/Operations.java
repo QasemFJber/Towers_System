@@ -46,6 +46,7 @@ public class Operations extends AppCompatActivity implements ClickItem {
     private List<com.example.towerssystem.models.Operations> operations;
     private DeletedDialog deletedDialog = new DeletedDialog(this);
     private static int ID;
+    private static int  POSITION;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +73,7 @@ public class Operations extends AppCompatActivity implements ClickItem {
     }
 
     private void setOnCilck() {
+
     }
 
 
@@ -121,6 +123,11 @@ public class Operations extends AppCompatActivity implements ClickItem {
             @Override
             public void onSuccess(List<com.example.towerssystem.models.Operations> list) {
                 operations = list;
+                if (list.size() ==0){
+                    dialog.dismissDialog();
+                    binding.tvData.setVisibility(View.VISIBLE);
+                    binding.nodata.setVisibility(View.VISIBLE);
+                }
                 adapter.setOperationsList(list);
                 binding.rvOperations.setAdapter(adapter);
                 binding.rvOperations.setHasFixedSize(true);
@@ -137,7 +144,7 @@ public class Operations extends AppCompatActivity implements ClickItem {
 
     @Override
     public void onClick(com.example.towerssystem.models.Operations operations) {
-        ID = operations.id;
+
     }
 
     private void DroptoReorder(){
@@ -150,8 +157,8 @@ public class Operations extends AppCompatActivity implements ClickItem {
         new ItemTouchHelper(simpleCallback).attachToRecyclerView(binding.rvOperations);
     }
 
-    private  void deleteOperations(){
-        controller.deleteOperations(ID, new AuthCallBack() {
+    private  void deleteOperations(int id){
+        controller.deleteOperations(id, new AuthCallBack() {
             @Override
             public void onSuccess(String message) {
                 deletedDialog.startLoading();
@@ -200,16 +207,11 @@ public class Operations extends AppCompatActivity implements ClickItem {
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             int position = viewHolder.getAdapterPosition();
-            Intent intent = new Intent(getApplicationContext(),AddEmployee.class);
+            int id = operations.get(position).id;
+            Intent intent = new Intent(getApplicationContext(),AddOperations.class);
             intent.putExtra("id",2);
+            intent.putExtra("operationsID",id);
             startActivity(intent);
-            Snackbar.make(binding.getRoot(),deleteData,Snackbar.LENGTH_LONG).setAction("GERI ALL", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(Operations.this, "UPDATE EMPLOYEE", Toast.LENGTH_SHORT).show();
-
-                }
-            }).show();
 
 
         }
@@ -236,17 +238,11 @@ public class Operations extends AppCompatActivity implements ClickItem {
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            int position = viewHolder.getAdapterPosition();
-            deleteOperations();
-            operations.remove(position);
+            POSITION = viewHolder.getAdapterPosition();
+            int id = operations.get(POSITION).id;
+            deleteOperations(id);
+            operations.remove(POSITION);
 
-            Snackbar.make(binding.getRoot(),deleteData,Snackbar.LENGTH_LONG).setAction("GERI ALL", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(Operations.this, "RETRY", Toast.LENGTH_SHORT).show();
-
-                }
-            }).show();
 
         }
 

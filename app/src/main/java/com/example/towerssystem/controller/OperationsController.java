@@ -73,17 +73,27 @@ public class OperationsController {
         });
 
     }
-    public void updateOperations(int id, AuthCallBack callBack){
-        Call<BaseResponse> updateOperations = ApiController.getInstance().getRetrofitRequests().updateOperations(id,null,null,null,null,null,null);
+    public void updateOperations(int id,String category_id,String amount,String details , String actor_id,String actor_type,String date, AuthCallBack callBack){
+        Call<BaseResponse> updateOperations = ApiController.getInstance().getRetrofitRequests().updateOperations(id,category_id,amount,details,actor_id,actor_type,date);
         updateOperations.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-
+                if (response.isSuccessful() && response.body() != null) {
+                    callBack.onSuccess(response.body().message);
+                } else {
+                    try {
+                        String error = new String(response.errorBody().bytes(), StandardCharsets.UTF_8);
+                        JSONObject jsonObject = new JSONObject(error);
+                        callBack.onFailure(jsonObject.getString("message"));
+                    } catch (IOException | JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
 
             @Override
             public void onFailure(Call<BaseResponse> call, Throwable t) {
-
+                callBack.onFailure("Somewont wont woreng");
             }
         });
 
