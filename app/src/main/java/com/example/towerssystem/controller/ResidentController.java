@@ -101,11 +101,22 @@ public class ResidentController {
         updateUser.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-
+                if (response.isSuccessful() && response.body() != null) {
+                    callBack.onSuccess(response.body().message);
+                } else {
+                    try {
+                        String error = new String(response.errorBody().bytes(), StandardCharsets.UTF_8);
+                        JSONObject jsonObject = new JSONObject(error);
+                        callBack.onFailure(jsonObject.getString("message"));
+                    } catch (IOException | JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
 
             @Override
             public void onFailure(Call<BaseResponse> call, Throwable t) {
+                callBack.onFailure("Something wont Wrong");
 
             }
         });

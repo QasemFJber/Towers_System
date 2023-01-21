@@ -65,6 +65,11 @@ public class AddAdvertisements extends AppCompatActivity implements View.OnClick
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+    }
 
     private void initializeView() {
         setOnClick();
@@ -188,6 +193,7 @@ public class AddAdvertisements extends AppCompatActivity implements View.OnClick
                         addedDialog.dismissDialog();
                         Intent intent = new Intent(getApplicationContext(),Advertisements.class);
                         startActivity(intent);
+                        finish();
                     }
                 },2000);
 
@@ -213,6 +219,7 @@ public class AddAdvertisements extends AppCompatActivity implements View.OnClick
                         updatedDialog.dismissDialog();
                         Intent intent = new Intent(getApplicationContext(),Advertisements.class);
                         startActivity(intent);
+                        finish();
                     }
                 },2000);
             }

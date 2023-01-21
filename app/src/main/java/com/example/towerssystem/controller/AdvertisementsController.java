@@ -89,7 +89,7 @@ public class AdvertisementsController {
         RequestBody _title = RequestBody.create(MediaType.parse("String"),title);
         RequestBody _info = RequestBody.create(MediaType.parse("String"),info);
         RequestBody _method = RequestBody.create(MediaType.parse("String"),method);
-        Call<BaseResponse> updateAdvertisements = ApiController.getInstance().getRetrofitRequests().updateAdvertisements(_method,id,_title,_info,file);
+        Call<BaseResponse> updateAdvertisements = ApiController.getInstance().getRetrofitRequests().updateAdvertisements(id,_method,_title,_info,file);
         updateAdvertisements.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {

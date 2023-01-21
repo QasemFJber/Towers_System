@@ -142,7 +142,7 @@ public class AddOperations extends AppCompatActivity  implements DatePickerDialo
     protected void onStop() {
         super.onStop();
         unregisterReceiver(networkChangeListiners);
-        finish();
+
     }
 
     private void performData(){
@@ -198,6 +198,7 @@ public class AddOperations extends AppCompatActivity  implements DatePickerDialo
                         updatedDialog.dismissDialog();
                         Intent intent = new Intent(getApplicationContext(),Operations.class);
                         startActivity(intent);
+                        finish();
                     }
                 },2000);
 
@@ -371,6 +372,7 @@ public class AddOperations extends AppCompatActivity  implements DatePickerDialo
                        addedDialog.dismissDialog();
                        Intent intent = new Intent(getApplicationContext(),Operations.class);
                        startActivity(intent);
+                       finish();
                    }
                },2000);
 

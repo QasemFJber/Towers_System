@@ -115,7 +115,7 @@ public interface RetrofitRequests {
 
 
     @Multipart
-    @PUT("users/{id}")
+    @POST("users/{id}")
     Call<BaseResponse> updateResident(@Path("id") int id,
                                       @Part("name") RequestBody _method,
                                       @Part("name") RequestBody name,
@@ -196,9 +196,9 @@ public interface RetrofitRequests {
                                             @Part MultipartBody.Part image);
 
     @Multipart
-    @PUT("advertisements/{id}")
-    Call<BaseResponse> updateAdvertisements(@Part("_method") RequestBody _method,
-                                            @Path("id") int id,
+    @POST("advertisements/{id}")
+    Call<BaseResponse> updateAdvertisements(@Path("id") int id,
+                                            @Part("_method") RequestBody _method,
                                             @Part("title") RequestBody title,
                                             @Part("info") RequestBody info,
                                             @Part MultipartBody.Part image);

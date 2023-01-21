@@ -103,7 +103,7 @@ public class AddResident extends AppCompatActivity implements View.OnClickListen
     protected void onStop() {
         super.onStop();
         unregisterReceiver(networkChangeListiners);
-        finish();
+
     }
 
 
@@ -197,6 +197,7 @@ public class AddResident extends AppCompatActivity implements View.OnClickListen
                         addedDialog.dismissDialog();
                         Intent intent = new Intent(getApplicationContext(),ActivityResidents.class);
                         startActivity(intent);
+                        finish();
                     }
                 },2000);
 
@@ -243,6 +244,7 @@ public class AddResident extends AppCompatActivity implements View.OnClickListen
                         updatedDialog.dismissDialog();
                         Intent intent = new Intent(getApplicationContext(),Resident.class);
                         startActivity(intent);
+                        finish();
                     }
                 },2000);
 

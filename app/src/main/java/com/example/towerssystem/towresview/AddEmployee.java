@@ -101,6 +101,7 @@ public class AddEmployee extends AppCompatActivity  implements View.OnClickListe
                         addedDialog.dismissDialog();
                         Intent intent = new Intent(getApplicationContext(),ActivityEmployees.class);
                         startActivity(intent);
+                        finish();
                     }
                 },2000);
             }
@@ -230,6 +231,7 @@ public class AddEmployee extends AppCompatActivity  implements View.OnClickListe
                         updatedDialog.dismissDialog();
                         Intent intent = new Intent(getApplicationContext(),Employee.class);
                         startActivity(intent);
+                        finish();
                     }
                 },2000);
 

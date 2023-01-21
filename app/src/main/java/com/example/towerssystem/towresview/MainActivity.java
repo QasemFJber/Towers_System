@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -48,13 +49,14 @@ public class MainActivity extends AppCompatActivity  implements CategoryClickRec
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initializeView();
-        dialog.startLoading();
-        new Handler().postDelayed(new Runnable() {
+        binding.swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void run() {
-                dialog.dismissDialog();
+            public void onRefresh() {
+                getCategories();
+                binding.swipeRefresh.setRefreshing(false);
             }
-        },2300);
+        });
+
     }
 
     private void operationsSccren() {
@@ -111,6 +113,17 @@ public class MainActivity extends AppCompatActivity  implements CategoryClickRec
     private void initializeView() {
         getCategories();
         operationsSccren();
+        loadDialog();
+    }
+
+    private void loadDialog() {
+        dialog.startLoading();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialog.dismissDialog();
+            }
+        },2300);
     }
 
 
@@ -123,8 +136,7 @@ public class MainActivity extends AppCompatActivity  implements CategoryClickRec
                 binding.rvCategories.setAdapter(adapter);
                 binding.rvCategories.setLayoutManager(new GridLayoutManager(MainActivity.this,2));
                 binding.rvCategories.setHasFixedSize(true);
-
-                Log.v("QASEM_LIST","LIST"+list.size());
+                Toast.makeText(MainActivity.this, "SIZE IS :" + list.size(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
