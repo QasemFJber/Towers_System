@@ -20,6 +20,7 @@ import com.example.towerssystem.adapters.ShowAdapter;
 import com.example.towerssystem.controller.CategoriesController;
 import com.example.towerssystem.databinding.ActivityShowCategorieBinding;
 import com.example.towerssystem.interfaces.ContentCallBack;
+import com.example.towerssystem.interfaces.DetailsClick;
 import com.example.towerssystem.interfaces.ShowListenirs;
 import com.example.towerssystem.models.Categorie;
 import com.google.android.material.snackbar.Snackbar;
@@ -27,7 +28,7 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShowCategorie extends AppCompatActivity {
+public class ShowCategorie extends AppCompatActivity implements DetailsClick {
     private ActivityShowCategorieBinding binding;
     CategoriesController categoriesController = new CategoriesController();
     private List<com.example.towerssystem.models.ShowCategorie> categories = new ArrayList<>();
@@ -67,7 +68,7 @@ public class ShowCategorie extends AppCompatActivity {
     }
 
     private void setDataInRecycler() {
-        adapter = new ShowAdapter(categories);
+        adapter = new ShowAdapter(categories, this::onClick);
 
     }
 
@@ -101,5 +102,10 @@ public class ShowCategorie extends AppCompatActivity {
         setTitle("OperationsOfIdCategories");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.yl)));
         getWindow().setStatusBarColor(ContextCompat.getColor(ShowCategorie.this, R.color.black));
+    }
+
+    @Override
+    public void onClick(com.example.towerssystem.models.ShowCategorie showCategorie) {
+
     }
 }

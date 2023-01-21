@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.towerssystem.databinding.ItemShowBinding;
+import com.example.towerssystem.interfaces.DetailsClick;
 import com.example.towerssystem.models.ShowCategorie;
 import com.squareup.picasso.Picasso;
 
@@ -15,9 +16,11 @@ import java.util.List;
 
 public class ShowAdapter extends RecyclerView.Adapter<ShowAdapter.ShowViewHolder> {
     private List<ShowCategorie> categorieList;
+    private DetailsClick click;
 
-    public ShowAdapter(List<ShowCategorie> categorieList) {
+    public ShowAdapter(List<ShowCategorie> categorieList,DetailsClick click) {
         this.categorieList = categorieList;
+        this.click=click;
     }
 
     public void setCategorieList(List<ShowCategorie> categorieList) {
@@ -44,6 +47,9 @@ public class ShowAdapter extends RecyclerView.Adapter<ShowAdapter.ShowViewHolder
         holder.binding.tvEmailRes.setText(categorie.resident.email);
         holder.binding.tvTowresName.setText(categorie.resident.towerName);
         Picasso.get().load(categorie.resident.imageUrl).into(holder.binding.imag);
+        holder.binding.card.setOnClickListener(v -> {
+            click.onClick(categorie);
+        });
 
     }
 

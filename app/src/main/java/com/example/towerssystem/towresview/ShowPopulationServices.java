@@ -19,14 +19,16 @@ import com.example.towerssystem.Dialog.CustomDialog;
 import com.example.towerssystem.R;
 import com.example.towerssystem.adapters.ShowAdapter;
 import com.example.towerssystem.controller.CategoriesController;
+
 import com.example.towerssystem.databinding.ActivityShowPopulationServicesBinding;
+import com.example.towerssystem.interfaces.DetailsClick;
 import com.example.towerssystem.interfaces.ShowListenirs;
 import com.example.towerssystem.models.ShowCategorie;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShowPopulationServices extends AppCompatActivity {
+public class ShowPopulationServices extends AppCompatActivity implements DetailsClick {
     ActivityShowPopulationServicesBinding binding;
     CategoriesController categoriesController = new CategoriesController();
     private List<ShowCategorie> categories = new ArrayList<>();
@@ -70,7 +72,7 @@ public class ShowPopulationServices extends AppCompatActivity {
     }
 
     private void setDataInRecycler() {
-        adapter = new ShowAdapter(categories);
+        adapter = new ShowAdapter(categories,this);
 
     }
 
@@ -135,6 +137,21 @@ public class ShowPopulationServices extends AppCompatActivity {
         setTitle("Population Services");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.yl)));
         getWindow().setStatusBarColor(ContextCompat.getColor(ShowPopulationServices.this,R.color.black));
+
+    }
+
+    @Override
+    public void onClick(ShowCategorie showCategorie) {
+        Intent intent = new Intent(getApplicationContext(),Details.class);
+        intent.putExtra("categoryName",showCategorie.categoryName);
+        intent.putExtra("amount",showCategorie.amount);
+        intent.putExtra("residentname",showCategorie.resident.name);
+        intent.putExtra("date",showCategorie.date);
+        intent.putExtra("residentemail",showCategorie.resident.email);
+        intent.putExtra("residenttowerName",showCategorie.resident.towerName);
+        intent.putExtra("details",showCategorie.details);
+        intent.putExtra("image",showCategorie.resident.imageUrl);
+        startActivity(intent);
 
     }
 }

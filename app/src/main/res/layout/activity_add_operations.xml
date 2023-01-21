@@ -60,7 +60,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="60dp"
         android:background="@drawable/edittext_login"
         android:ems="10"
@@ -70,9 +69,9 @@
         android:paddingStart="10dp"
         android:textColorHint="#A2A2A2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_family_members2"
+        app:layout_constraintTop_toBottomOf="@+id/tv_category_name_details"
         tools:ignore="TouchTargetSizeCheck" />
 
     <EditText
@@ -138,10 +137,9 @@
         app:layout_constraintTop_toBottomOf="@+id/spinner_actor_type" />
 
     <TextView
-        android:id="@+id/tv_family_members2"
+        android:id="@+id/tv_category_name_details"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:text="DATE"
         android:textColor="@color/white"
         android:textSize="16sp"
@@ -156,6 +154,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="77dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="77dp"
         android:backgroundTint="#FFBB3B"
         android:text="SAVE"
@@ -166,7 +165,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_date"
+        app:layout_constraintTop_toBottomOf="@+id/et_towres_name_details"
         app:layout_constraintVertical_bias="0.21" />
 
     <TextView
