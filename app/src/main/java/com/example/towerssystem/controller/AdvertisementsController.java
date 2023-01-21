@@ -4,7 +4,6 @@ import com.example.towerssystem.interfaces.AuthCallBack;
 import com.example.towerssystem.interfaces.ContentCallBack;
 import com.example.towerssystem.models.Advertisements;
 import com.example.towerssystem.models.BaseResponse;
-import com.example.towerssystem.models.Employee;
 import com.example.towerssystem.towers.towrescontroller.ApiController;
 
 import org.json.JSONException;
@@ -21,7 +20,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AdvertisementsController {
-    public byte[] imageBytesArray;
+
+    Advertisements advertisements = new Advertisements();
 
     public void getAllAdvertisements(ContentCallBack<Advertisements> callBack){
         Call<BaseResponse<Advertisements>> getAllAdvertisements = ApiController.getInstance().getRetrofitRequests().getAllAdvertisements();
@@ -50,8 +50,9 @@ public class AdvertisementsController {
 
     }
 
-    public void insertAdvertisements(String title, String info, AuthCallBack callBack){
-        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), imageBytesArray);
+    public void insertAdvertisements(String title, String info, byte[] bytes, AuthCallBack callBack){
+        advertisements.imageBytesArray=bytes;
+        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), bytes);
         MultipartBody.Part file = MultipartBody.Part.createFormData("image", "image-file", requestBody);
         RequestBody _title = RequestBody.create(MediaType.parse("String"),title);
         RequestBody _info = RequestBody.create(MediaType.parse("String"),info);
@@ -59,6 +60,19 @@ public class AdvertisementsController {
         insertAdvertisements.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                if (response.isSuccessful() && response.body() !=null) {
+                    callBack.onSuccess(response.body().message);
+                } else {
+                    try {
+                        String error = new String(response.errorBody().bytes(), StandardCharsets.UTF_8);
+                        JSONObject jsonObject = new JSONObject(error);
+                        callBack.onFailure(jsonObject.getString("message"));
+                    }catch (JSONException jsonException){
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
 
             }
 
@@ -68,11 +82,30 @@ public class AdvertisementsController {
             }
         });
     }
-    public void updateAdvertisements(int id, AuthCallBack callBack){
-        Call<BaseResponse> updateAdvertisements = ApiController.getInstance().getRetrofitRequests().updateAdvertisements(id,null,null,null);
+    public void updateAdvertisements(int id,String method, String title, String info, byte[] bytes, AuthCallBack callBack){
+        advertisements.imageBytesArray = bytes;
+        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), bytes);
+        MultipartBody.Part file = MultipartBody.Part.createFormData("image", "image-file", requestBody);
+        RequestBody _title = RequestBody.create(MediaType.parse("String"),title);
+        RequestBody _info = RequestBody.create(MediaType.parse("String"),info);
+        RequestBody _method = RequestBody.create(MediaType.parse("String"),method);
+        Call<BaseResponse> updateAdvertisements = ApiController.getInstance().getRetrofitRequests().updateAdvertisements(_method,id,_title,_info,file);
         updateAdvertisements.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                if (response.isSuccessful() && response.body() !=null) {
+                    callBack.onSuccess(response.body().message);
+                } else {
+                    try {
+                        String error = new String(response.errorBody().bytes(), StandardCharsets.UTF_8);
+                        JSONObject jsonObject = new JSONObject(error);
+                        callBack.onFailure(jsonObject.getString("message"));
+                    }catch (JSONException jsonException){
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
 
             }
 

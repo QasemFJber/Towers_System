@@ -44,6 +44,7 @@ public class AdvertisementsAdapter extends RecyclerView.Adapter<AdvertisementsAd
         Picasso.get().load(advertisements.imageUrl).into(holder.binding.imag);
         holder.binding.card.setOnClickListener(v -> {
             clickItemRecycler.onClick(advertisements);
+
         });
 
 

@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.towerssystem.Broadcastreciver.NetworkChangeListiners;
 import com.example.towerssystem.Dialog.AddedDialog;
+import com.example.towerssystem.Dialog.UpdatedDialog;
 import com.example.towerssystem.controller.ResidentController;
 import com.example.towerssystem.R;
 import com.example.towerssystem.databinding.AddResidentBinding;
@@ -36,10 +37,13 @@ public class AddResident extends AppCompatActivity implements View.OnClickListen
     AddResidentBinding binding;
     private ActivityResultLauncher<String> permissionResultLauncher;
     private ActivityResultLauncher<Void> cameraResultLauncher;
+    UpdatedDialog updatedDialog = new UpdatedDialog(this);
     private Bitmap imageBitmap;
     private Dialog dialog;
     private Uri imagePick;
     private String gender;
+    private static int idResident;
+    private static int ID;
     private ResidentController controller = new ResidentController();
     NetworkChangeListiners networkChangeListiners = new NetworkChangeListiners();
     AddedDialog addedDialog = new AddedDialog(this);
@@ -56,12 +60,15 @@ public class AddResident extends AppCompatActivity implements View.OnClickListen
         OperationsSccren();
         setupResultsLauncher();
         checkIdOfActivity();
+        controlGenderSelection();
+        Toast.makeText(this, "The Resident Id is : " + idResident, Toast.LENGTH_SHORT).show();
     }
 
     private void checkIdOfActivity() {
         Intent intent = getIntent();
-       int id =  intent.getIntExtra("id",0);
-       if (id == 1){
+        ID =  intent.getIntExtra("id",0);
+        idResident =  intent.getIntExtra("residentID",0);
+       if (ID == 1){
            binding.btnSave.setText("Save");
            setTitle("ADD RESIDENT");
        }else {
@@ -127,10 +134,12 @@ public class AddResident extends AppCompatActivity implements View.OnClickListen
 
 
     private void performData(){
-        if (checkData()){
+        if (checkData() && ID == 1){
             saveResident();
+        }else if (checkData() && ID == 2){
+            updateResident();
         }else {
-            Toast.makeText(this, "ENTER REQUERD DATA", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, " PLEASE ENTER DATA", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -178,9 +187,7 @@ public class AddResident extends AppCompatActivity implements View.OnClickListen
         String mobile = binding.etMobile.getText().toString().trim();
         String number =binding.etNationalNumber.getText().toString().trim();
         String family =binding.etFamilyMembers.getText().toString().trim();
-        Resident resident = new Resident(name,email,mobile,number,family,gender,bitmapToBytes());
-        ResidentController residentController = new ResidentController();
-        residentController.insertResident(resident, new AuthCallBack() {
+        controller.insertResident(name,email,mobile,number,family,gender,bitmapToBytes(), new AuthCallBack() {
             @Override
             public void onSuccess(String message) {
                 addedDialog.startLoading();
@@ -221,15 +228,20 @@ public class AddResident extends AppCompatActivity implements View.OnClickListen
         });
     }
     private void updateResident(){
-        controller.updateResident(1, new AuthCallBack() {
+        String name =binding.etFirstname.getText().toString().trim();
+        String email = binding.etEmailUser.getText().toString().trim();
+        String mobile = binding.etMobile.getText().toString().trim();
+        String number =binding.etNationalNumber.getText().toString().trim();
+        String family =binding.etFamilyMembers.getText().toString().trim();
+        controller.updateResident(idResident,"PUT",name,email,mobile,number,family,gender,bitmapToBytes(), new AuthCallBack() {
             @Override
             public void onSuccess(String message) {
-                addedDialog.startLoading();
+                updatedDialog.startLoading();
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        addedDialog.dismissDialog();
-                        Intent intent = new Intent(getApplicationContext(),Operations.class);
+                        updatedDialog.dismissDialog();
+                        Intent intent = new Intent(getApplicationContext(),Resident.class);
                         startActivity(intent);
                     }
                 },2000);

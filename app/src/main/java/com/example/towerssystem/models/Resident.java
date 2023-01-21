@@ -35,7 +35,8 @@ public class Resident {
     @Expose
     public String token;
 
+    public byte[] imageBytesArray;
 
-    public Resident(String name, String email, String mobile, String number, String family, String gender, byte[] bitmapToBytes) {
+    public Resident() {
     }
 }

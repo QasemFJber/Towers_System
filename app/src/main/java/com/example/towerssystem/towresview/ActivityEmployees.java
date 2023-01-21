@@ -99,7 +99,7 @@ public class ActivityEmployees extends AppCompatActivity  implements Item_Click 
     protected void onStop() {
         unregisterReceiver(networkChangeListiners);
         super.onStop();
-        onBackPressed();
+
     }
 
     @Override
@@ -212,7 +212,7 @@ public class ActivityEmployees extends AppCompatActivity  implements Item_Click 
             int id = employees.get(position).id;
             Intent intent = new Intent(getApplicationContext(),AddEmployee.class);
             intent.putExtra("id",2);
-            intent.putExtra("operationsID",id);
+            intent.putExtra("employeeID",id);
             startActivity(intent);
         }
 

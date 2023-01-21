@@ -10,12 +10,12 @@
                 <item
                     android:id="@+id/logout"
                     android:icon="@drawable/ic_baseline_logout_24"
-                    android:title="Logout"
+                    android:title="LOGOUT"
                     app:showAsAction="ifRoom" />
                 <item
                     android:id="@+id/change_password"
                     android:icon="@drawable/change"
-                    android:title="Change Password"
+                    android:title="CHANGE PASSWORD"
                     app:showAsAction="ifRoom" />
 
             <item
@@ -27,18 +27,18 @@
                 <item
                     android:id="@+id/add_user"
                     android:icon="@drawable/adduser"
-                    android:title="USERS"
+                    android:title="RESIDENTS"
                     app:showAsAction="ifRoom" />
 
                 <item
                     android:id="@+id/advertisements"
                     android:icon="@drawable/addadv"
-                    android:title="Advertisements "
+                    android:title="ADVERTISEMENTS"
                     app:showAsAction="ifRoom" />
                 <item
                     android:id="@+id/operations"
                     android:icon="@drawable/operations"
-                    android:title="Operations "
+                    android:title="OPERATIONS"
                     app:showAsAction="ifRoom"/>
         </menu>
     </item>

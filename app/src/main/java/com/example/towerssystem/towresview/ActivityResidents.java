@@ -227,7 +227,7 @@ public class ActivityResidents extends AppCompatActivity implements ItemClickRes
             int id = residents.get(position).id;
             Intent intent = new Intent(getApplicationContext(),AddResident.class);
             intent.putExtra("id",2);
-            intent.putExtra("operationsID",id);
+            intent.putExtra("residentID",id);
             startActivity(intent);
 
 

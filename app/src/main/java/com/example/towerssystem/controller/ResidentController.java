@@ -20,7 +20,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ResidentController {
-    public byte[] imageBytesArray;
+
+
+    Resident resident = new Resident();
 
     public void getAllResident(ContentCallBack<Resident> callBack){
         Call<BaseResponse<Resident>> getAllResident = ApiController.getInstance().getRetrofitRequests().getAllResident();
@@ -49,31 +51,53 @@ public class ResidentController {
         });
     }
 
-    public void insertResident(Resident resident,AuthCallBack callBack){
-        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), imageBytesArray);
+    public void insertResident(String name,String email,String mobile,String nationalNumber , String familyMembers,String gender,byte[] bytes,AuthCallBack callBack){
+        resident.imageBytesArray = bytes;
+        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), bytes);
         MultipartBody.Part file = MultipartBody.Part.createFormData("image", "image-file", requestBody);
-        RequestBody _name = RequestBody.create(MediaType.parse("String"),resident.name);
-        RequestBody _email = RequestBody.create(MediaType.parse("String"),resident.email);
-        RequestBody _mobile = RequestBody.create(MediaType.parse("String"),resident.mobile);
-        RequestBody _nationalNumber = RequestBody.create(MediaType.parse("String"),resident.nationalNumber);
-        RequestBody _familyMembers = RequestBody.create(MediaType.parse("String"),resident.familyMembers);
-        RequestBody _gender = RequestBody.create(MediaType.parse("String"),resident.gender);
+        RequestBody _name = RequestBody.create(MediaType.parse("String"),name);
+        RequestBody _email = RequestBody.create(MediaType.parse("String"),email);
+        RequestBody _mobile = RequestBody.create(MediaType.parse("String"),mobile);
+        RequestBody _nationalNumber = RequestBody.create(MediaType.parse("String"),nationalNumber);
+        RequestBody _familyMembers = RequestBody.create(MediaType.parse("String"),familyMembers);
+        RequestBody _gender = RequestBody.create(MediaType.parse("String"),gender);
         Call<BaseResponse> insertResident = ApiController.getInstance().getRetrofitRequests().insertResident(_name,_email,_mobile,_nationalNumber,_familyMembers,_gender,file);
        insertResident.enqueue(new Callback<BaseResponse>() {
            @Override
            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-
+               if (response.isSuccessful() && response.body() != null) {
+                   callBack.onSuccess(response.body().message);
+               } else {
+                   try {
+                       String error = new String(response.errorBody().bytes(), StandardCharsets.UTF_8);
+                       JSONObject jsonObject = new JSONObject(error);
+                       callBack.onFailure(jsonObject.getString("message"));
+                   } catch (IOException | JSONException e) {
+                       e.printStackTrace();
+                   }
+               }
            }
 
            @Override
            public void onFailure(Call<BaseResponse> call, Throwable t) {
+               callBack.onFailure("Something Wont Wrong");
 
            }
        });
 
     }
-    public void updateResident(int id, AuthCallBack callBack){
-        Call<BaseResponse> updateUser = ApiController.getInstance().getRetrofitRequests().updateResident(id,null,null,null,null,null,null,null);
+    public void updateResident(int id,String method ,String name,String email,String mobile,String nationalNumber , String familyMembers,String gender,byte[] bytes, AuthCallBack callBack){
+        resident.imageBytesArray=bytes;
+        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), bytes);
+        MultipartBody.Part file = MultipartBody.Part.createFormData("image", "image-file", requestBody);
+        RequestBody _method = RequestBody.create(MediaType.parse("String"),method);
+        RequestBody _name = RequestBody.create(MediaType.parse("String"),name);
+        RequestBody _email = RequestBody.create(MediaType.parse("String"),email);
+        RequestBody _mobile = RequestBody.create(MediaType.parse("String"),mobile);
+        RequestBody _nationalNumber = RequestBody.create(MediaType.parse("String"),nationalNumber);
+        RequestBody _familyMembers = RequestBody.create(MediaType.parse("String"),familyMembers);
+        RequestBody _gender = RequestBody.create(MediaType.parse("String"),gender);
+        Call<BaseResponse> updateUser = ApiController.getInstance().getRetrofitRequests().updateResident(id,_method,_name,_email,_mobile,_nationalNumber,_familyMembers,_gender,file);
         updateUser.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {

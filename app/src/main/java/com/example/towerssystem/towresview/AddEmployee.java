@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.example.towerssystem.Broadcastreciver.NetworkChangeListiners;
 import com.example.towerssystem.Dialog.AddedDialog;
+import com.example.towerssystem.Dialog.UpdatedDialog;
 import com.example.towerssystem.controller.EmployeeController;
 import com.example.towerssystem.R;
 import com.example.towerssystem.databinding.AddEmployeeBinding;
@@ -35,13 +36,14 @@ import java.io.ByteArrayOutputStream;
 
 public class AddEmployee extends AppCompatActivity  implements View.OnClickListener {
     AddEmployeeBinding binding;
-    private int id;
-
+    UpdatedDialog updatedDialog = new UpdatedDialog(this);
     private ActivityResultLauncher<String> permissionResultLauncher;
     private ActivityResultLauncher<Void> cameraResultLauncher;
     private Bitmap imageBitmap;
     private Dialog dialog;
     private Uri imagePick;
+    private static int idEmployee;
+    private static int ID;
     private EmployeeController controller = new EmployeeController();
     NetworkChangeListiners networkChangeListiners = new NetworkChangeListiners();
     AddedDialog addedDialog = new AddedDialog(this);
@@ -60,6 +62,7 @@ public class AddEmployee extends AppCompatActivity  implements View.OnClickListe
         operationsSccren();
         setupResultsLauncher();
         checkIdOfActivity();
+        Toast.makeText(this, "The Employee Id is :"+idEmployee, Toast.LENGTH_SHORT).show();
     }
 
     private void setOnClick() {
@@ -72,7 +75,7 @@ public class AddEmployee extends AppCompatActivity  implements View.OnClickListe
     protected void onStop() {
         super.onStop();
         unregisterReceiver(networkChangeListiners);
-        finish();
+
 
     }
 
@@ -84,18 +87,11 @@ public class AddEmployee extends AppCompatActivity  implements View.OnClickListe
     }
 
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode== RESULT_OK){
-            binding.imageView2.setImageURI(data.getData());
-        }
-    }
     public void saveEmployee(){
         String name = binding.etFirstname.getText().toString().trim();
         String mobile =binding.etMobile.getText().toString().trim();
         String number =binding.etNationalNumber.getText().toString().trim();
-        controller.insertEmployee(name,mobile,number, new AuthCallBack() {
+        controller.insertEmployee(name,mobile,number,bitmapToBytes(), new AuthCallBack() {
             @Override
             public void onSuccess(String message) {
                 addedDialog.startLoading();
@@ -120,8 +116,9 @@ public class AddEmployee extends AppCompatActivity  implements View.OnClickListe
 
     private void checkIdOfActivity() {
         Intent intent = getIntent();
-         id =  intent.getIntExtra("id",0);
-        if (id == 1){
+         ID =  intent.getIntExtra("id",0);
+         idEmployee =  intent.getIntExtra("employeeID",0);
+        if (ID == 1){
             binding.btnSave.setText("SAVE");
             setTitle("ADD EMPLOYEE");
         }else {
@@ -139,7 +136,9 @@ public class AddEmployee extends AppCompatActivity  implements View.OnClickListe
 
     private void setOnCilck() {
         binding.imageView2.setOnClickListener(this::onClick);
+        binding.imageView4.setOnClickListener(this::onClick);
         binding.btnSave.setOnClickListener(this::onClick);
+        binding.tvBack.setOnClickListener(this::onClick);
     }
 
 
@@ -188,9 +187,9 @@ public class AddEmployee extends AppCompatActivity  implements View.OnClickListe
     }
 
     private void performData(){
-        if (checkData() && id==1){
+        if (checkData() && ID ==1){
             saveEmployee();
-        }else if (checkData() && id == 2){
+        }else if (checkData() && ID == 2){
             updateEmployee();
         }
     }
@@ -218,10 +217,21 @@ public class AddEmployee extends AppCompatActivity  implements View.OnClickListe
     }
 
     private void updateEmployee(){
-        Employee employee = new Employee(null,null,null,bitmapToBytes());
-        controller.updateEmployee(4,employee, new AuthCallBack() {
+        String name = binding.etFirstname.getText().toString().trim();
+        String mobile =binding.etMobile.getText().toString().trim();
+        String number =binding.etNationalNumber.getText().toString().trim();
+        controller.updateEmployee(idEmployee,name,mobile,number,bitmapToBytes(),"PUT", new AuthCallBack() {
             @Override
             public void onSuccess(String message) {
+                updatedDialog.startLoading();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        updatedDialog.dismissDialog();
+                        Intent intent = new Intent(getApplicationContext(),Employee.class);
+                        startActivity(intent);
+                    }
+                },2000);
 
             }
 

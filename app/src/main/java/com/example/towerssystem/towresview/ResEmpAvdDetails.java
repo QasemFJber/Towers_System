@@ -62,6 +62,7 @@ public class ResEmpAvdDetails extends AppCompatActivity {
         int id =intent.getIntExtra("iddetails",0);
         Toast.makeText(this, "Id is :"+ id, Toast.LENGTH_SHORT).show();
         if (id == 1){
+            setTitle("EMPLOYEES DETAILS");
         Picasso.get().load(intent.getStringExtra("image")).into(binding.imageView2);
         binding.etFirstname.setText(intent.getStringExtra("name"));
         binding.etMobile.setText(intent.getStringExtra("mobile"));
@@ -72,6 +73,7 @@ public class ResEmpAvdDetails extends AppCompatActivity {
         binding.etFamilyMembers.setText(intent.getStringExtra("towerName"));
 
         }else if (id == 2){
+            setTitle("RESIDENTS DETAILS");
             Picasso.get().load(intent.getStringExtra("image")).into(binding.imageView2);
             binding.etFirstname.setText(intent.getStringExtra("name"));
             binding.etMobile.setText(intent.getStringExtra("mobile"));
@@ -80,6 +82,7 @@ public class ResEmpAvdDetails extends AppCompatActivity {
             binding.etFamilyMembers.setText(intent.getStringExtra("familyMembers"));
 
         }else if (id == 3){
+            setTitle(" ADVERTISEMENTS DETAILS");
          Picasso.get().load(intent.getStringExtra("image")).into(binding.imageView2);
          binding.tvFirstname.setText("TITLE");
          binding.etFirstname.setText(intent.getStringExtra("title"));
@@ -92,6 +95,7 @@ public class ResEmpAvdDetails extends AppCompatActivity {
          binding.tvFamilyMembers.setVisibility(View.INVISIBLE);
          binding.etFamilyMembers.setVisibility(View.INVISIBLE);
         }else if (id == 4){
+            setTitle("OPERATIONS DETAILS");
             Picasso.get().load(intent.getStringExtra("image")).into(binding.imageView2);
             binding.tvFirstname.setText("CATEGORY NAME");
             binding.tvMobile.setText("AMOUNT");
@@ -114,7 +118,7 @@ public class ResEmpAvdDetails extends AppCompatActivity {
     }
 
     private void operationsSccren () {
-        setTitle("DETAILS");
+
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.yl)));
         getWindow().setStatusBarColor(ContextCompat.getColor(ResEmpAvdDetails.this, R.color.black));
     }

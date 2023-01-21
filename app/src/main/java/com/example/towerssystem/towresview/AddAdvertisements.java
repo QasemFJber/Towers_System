@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.towerssystem.Broadcastreciver.NetworkChangeListiners;
 import com.example.towerssystem.Dialog.AddedDialog;
+import com.example.towerssystem.Dialog.UpdatedDialog;
 import com.example.towerssystem.R;
 import com.example.towerssystem.controller.AdvertisementsController;
 import com.example.towerssystem.databinding.ActivityAddAdvertisementsBinding;
@@ -31,6 +32,7 @@ import java.io.ByteArrayOutputStream;
 
 public class AddAdvertisements extends AppCompatActivity implements View.OnClickListener {
     private ActivityAddAdvertisementsBinding binding;
+    UpdatedDialog updatedDialog = new UpdatedDialog(this);
     NetworkChangeListiners networkChangeListiners = new NetworkChangeListiners();
     AdvertisementsController controller = new AdvertisementsController();
     private ActivityResultLauncher<String> permissionResultLauncher;
@@ -38,6 +40,8 @@ public class AddAdvertisements extends AppCompatActivity implements View.OnClick
     private Bitmap imageBitmap;
     private Dialog dialog;
     private Uri imagePick;
+    private static int idOperation;
+    private static int ID;
     AddedDialog addedDialog = new AddedDialog(this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +62,7 @@ public class AddAdvertisements extends AppCompatActivity implements View.OnClick
     protected void onStop() {
         super.onStop();
         unregisterReceiver(networkChangeListiners);
-        finish();
+
     }
 
 
@@ -67,6 +71,7 @@ public class AddAdvertisements extends AppCompatActivity implements View.OnClick
         operationsSccren();
         setupResultsLauncher();
         checkIdOfActivity();
+        Toast.makeText(this, "Operation id is : "+ idOperation, Toast.LENGTH_SHORT).show();
     }
 
     private void setOnClick() {
@@ -77,10 +82,12 @@ public class AddAdvertisements extends AppCompatActivity implements View.OnClick
     }
 
     private void performData(){
-        if (checkData()){
+        if (checkData() && ID == 1){
             insertAdvertisements();
+        }else if (checkData() && ID == 2){
+            updateAdvertisements();
         }else {
-            Toast.makeText(this, "ENTER REQUERD DATA", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please Enter Data", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -131,13 +138,16 @@ public class AddAdvertisements extends AppCompatActivity implements View.OnClick
 
     private void checkIdOfActivity() {
         Intent intent = getIntent();
-        int id =  intent.getIntExtra("id",0);
-        if (id == 1){
+        ID=  intent.getIntExtra("id",0);
+         idOperation =  intent.getIntExtra("operationsID",0);
+        if (ID == 1){
             binding.btnSave.setText("SAVE");
             setTitle("ADD ADVERTISEMENT");
+
         }else {
             binding.btnSave.setText("UPDATE");
             setTitle("UPDATE ADVERTISEMENT");
+
 
         }
     }
@@ -168,7 +178,7 @@ public class AddAdvertisements extends AppCompatActivity implements View.OnClick
     private void insertAdvertisements(){
         String _title =binding.etTitle.getText().toString().trim();
         String _info = binding.etInfo.getText().toString().trim();
-        controller.insertAdvertisements(_title, _info, new AuthCallBack() {
+        controller.insertAdvertisements(_title, _info,bitmapToBytes(), new AuthCallBack() {
             @Override
             public void onSuccess(String message) {
                 addedDialog.startLoading();
@@ -185,22 +195,23 @@ public class AddAdvertisements extends AppCompatActivity implements View.OnClick
 
             @Override
             public void onFailure(String message) {
-
                 Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
             }
         });
     }
 
     private void updateAdvertisements(){
-        controller.updateAdvertisements(1, new AuthCallBack() {
+        String _title =binding.etTitle.getText().toString().trim();
+        String _info = binding.etInfo.getText().toString().trim();
+        controller.updateAdvertisements(idOperation,"PUT",_title,_info,bitmapToBytes(),new AuthCallBack() {
             @Override
             public void onSuccess(String message) {
-                addedDialog.startLoading();
+                updatedDialog.startLoading();
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        addedDialog.dismissDialog();
-                        Intent intent = new Intent(getApplicationContext(),Operations.class);
+                        updatedDialog.dismissDialog();
+                        Intent intent = new Intent(getApplicationContext(),Advertisements.class);
                         startActivity(intent);
                     }
                 },2000);

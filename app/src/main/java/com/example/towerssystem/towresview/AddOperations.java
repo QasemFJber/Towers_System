@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.towerssystem.Broadcastreciver.NetworkChangeListiners;
 import com.example.towerssystem.Dialog.AddedDialog;
+import com.example.towerssystem.Dialog.UpdatedDialog;
 import com.example.towerssystem.R;
 import com.example.towerssystem.controller.CategoriesController;
 import com.example.towerssystem.controller.EmployeeController;
@@ -42,12 +43,13 @@ import java.util.List;
 public class AddOperations extends AppCompatActivity  implements DatePickerDialog.OnDateSetListener  {
     private ActivityAddOperationsBinding binding;
     private OperationsController controller = new OperationsController();
+    UpdatedDialog updatedDialog = new UpdatedDialog(this);
     NetworkChangeListiners networkChangeListiners = new NetworkChangeListiners();
     CategoriesController categoriesController = new CategoriesController();
     ResidentController residentController = new ResidentController();
     EmployeeController employeeController = new EmployeeController();
     String[] Actor_Type ={"Employee","Resident"};
-    private  String Id_CATEGORY;
+    private  int Id_CATEGORY;
     private  String Id_TYPE;
     private String type;
     AddedDialog addedDialog = new AddedDialog(this);
@@ -145,11 +147,26 @@ public class AddOperations extends AppCompatActivity  implements DatePickerDialo
 
     private void performData(){
         if (checkData() && ID == 1){
-            insertOperations();
+            insert();
         }else if (checkData() && ID == 2){
             updateOperations();
         }else {
             Toast.makeText(this, "Enter Data Please", Toast.LENGTH_SHORT).show();
+        }
+    }
+    private void insert(){
+        if (Id_CATEGORY == 1){
+            insertOperations();
+
+        }else if (Id_CATEGORY ==  2){
+            insertOperations();
+
+        }else if (Id_CATEGORY == 3){
+            insertOperationsToType();
+
+        }else if(Id_CATEGORY == 4){
+            insertOperationsToType();
+
         }
     }
 
@@ -171,14 +188,14 @@ public class AddOperations extends AppCompatActivity  implements DatePickerDialo
 
 
     private void updateOperations(){
-        controller.updateOperations(operationID,Id_CATEGORY, binding.etAmount.getText().toString().trim(), binding.etDetails.getText().toString().trim(), Id_TYPE,type, binding.etDate.getText().toString().trim(), new AuthCallBack() {
+        controller.updateOperations(operationID, String.valueOf(Id_CATEGORY), binding.etAmount.getText().toString().trim(), binding.etDetails.getText().toString().trim(), Id_TYPE,type, binding.etDate.getText().toString().trim(), new AuthCallBack() {
             @Override
             public void onSuccess(String message) {
-                addedDialog.startLoading();
+                updatedDialog.startLoading();
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        addedDialog.dismissDialog();
+                        updatedDialog.dismissDialog();
                         Intent intent = new Intent(getApplicationContext(),Operations.class);
                         startActivity(intent);
                     }
@@ -208,8 +225,30 @@ public class AddOperations extends AppCompatActivity  implements DatePickerDialo
                     binding.spinnerCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//
-                            Id_CATEGORY = String.valueOf(position+1);
+                            Id_CATEGORY = position+1;
+                            Toast.makeText(AddOperations.this, "The Category Id is : "+Id_CATEGORY, Toast.LENGTH_SHORT).show();
+                            if (Id_CATEGORY == 3 ){
+                                binding.tvNationalNumber.setVisibility(View.INVISIBLE);
+                                binding.tvFamilyMembers.setVisibility(View.INVISIBLE);
+                                binding.spinnerActorType.setVisibility(View.INVISIBLE);
+                                binding.spinnerActorId.setVisibility(View.INVISIBLE);
+
+                            }else if (Id_CATEGORY == 4){
+                                binding.tvNationalNumber.setVisibility(View.INVISIBLE);
+                                binding.tvFamilyMembers.setVisibility(View.INVISIBLE);
+                                binding.spinnerActorType.setVisibility(View.INVISIBLE);
+                                binding.spinnerActorId.setVisibility(View.INVISIBLE);
+                            }else if (Id_CATEGORY == 1){
+                                binding.tvNationalNumber.setVisibility(View.VISIBLE);
+                                binding.tvFamilyMembers.setVisibility(View.VISIBLE);
+                                binding.spinnerActorType.setVisibility(View.VISIBLE);
+                                binding.spinnerActorId.setVisibility(View.VISIBLE);
+                            }else  if (Id_CATEGORY == 2){
+                                binding.tvNationalNumber.setVisibility(View.VISIBLE);
+                                binding.tvFamilyMembers.setVisibility(View.VISIBLE);
+                                binding.spinnerActorType.setVisibility(View.VISIBLE);
+                                binding.spinnerActorId.setVisibility(View.VISIBLE);
+                            }
                         }
 
                         @Override
@@ -322,7 +361,7 @@ public class AddOperations extends AppCompatActivity  implements DatePickerDialo
 
     }
     private void insertOperations(){
-        controller.insertOperations(Id_CATEGORY, binding.etAmount.getText().toString().trim(), binding.etDetails.getText().toString().trim(), Id_TYPE,type, binding.etDate.getText().toString().trim(), new AuthCallBack() {
+        controller.insertOperations(String.valueOf(Id_CATEGORY), binding.etAmount.getText().toString().trim(), binding.etDetails.getText().toString().trim(), Id_TYPE,type, binding.etDate.getText().toString().trim(), new AuthCallBack() {
             @Override
             public void onSuccess(String message) {
                addedDialog.startLoading();
@@ -346,12 +385,19 @@ public class AddOperations extends AppCompatActivity  implements DatePickerDialo
         });
     }
     private void insertOperationsToType(){
-        controller.insertOperations(Id_CATEGORY, binding.etAmount.getText().toString().trim(), binding.etDetails.getText().toString().trim(), null,null, binding.etDate.getText().toString().trim(), new AuthCallBack() {
+        controller.insertOperations(String.valueOf(Id_CATEGORY), binding.etAmount.getText().toString().trim(), binding.etDetails.getText().toString().trim(), null,null, binding.etDate.getText().toString().trim(), new AuthCallBack() {
             @Override
             public void onSuccess(String message) {
-                Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
-                Intent intent = new Intent(getApplicationContext(),Operations.class);
-                startActivity(intent);
+                addedDialog.startLoading();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        addedDialog.dismissDialog();
+                        Intent intent = new Intent(getApplicationContext(),Operations.class);
+                        startActivity(intent);
+                    }
+                },2000);
+
 
 
             }

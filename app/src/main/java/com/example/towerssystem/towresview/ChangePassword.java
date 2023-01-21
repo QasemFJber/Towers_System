@@ -13,6 +13,7 @@ import android.view.View;
 
 import com.example.towerssystem.Broadcastreciver.NetworkChangeListiners;
 import com.example.towerssystem.Dialog.AddedDialog;
+import com.example.towerssystem.Dialog.UpdatedDialog;
 import com.example.towerssystem.R;
 import com.example.towerssystem.controller.AuthController;
 import com.example.towerssystem.databinding.ActivityForgotPasswordBinding;
@@ -23,7 +24,7 @@ public class ChangePassword extends AppCompatActivity  implements View.OnClickLi
     private ActivityForgotPasswordBinding binding;
     AuthController authController = new AuthController();
     NetworkChangeListiners networkChangeListiners = new NetworkChangeListiners();
-    AddedDialog addedDialog = new AddedDialog(this);
+    UpdatedDialog dialog = new UpdatedDialog(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +57,11 @@ public class ChangePassword extends AppCompatActivity  implements View.OnClickLi
         authController.changePassword(binding.etCurrentPassword.getText().toString().trim(), binding.etNewPassword.getText().toString().trim(), binding.etNewPasswordConfirmation.getText().toString().trim(), new AuthCallBack() {
             @Override
             public void onSuccess(String message) {
-                addedDialog.startLoading();
+                dialog.startLoading();
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        addedDialog.dismissDialog();
+                        dialog.dismissDialog();
                         Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                         startActivity(intent);
                     }

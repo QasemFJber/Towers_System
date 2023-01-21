@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity  implements CategoryClickRec
 
     @Override
     protected void onStart() {
-
+        adapter.notifyDataSetChanged();
         IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(networkChangeListiners,intentFilter);
         super.onStart();

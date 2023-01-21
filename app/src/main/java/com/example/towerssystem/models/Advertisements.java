@@ -20,4 +20,8 @@ public class Advertisements {
     @Expose
     public String towerName;
 
+    public byte[] imageBytesArray;
+
+    public Advertisements() {
+    }
 }

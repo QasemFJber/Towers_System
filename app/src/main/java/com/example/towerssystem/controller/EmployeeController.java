@@ -24,8 +24,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class EmployeeController {
-    public byte[] imageBytesArray;
 
+
+    Employee employee = new Employee();
 
 
     public void getAllEmployees(ContentCallBack<Employee> callBack){
@@ -55,7 +56,8 @@ public class EmployeeController {
 
     }
 
-    public void insertEmployee(String name,String mobile,String nationalNumber,AuthCallBack callBack){
+    public void insertEmployee(String name,String mobile,String nationalNumber,byte[] imageBytesArray,AuthCallBack callBack){
+        employee.imageBytesArray=imageBytesArray;
         RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), imageBytesArray);
         MultipartBody.Part file = MultipartBody.Part.createFormData("image", "image-file", requestBody);
         RequestBody _name = RequestBody.create(MediaType.parse("String"),name);
@@ -87,17 +89,31 @@ public class EmployeeController {
             }
         });
     }
-    public void updateEmployee(int id,Employee employee, AuthCallBack callBack){
-        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), imageBytesArray);
+    public void updateEmployee(int id,String name,String mobile,String nationalNumber,byte[] imageBytesArray,String method , AuthCallBack callBack){
+        employee.imageBytesArray=imageBytesArray;
+        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"),imageBytesArray);
         MultipartBody.Part file = MultipartBody.Part.createFormData("image", "image-file", requestBody);
-        RequestBody _name = RequestBody.create(MediaType.parse("String"),employee.name);
-        RequestBody _mobile = RequestBody.create(MediaType.parse("String"),employee.mobile);
-        RequestBody _nationalNumber = RequestBody.create(MediaType.parse("String"),employee.nationalNumber);
-        Call<BaseResponse> updateEmployee = ApiController.getInstance().getRetrofitRequests().updateEmployee(id,_name,_mobile,_nationalNumber,file,null);
+        RequestBody _name = RequestBody.create(MediaType.parse("String"),name);
+        RequestBody _mobile = RequestBody.create(MediaType.parse("String"),mobile);
+        RequestBody _nationalNumber = RequestBody.create(MediaType.parse("String"),nationalNumber);
+        RequestBody _method = RequestBody.create(MediaType.parse("String"),method);
+        Call<BaseResponse> updateEmployee = ApiController.getInstance().getRetrofitRequests().updateEmployee(id,_name,_mobile,_nationalNumber,file,_method);
         updateEmployee.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                if (response.isSuccessful() && response.body() !=null) {
+                    callBack.onSuccess(response.body().message);
+                } else {
+                    try {
+                        String error = new String(response.errorBody().bytes(), StandardCharsets.UTF_8);
+                        JSONObject jsonObject = new JSONObject(error);
+                        callBack.onFailure(jsonObject.getString("message"));
+                    }catch (JSONException jsonException){
 
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
 
             @Override

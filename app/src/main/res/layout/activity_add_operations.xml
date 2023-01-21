@@ -60,6 +60,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="60dp"
         android:background="@drawable/edittext_login"
         android:ems="10"
@@ -118,9 +119,9 @@
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.178"
+        app:layout_constraintHorizontal_bias="0.192"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_details" />
+        app:layout_constraintTop_toBottomOf="@+id/et_date" />
 
     <TextView
         android:id="@+id/tv_family_members"
@@ -132,7 +133,7 @@
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.192"
+        app:layout_constraintHorizontal_bias="0.163"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinner_actor_type" />
 
@@ -140,6 +141,7 @@
         android:id="@+id/tv_category_name_details"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="DATE"
         android:textColor="@color/white"
         android:textSize="16sp"
@@ -147,14 +149,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.163"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_actor_id" />
+        app:layout_constraintTop_toBottomOf="@+id/et_details" />
 
     <Button
         android:id="@+id/btn_save"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="77dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="77dp"
         android:backgroundTint="#FFBB3B"
         android:text="SAVE"
