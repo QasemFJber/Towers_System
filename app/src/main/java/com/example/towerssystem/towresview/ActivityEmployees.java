@@ -62,7 +62,7 @@ public class ActivityEmployees extends AppCompatActivity  implements Item_Click 
 
 
     private void initializeView() {
-        setOnClick();
+
         operationsSccren();
         getAllEmployees();
         dialogLoad();
@@ -80,21 +80,19 @@ public class ActivityEmployees extends AppCompatActivity  implements Item_Click 
             public void run() {
                 dialog.dismissDialog();
             }
-        },3000);
+        },2000);
     }
 
-    private void setOnClick() {
-    }
+
 
     private void operationsSccren() {
         setTitle("EMPLOYEES");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.yl)));
         getWindow().setStatusBarColor(ContextCompat.getColor(ActivityEmployees.this,R.color.black));
-        setOnCilck();
+
     }
 
-    private void setOnCilck() {
-    }
+
 
 
     @Override
@@ -193,7 +191,14 @@ public class ActivityEmployees extends AppCompatActivity  implements Item_Click 
 
     @Override
     public void onClick(Employee employee) {
-        ID = employee.id;
+        Intent intent = new Intent(getApplicationContext(),ResEmpAvdDetails.class);
+        intent.putExtra("name",employee.name);
+        intent.putExtra("mobile",employee.mobile);
+        intent.putExtra("nationalNumber",employee.nationalNumber);
+        intent.putExtra("towerName",employee.towerName);
+        intent.putExtra("iddetails",1);
+        intent.putExtra("image",employee.imageUrl);
+        startActivity(intent);
     }
     ItemTouchHelper.SimpleCallback simpleCallback2 = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT) {
         @Override

@@ -159,6 +159,16 @@ public class ActivityResidents extends AppCompatActivity implements ItemClickRes
 
     @Override
     public void onClick(Resident resident) {
+        Intent intent = new Intent(getApplicationContext(),ResEmpAvdDetails.class);
+        intent.putExtra("name",resident.name);
+        intent.putExtra("mobile",resident.mobile);
+        intent.putExtra("email",resident.email);
+        intent.putExtra("nationalNumber",resident.nationalNumber);
+        intent.putExtra("towerName",resident.towerName);
+        intent.putExtra("familyMembers",resident.familyMembers);
+        intent.putExtra("iddetails",2);
+        intent.putExtra("image",resident.imageUrl);
+        startActivity(intent);
 
     }
 

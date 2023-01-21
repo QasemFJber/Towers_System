@@ -79,7 +79,7 @@ public class Advertisements extends AppCompatActivity implements ClickItemRecycl
             public void run() {
                 dialog.dismissDialog();
             }
-        },3000);
+        },2000);
     }
 
     private void operationsSccren() {
@@ -151,7 +151,13 @@ public class Advertisements extends AppCompatActivity implements ClickItemRecycl
 
     @Override
     public void onClick(com.example.towerssystem.models.Advertisements advertisements) {
-
+        Intent intent = new Intent(getApplicationContext(),ResEmpAvdDetails.class);
+        intent.putExtra("title",advertisements.title);
+        intent.putExtra("info",advertisements.info);
+        intent.putExtra("towerName",advertisements.towerName);
+        intent.putExtra("image",advertisements.imageUrl);
+        intent.putExtra("iddetails",3);
+        startActivity(intent);
 
 
     }

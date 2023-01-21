@@ -58,7 +58,7 @@ public class ShowPopulationServices extends AppCompatActivity implements Details
             public void run() {
                 dialog.dismissDialog();
             }
-        }, 3000);
+        }, 2000);
     }
 
     @Override

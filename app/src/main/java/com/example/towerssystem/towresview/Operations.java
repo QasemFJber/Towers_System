@@ -56,7 +56,7 @@ public class Operations extends AppCompatActivity implements ClickItem {
         initializeView();
     }
     private void initializeView(){
-        setOnCilck();
+
         OperationsSccren();
         getAllOperations();
         dialogLoad();
@@ -69,12 +69,10 @@ public class Operations extends AppCompatActivity implements ClickItem {
         setTitle("Operations");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.yl)));
         getWindow().setStatusBarColor(ContextCompat.getColor(Operations.this,R.color.black));
-        setOnCilck();
-    }
-
-    private void setOnCilck() {
 
     }
+
+
 
 
 
@@ -85,7 +83,7 @@ public class Operations extends AppCompatActivity implements ClickItem {
             public void run() {
                 dialog.dismissDialog();
             }
-        },3000);
+        },2000);
     }
 
     @Override
@@ -144,6 +142,15 @@ public class Operations extends AppCompatActivity implements ClickItem {
 
     @Override
     public void onClick(com.example.towerssystem.models.Operations operations) {
+        Intent intent = new Intent(getApplicationContext(),ResEmpAvdDetails.class);
+        intent.putExtra("categoryName",operations.categoryName);
+        intent.putExtra("amount",operations.amount);
+        intent.putExtra("employee_name",operations.employee.name);
+        intent.putExtra("image",operations.employee.imageUrl);
+        intent.putExtra("date",operations.date);
+        intent.putExtra("details",operations.details);
+        intent.putExtra("iddetails",4);
+        startActivity(intent);
 
     }
 

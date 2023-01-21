@@ -49,7 +49,7 @@ public class ShowCategorie extends AppCompatActivity implements DetailsClick {
             public void run() {
                 dialog.dismissDialog();
             }
-        }, 3000);
+        }, 2000);
     }
 
     private void initializeView() {

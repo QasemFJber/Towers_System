@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity  implements CategoryClickRec
             public void run() {
                 dialog.dismissDialog();
             }
-        },3000);
+        },2300);
     }
 
     private void operationsSccren() {
