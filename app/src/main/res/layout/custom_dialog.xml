@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/edittext_login"
+
     android:padding="@dimen/_30sdp">
 
     <com.airbnb.lottie.LottieAnimationView
@@ -24,6 +26,8 @@
         android:layout_marginTop="16dp"
         android:text="LOADING ....."
         android:textSize="@dimen/_22ssp"
+        android:textColor="@color/yl"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"

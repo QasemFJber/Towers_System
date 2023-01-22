@@ -145,8 +145,8 @@ public class Operations extends AppCompatActivity implements ClickItem {
         Intent intent = new Intent(getApplicationContext(),ResEmpAvdDetails.class);
         intent.putExtra("categoryName",operations.categoryName);
         intent.putExtra("amount",operations.amount);
-        intent.putExtra("employee_name",operations.employee.name);
-        intent.putExtra("image",operations.employee.imageUrl);
+        intent.putExtra("employee_name",operations.resident.name);
+        intent.putExtra("image",operations.resident.imageUrl);
         intent.putExtra("date",operations.date);
         intent.putExtra("details",operations.details);
         intent.putExtra("iddetails",4);

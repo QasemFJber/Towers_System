@@ -142,6 +142,7 @@ public class AddOperations extends AppCompatActivity  implements DatePickerDialo
     protected void onStop() {
         super.onStop();
         unregisterReceiver(networkChangeListiners);
+        finish();
 
     }
 

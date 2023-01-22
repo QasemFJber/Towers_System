@@ -199,7 +199,7 @@ public class AddResident extends AppCompatActivity implements View.OnClickListen
                         startActivity(intent);
                         finish();
                     }
-                },2000);
+                },3200);
 
             }
 
@@ -246,7 +246,7 @@ public class AddResident extends AppCompatActivity implements View.OnClickListen
                         startActivity(intent);
                         finish();
                     }
-                },2000);
+                },3000);
 
             }
 

@@ -7,16 +7,7 @@
         android:icon="@drawable/ic_baseline_more_vert_24"
         app:showAsAction="always">
         <menu>
-                <item
-                    android:id="@+id/logout"
-                    android:icon="@drawable/ic_baseline_logout_24"
-                    android:title="LOGOUT"
-                    app:showAsAction="ifRoom" />
-                <item
-                    android:id="@+id/change_password"
-                    android:icon="@drawable/change"
-                    android:title="CHANGE PASSWORD"
-                    app:showAsAction="ifRoom" />
+
 
             <item
                 android:id="@+id/add_employee"
@@ -40,6 +31,19 @@
                     android:icon="@drawable/operations"
                     android:title="OPERATIONS"
                     app:showAsAction="ifRoom"/>
+
+
+            <item
+                android:id="@+id/change_password"
+                android:icon="@drawable/change"
+                android:title="CHANGE PASSWORD"
+                app:showAsAction="ifRoom" />
+
+            <item
+                android:id="@+id/logout"
+                android:icon="@drawable/ic_baseline_logout_24"
+                android:title="LOGOUT"
+                app:showAsAction="ifRoom" />
         </menu>
     </item>
 </menu>

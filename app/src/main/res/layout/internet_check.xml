@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@drawable/edittext_login"
     android:layout_height="wrap_content">
 
     <com.airbnb.lottie.LottieAnimationView
@@ -38,7 +39,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="97dp"
         android:text="No Internet Connection"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="@dimen/_22ssp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -51,6 +52,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="11dp"
         android:text="Please check your connection"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
         android:textSize="@dimen/_15ssp"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
@@ -68,6 +71,8 @@
         android:layout_marginBottom="32dp"
         android:background="@drawable/btn_retry"
         android:text="RETRY"
+        android:textColor="#979292"
+        android:textColorHint="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"

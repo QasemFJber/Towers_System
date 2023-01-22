@@ -26,6 +26,7 @@ import com.example.towerssystem.Dialog.DeletedDialog;
 import com.example.towerssystem.R;
 import com.example.towerssystem.adapters.EmployeeAdapter;
 import com.example.towerssystem.controller.EmployeeController;
+
 import com.example.towerssystem.databinding.ActivityEmployeesBinding;
 import com.example.towerssystem.interfaces.AuthCallBack;
 import com.example.towerssystem.interfaces.ContentCallBack;
@@ -99,6 +100,7 @@ public class ActivityEmployees extends AppCompatActivity  implements Item_Click 
     protected void onStop() {
         unregisterReceiver(networkChangeListiners);
         super.onStop();
+
 
     }
 

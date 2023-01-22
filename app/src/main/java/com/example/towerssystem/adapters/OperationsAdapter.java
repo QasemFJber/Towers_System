@@ -42,7 +42,7 @@ public class OperationsAdapter extends RecyclerView.Adapter<OperationsAdapter.Op
         holder.binding.tvItemDate.setText(operations.date);
         holder.binding.tvItemDetails.setText(operations.details);
         holder.binding.tvCategoryName.setText(operations.categoryName);
-        Picasso.get().load(operations.employee.imageUrl).into(holder.binding.imag);
+        Picasso.get().load(operations.resident.imageUrl).into(holder.binding.imag);
 
         holder.binding.card.setOnClickListener(v -> {
             clickItem.onClick(operations);

@@ -28,6 +28,6 @@ public class Operations {
     public String categoryName;
     @SerializedName("actor")
     @Expose
-    public Employee employee;
+    public Resident resident;
 
 }

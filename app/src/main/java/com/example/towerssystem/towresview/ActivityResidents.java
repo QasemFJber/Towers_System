@@ -92,7 +92,7 @@ public class ActivityResidents extends AppCompatActivity implements ItemClickRes
     protected void onStop() {
         super.onStop();
         unregisterReceiver(networkChangeListiners);
-        onBackPressed();
+
     }
 
     @Override

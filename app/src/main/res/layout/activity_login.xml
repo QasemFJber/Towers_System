@@ -33,13 +33,37 @@
         android:ems="10"
         android:hint="Email Here"
         android:inputType="textEmailAddress"
-        android:padding="7dp"
+        android:padding="@dimen/_10sdp"
         android:paddingStart="10dp"
-        android:textColorHint="#A2A2A2"
+        android:textColor="@color/yl"
+        android:textColorHint="#7A7A7A"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_em"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <EditText
+        android:id="@+id/et_password"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="60dp"
+        android:background="@drawable/edittext_login"
+        android:ems="10"
+        android:hint="Password Here"
+        android:inputType="numberPassword"
+        android:padding="@dimen/_10sdp"
+        android:paddingStart="10dp"
+        android:textColor="@color/yl"
+        android:textColorHint="#7A7A7A"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_pass"
         tools:ignore="TouchTargetSizeCheck" />
 
     <TextView
@@ -55,26 +79,6 @@
         app:layout_constraintHorizontal_bias="0.165"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_text_logo" />
-
-    <EditText
-        android:id="@+id/et_password"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="60dp"
-        android:background="@drawable/edittext_login"
-        android:ems="10"
-        android:hint="Password Here"
-        android:inputType="textEmailAddress"
-        android:padding="7dp"
-        android:paddingStart="10dp"
-        android:textColorHint="#A2A2A2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_pass"
-        tools:ignore="TouchTargetSizeCheck" />
 
     <TextView
         android:id="@+id/tv_pass"
@@ -142,12 +146,12 @@
         android:id="@+id/tv_Social"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="179dp"
         android:layout_marginTop="40dp"
         android:text="Social Logins"
         android:textColor="@color/white"
+        android:textColorHint="@color/yl"
         app:layout_constraintEnd_toStartOf="@+id/view"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.828"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_login" />
 

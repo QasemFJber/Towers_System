@@ -90,7 +90,7 @@ public class EmployeeController {
         });
     }
     public void updateEmployee(int id,String name,String mobile,String nationalNumber,byte[] imageBytesArray,String method , AuthCallBack callBack){
-        employee.imageBytesArray=imageBytesArray;
+        employee.imageBytesArray = imageBytesArray;
         RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"),imageBytesArray);
         MultipartBody.Part file = MultipartBody.Part.createFormData("image", "image-file", requestBody);
         RequestBody _name = RequestBody.create(MediaType.parse("String"),name);

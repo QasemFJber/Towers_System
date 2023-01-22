@@ -117,7 +117,7 @@ public interface RetrofitRequests {
     @Multipart
     @POST("users/{id}")
     Call<BaseResponse> updateResident(@Path("id") int id,
-                                      @Part("name") RequestBody _method,
+                                      @Part("_method") RequestBody _method,
                                       @Part("name") RequestBody name,
                                       @Part("email") RequestBody email,
                                       @Part("mobile") RequestBody mobile,

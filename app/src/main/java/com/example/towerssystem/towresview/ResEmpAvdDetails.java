@@ -86,8 +86,8 @@ public class ResEmpAvdDetails extends AppCompatActivity {
          Picasso.get().load(intent.getStringExtra("image")).into(binding.imageView2);
          binding.tvFirstname.setText("TITLE");
          binding.etFirstname.setText(intent.getStringExtra("title"));
-         binding.tvMobile.setText("MOBILE");
-         binding.etMobile.setText(intent.getStringExtra("mobile"));
+         binding.tvMobile.setText("INFO");
+         binding.etMobile.setText(intent.getStringExtra("info"));
          binding.tvNationalNumber.setText("Towers Name");
          binding.etNationalNumber.setText(intent.getStringExtra("towerName"));
          binding.tvEmail.setVisibility(View.INVISIBLE);
