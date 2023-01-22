@@ -49,9 +49,7 @@ public class ShowAdapter extends RecyclerView.Adapter<ShowAdapter.ShowViewHolder
 //        holder.binding.tvEmailRes.setText(categorie.resident.email);
 //        holder.binding.tvTowresName.setText(categorie.resident.towerName);
 //        Picasso.get().load(categorie.resident.imageUrl).into(holder.binding.imag);
-        holder.binding.card.setOnClickListener(v -> {
-            click.onClick(categorie);
-        });
+
 
     }
 
