@@ -72,9 +72,11 @@
         android:layout_marginEnd="32dp"
         android:background="@drawable/edittext_login"
         android:ems="10"
+        android:enabled="false"
         android:hint=" name here"
         android:padding="12dp"
         android:paddingStart="10dp"
+        android:inputType="none"
         android:textColor="@color/white"
         android:textColorHint="#A2A2A2"
         android:textStyle="bold"
@@ -92,6 +94,7 @@
         android:text="FIRST NAME"
         android:textColor="@color/yl"
         android:textSize="16sp"
+        android:inputType="none"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.1"
@@ -108,17 +111,18 @@
         android:background="@drawable/edittext_login"
         android:ems="10"
         android:hint="email here"
+        android:enabled="false"
         android:padding="12dp"
         android:paddingStart="10dp"
-
         android:textColor="@color/white"
         android:textColorHint="#A2A2A2"
+        android:inputType="none"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_email"
-        tools:ignore="TouchTargetSizeCheck" />
+        tools:ignore="TextFields,TouchTargetSizeCheck" />
 
     <TextView
         android:id="@+id/tv_email"
@@ -144,9 +148,10 @@
         android:background="@drawable/edittext_login"
         android:ems="10"
         android:hint="national number here"
-
-        android:inputType="textEmailAddress"
+        android:inputType="none"
         android:padding="12dp"
+        android:enabled="false"
+
         android:paddingStart="10dp"
         android:textColor="@color/white"
         android:textColorHint="#A2A2A2"
@@ -167,11 +172,12 @@
         android:background="@drawable/edittext_login"
         android:ems="10"
         android:hint="family members here"
-        android:inputType="textEmailAddress"
+        android:inputType="none"
         android:padding="12dp"
         android:paddingStart="10dp"
-
         android:textColor="@color/white"
+        android:enabled="false"
+
         android:textColorHint="#A2A2A2"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -190,8 +196,9 @@
         android:background="@drawable/edittext_login"
         android:ems="10"
         android:hint="mobile here"
+        android:enabled="false"
 
-        android:inputType="textEmailAddress"
+        android:inputType="none"
         android:padding="12dp"
         android:paddingStart="10dp"
         android:textColor="@color/white"

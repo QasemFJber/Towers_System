@@ -43,7 +43,7 @@ public class ShowAdapter extends RecyclerView.Adapter<ShowAdapter.ShowViewHolder
         holder.binding.tvIdCategorie.setText(categorie.categoryId);
         holder.binding.tvCategorieName.setText(categorie.categoryName);
         holder.binding.tvAmount.setText(categorie.amount);
-        holder.binding.tvResidentName.setText(categorie.resident.name);
+//        holder.binding.tvResidentName.setText(categorie.resident.name);
         holder.binding.tvDetilas.setText(categorie.details);
         holder.binding.tvDate.setText(categorie.date);
 //        holder.binding.tvEmailRes.setText(categorie.resident.email);
